@@ -1,0 +1,58 @@
+<section class="product-details">
+
+  @if (product) {
+
+    <div class="product-image">
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+        (error)="handleImageError($event)"
+      >
+    </div>
+
+    <div class="product-info">
+
+      <p class="brand">
+        {{ product.brand }}
+      </p>
+
+      <h1>{{ product.name }}</h1>
+
+      <div class="rating">
+        @for (star of ratingStars; track star) {
+          <span [class.filled]="star <= rating">★</span>
+        }
+        <span class="review-count">({{ reviewCount }} reviews)</span>
+      </div>
+
+      <p class="category">
+        {{ product.category }}
+      </p>
+
+      <h2>₹{{ product.price }}</h2>
+
+      <p class="description">
+        {{ product.description }}
+      </p>
+
+      <div class="actions">
+
+        <button (click)="buyNow()" class="btn-buy-now">
+          Buy Now
+        </button>
+
+        <button (click)="addToCart()" class="btn-cart">
+          Add to Cart
+        </button>
+
+        <button (click)="addToWishlist()" class="btn-wishlist">
+          ♡ Add to Wishlist
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</section>

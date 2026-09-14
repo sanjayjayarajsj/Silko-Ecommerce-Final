@@ -1,0 +1,46 @@
+<section class="auth-page">
+
+  <div class="auth-box">
+
+    <h1>Welcome Back</h1>
+
+    <p>Login to your account</p>
+
+    <form (ngSubmit)="login()">
+
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="username"
+        placeholder="Username"
+        required
+      >
+
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Password"
+        required
+      >
+
+      <button type="submit">
+        Login
+      </button>
+
+    </form>
+
+    @if (errorMessage) {
+      <p class="error">
+        {{ errorMessage }}
+      </p>
+    }
+
+    <p>
+      Don't have an account?
+      <a routerLink="/register">Register</a>
+    </p>
+
+  </div>
+
+</section>

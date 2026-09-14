@@ -1,0 +1,64 @@
+.success-page {
+  min-height: calc(100vh - var(--navbar-height));
+  min-height: calc(100svh - var(--navbar-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--color-surface);
+}
+
+.success-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5) var(--space-4);
+}
+
+.check-circle {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-text);
+  color: #ffffff;
+}
+
+.success-card h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.success-card > p {
+  font-size: 14px;
+}
+
+.order-meta {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.ok-btn {
+  margin-top: var(--space-4);
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.ok-btn:hover {
+  opacity: 0.85;
+}

@@ -1,0 +1,118 @@
+<section class="cart-page">
+
+  <div class="cart-header">
+    <p>YOUR SHOPPING BAG</p>
+    <h1>MY CART</h1>
+  </div>
+
+  @if (cartItems | async; as items) {
+
+    @if (items.length > 0) {
+
+      <div class="cart-content">
+
+        <div class="cart-items">
+
+          @for (item of items; track item.product.id) {
+
+            <div class="cart-item">
+
+              <div class="product-info">
+
+                <div class="product-image">
+                  <img
+                    [src]="item.product.image"
+                    [alt]="item.product.name"
+                  >
+                </div>
+
+                <div>
+                  <p class="brand">
+                    {{ item.product.brand }}
+                  </p>
+
+                  <h3>
+                    {{ item.product.name }}
+                  </h3>
+
+                  <p class="price">
+                    ₹{{ item.product.price }}
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="quantity">
+
+                <button
+                  (click)="decrease(item.product.id)"
+                >
+                  −
+                </button>
+
+                <span>{{ item.quantity }}</span>
+
+                <button
+                  (click)="increase(item.product.id)"
+                >
+                  +
+                </button>
+
+              </div>
+
+              <p class="item-total">
+                ₹{{ item.product.price * item.quantity }}
+              </p>
+
+              <button
+                class="remove-btn"
+                (click)="remove(item.product.id)"
+              >
+                Remove
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+        <div class="cart-summary">
+
+          <h2>Order Summary</h2>
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>₹{{ cartTotal | async }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+
+          <hr>
+
+          <div class="total-row">
+            <span>Total</span>
+            <span>₹{{ cartTotal | async }}</span>
+          </div>
+
+       <button class="checkout-btn"routerLink="/checkout">Checkout</button>
+
+        </div>
+
+      </div>
+
+    } @else {
+
+      <div class="empty-cart">
+        <h2>Your cart is empty</h2>
+        <p>Add some watches to your cart.</p>
+      </div>
+
+    }
+
+  }
+
+</section>

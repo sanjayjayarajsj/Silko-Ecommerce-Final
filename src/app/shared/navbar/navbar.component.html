@@ -1,0 +1,60 @@
+<nav class="navbar" [class.scrolled]="scrolled" [class.over-hero]="overHero()" [class.nav-hidden]="hidden">
+
+  <a routerLink="/" class="logo">
+    <svg class="logo-mark" viewBox="0 0 24 24" width="22" height="22">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <line x1="12" y1="12" x2="12" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="12" y1="12" x2="15.5" y2="13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    SILKO
+  </a>
+
+  <div class="search-inline">
+    <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input
+      type="text"
+      placeholder="Search products..."
+      [(ngModel)]="searchText"
+      (keyup.enter)="search()"
+    >
+  </div>
+
+  <div class="nav-icons">
+
+    <a routerLink="/wishlist" routerLinkActive="active-link" class="nav-link-text" aria-label="Wishlist">
+      WISHLIST
+      @if ((wishlistCount | async); as count) {
+        @if (count > 0) { <span>{{ count }}</span> }
+      }
+    </a>
+
+    <a routerLink="/cart" routerLinkActive="active-link" class="nav-link-text" aria-label="Cart">
+      CART
+      @if ((cartCount | async); as count) {
+        @if (count > 0) { <span>{{ count }}</span> }
+      }
+    </a>
+
+    <a routerLink="/contact-section" routerLinkActive="active-link" class="nav-link-text">
+      CONTACT US
+    </a>
+
+    <button class="icon-btn" (click)="showAccount = !showAccount" aria-label="Account">
+      <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+    </button>
+
+    @if (showAccount) {
+      <div class="account-menu">
+        @if (isLoggedIn()) {
+          <a routerLink="/order" (click)="showAccount = false">My Orders</a>
+          <button (click)="logout()">Logout</button>
+        } @else {
+          <a routerLink="/login" (click)="showAccount = false">Login</a>
+          <a routerLink="/register" (click)="showAccount = false">Register</a>
+        }
+      </div>
+    }
+
+  </div>
+
+</nav>

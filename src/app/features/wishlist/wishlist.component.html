@@ -1,0 +1,65 @@
+<section class="wishlist-page">
+
+  <div class="wishlist-header">
+    <p>YOUR FAVORITES</p>
+    <h1>MY WISHLIST</h1>
+  </div>
+
+  @if (wishlistItems | async; as items) {
+
+    @if (items.length > 0) {
+
+      <div class="wishlist-grid">
+
+@for (item of items; track item.product.id) {
+
+  <div class="wishlist-card">
+
+    <img
+      [src]="item.product.image"
+      [alt]="item.product.name"
+    >
+
+    <div class="wishlist-info">
+
+      <p>{{ item.product.brand }}</p>
+
+      <h2>{{ item.product.name }}</h2>
+
+      <h3>₹{{ item.product.price }}</h3>
+
+      <div class="actions">
+
+        <button (click)="addToCart(item.product)">
+          Add to Cart
+        </button>
+
+        <button
+          class="remove-btn"
+          (click)="removeFromWishlist(item.product.id)"
+        >
+          Remove
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+      </div>
+
+    } @else {
+
+      <div class="empty-wishlist">
+        <h2>Your wishlist is empty</h2>
+        <p>Add watches you love to see them here.</p>
+      </div>
+
+    }
+
+  }
+
+</section>

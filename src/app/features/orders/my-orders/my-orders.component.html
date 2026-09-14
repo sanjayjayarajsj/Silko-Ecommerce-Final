@@ -1,0 +1,60 @@
+<section class="orders-page">
+
+  <div class="orders-header">
+    <p>YOUR PURCHASES</p>
+    <h1>My Orders</h1>
+  </div>
+
+  @if (orders | async; as ordersList) {
+
+    @if (ordersList.length > 0) {
+
+      @for (order of ordersList; track order.id) {
+
+        <div class="order-card">
+
+          <h2>Order #{{ order.id }}</h2>
+
+          <p>{{ order.fullName }}</p>
+          <p>{{ order.address }}, {{ order.city }}</p>
+
+          <div class="order-items">
+
+            @for (item of order.items; track item.product.id) {
+
+              <div class="order-item">
+                <span>
+                  {{ item.product.name }}
+                </span>
+
+                <span>
+                  × {{ item.quantity }}
+                </span>
+
+                <span>
+                  ₹{{ item.product.price * item.quantity }}
+                </span>
+              </div>
+
+            }
+
+          </div>
+
+          <h3>Total: ₹{{ order.total }}</h3>
+
+        </div>
+
+      }
+
+    } @else {
+
+      <div class="empty-orders">
+        <h2>No orders yet</h2>
+        <p>Your completed orders will appear here.</p>
+      </div>
+
+    }
+
+  }
+
+</section>

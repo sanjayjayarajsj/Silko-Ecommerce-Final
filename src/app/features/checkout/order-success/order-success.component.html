@@ -1,0 +1,27 @@
+<div class="success-page">
+
+  <div class="success-card">
+
+    <div class="check-circle">
+      <svg viewBox="0 0 24 24" width="34" height="34">
+        <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+
+    <h1>Order Placed Successfully</h1>
+
+    <p>Thank you for shopping with us. Your order is being processed.</p>
+
+    @if (orderId) {
+      <p class="order-meta">Order #{{ orderId }}</p>
+    }
+
+    @if (total) {
+      <p class="order-meta">Total paid: {{ total | currency:'INR':'symbol':'1.0-0' }}</p>
+    }
+
+    <button class="ok-btn" (click)="goHome()">OK</button>
+
+  </div>
+
+</div>

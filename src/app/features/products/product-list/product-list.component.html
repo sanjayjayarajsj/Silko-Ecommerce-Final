@@ -1,0 +1,74 @@
+<section class="products-page">
+
+  <div class="heading">
+    <p>OUR COLLECTION</p>
+   <h1>
+  @if (searchText) {
+    Search Results
+  } @else {
+    All Watches
+  }
+</h1>
+@if (searchText) {
+  <p class="search-result">
+    Search results for "{{ searchText }}"
+  </p>
+   <button class="clear-search" (click)="clearSearch()">
+    Clear Search
+  </button>
+}
+  </div>
+  <div class="product-filters">
+
+<input
+  type="text"
+  placeholder="Search watches..."
+  [(ngModel)]="searchText"
+  (ngModelChange)="resetPage()"
+>
+
+<select [(ngModel)]="selectedCategory" (ngModelChange)="resetPage()">
+  <option value="">All Brands</option>
+  <option value="Titan">Titan</option>
+  <option value="Casio">Casio</option>
+  <option value="Fastrack">Fastrack</option>
+  <option value="Fossil">Fossil</option>
+  <option value="Police">Police</option>
+  <option value="G-Shock">G-Shock</option>
+</select>
+
+<select [(ngModel)]="sortOption" (ngModelChange)="resetPage()">
+  <option value="">Sort: Default</option>
+  <option value="price-asc">Price: Low to High</option>
+  <option value="price-desc">Price: High to Low</option>
+</select>
+</div>
+
+  <div class="product-grid">
+@if (products | async; as productList) {
+  @for (product of pagedProducts(productList); track product.id) {
+    <app-product-card [product]="product"></app-product-card>
+  }
+}
+
+  </div>
+
+  @if (products | async; as productList) {
+    @if (totalPages(productList) > 1) {
+      <div class="pagination">
+        <button
+          [disabled]="currentPage === 1"
+          (click)="goToPage(currentPage - 1, productList)"
+        >Prev</button>
+
+        <span>Page {{ currentPage }} of {{ totalPages(productList) }}</span>
+
+        <button
+          [disabled]="currentPage === totalPages(productList)"
+          (click)="goToPage(currentPage + 1, productList)"
+        >Next</button>
+      </div>
+    }
+  }
+
+</section>

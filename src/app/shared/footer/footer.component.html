@@ -1,0 +1,38 @@
+<footer>
+
+  <div class="footer-top">
+
+    <div class="footer-brand">
+      <h3>SILKO</h3>
+      <p>Timeless watches for every moment. Crafted for style, built for everyday confidence.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a routerLink="/products">All Watches</a>
+      <a routerLink="/products" [queryParams]="{ brand: 'Titan' }">Titan</a>
+      <a routerLink="/products" [queryParams]="{ brand: 'Casio' }">Casio</a>
+      <a routerLink="/products" [queryParams]="{ brand: 'Fossil' }">Fossil</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Account</h4>
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+      <a routerLink="/order">My Orders</a>
+      <a routerLink="/wishlist">Wishlist</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Get in touch</h4>
+      <p>support&#64;silko.com</p>
+      <p>Mon&ndash;Sat, 10am&ndash;7pm</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; {{ currentYear }} Silko. All rights reserved.</p>
+  </div>
+
+</footer>

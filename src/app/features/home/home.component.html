@@ -1,0 +1,154 @@
+<section class="hero">
+
+  <div class="hero-bg">
+    @for (img of heroImages; track img; let i = $index) {
+      <div
+        class="hero-bg-slide"
+        [class.active]="i === currentHeroIndex"
+        [style.background-image]="'url(' + img + ')'">
+      </div>
+    }
+    <div class="hero-overlay"></div>
+  </div>
+
+  <div class="hero-content">
+    <p>PREMIUM MEN'S WATCHES</p>
+
+    <h1>
+      TIME THAT DEFINES YOU.
+     CHOOSE YOUR BRAND WITH SILKO. 
+    </h1>
+
+    <p class="hero-text">
+      DISCOVER WATCHES CRAFTED FOR STYLE, CONFIDENCE AND EVERY OCCASION.
+    </p>
+
+    <a routerLink="/products" class="shop-btn">
+      ↪Shop Now
+    </a>
+  </div>
+
+  <a href="#video-section" class="scroll-cue" aria-label="Scroll down">
+    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </a>
+
+</section>
+<section class="video-section reveal-on-scroll" id="video-section">
+
+  <video
+    class="video-bg"
+    autoplay
+    muted
+    loop
+    playsinline
+    [poster]="videoPoster">
+    <source [src]="videoSrc" type="video/mp4">
+  </video>
+
+  <div class="video-overlay"></div>
+
+  <div class="video-content">
+    <p>IN MOTION</p>
+    <h2>PRECISION, EVERY SECOND</h2>
+    <p class="video-text">
+      WATCH THE DETAILS THAT MAKE EVERY SILKO TIMEPIECE WORTH WEARING.
+    </p>
+  </div>
+
+</section>
+<section class="featured-section reveal-on-scroll" id="featured">
+
+  <p>HANDPICKED FOR YOU</p>
+
+  <h2>FEATURED WATCHES</h2>
+
+  <div class="featured-grid">
+    @if (featuredProducts | async; as products) {
+      @for (product of products; track product.id) {
+        <app-product-card [product]="product"></app-product-card>
+      }
+    }
+  </div>
+
+</section>
+<section class="brands-section reveal-on-scroll">
+
+  <p>SHOP BY BRAND</p>
+
+  <h2>FEATURED BRANDS</h2>
+<div class="brands">
+
+  <a routerLink="/products" [queryParams]="{ brand: 'Titan' }">
+    Titan
+  </a>
+
+  <a routerLink="/products" [queryParams]="{ brand: 'Casio' }">
+    Casio
+  </a>
+
+  <a routerLink="/products" [queryParams]="{ brand: 'Fastrack' }">
+    Fastrack
+  </a>
+
+  <a routerLink="/products" [queryParams]="{ brand: 'Fossil' }">
+    Fossil
+  </a>
+
+  <a routerLink="/products" [queryParams]="{ brand: 'Police' }">
+    Police
+  </a>
+
+  <a routerLink="/products" [queryParams]="{ brand: 'G-Shock' }">
+    G-Shock
+  </a>
+
+</div>
+
+</section>
+<section class="about-section reveal-on-scroll" id="about">
+
+  <div class="about-content">
+    <p>OUR STORY</p>
+    <h2>CRAFTED FOR EVERY MOMENTS</h2>
+    <p class="about-text">
+      Silko brings together timeless design and everyday reliability.
+      Every watch in our collection is chosen for the same reason: it should
+      feel just as at home in a boardroom as it does on a weekend out.
+      No unnecessary complexity, just watches built to be worn.<br>
+
+      Our unique heritage is built on a disruptive mindset, an innovative approach and a cool and free-minded spirit to think ahead and establish records. TAG Heuer builds its future with employees driven by a taste for challenge, creativity and team spirit.
+      Since 1999, TAG Heuer is part of the leading French luxury-goods group LMVH Moet Hennessy Louis Vuitton. Headquartered in La Chaux-de-Fonds and in Eysins, TAG Heuer operates 4 productions sites: mastering the whole watchmaking process.
+
+
+
+
+    </p>
+      </div>
+
+</section>
+
+
+<section class="contact-section reveal-on-scroll" id="contact">
+  <div class="contact-content">
+    <h2>CONTACT US</h2>
+    <p class="contact-text">
+      HOW WOULD YOU PREFER TO CONTACT US?<br>
+
+      ✉️Email : silkotimeless&gmail.com<br>
+
+      📑For Appoinments : 1800 0000 1919<br>
+
+      📱For Help Contact : 1800 8888 2200<br>
+
+      Do you have a question about Silko products or services?<br>
+We are here for you.<br>
+
+READ OUR FAQ©<br>
+REPAIR MY WATCH🔗<br>
+
+
+
+    </p>
+  </div>
+
+</section>

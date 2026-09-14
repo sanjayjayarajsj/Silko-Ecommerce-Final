@@ -1,0 +1,112 @@
+<section class="checkout-page">
+
+  <div class="checkout-header">
+    <p>COMPLETE YOUR ORDER</p>
+    <h1>CHECKOUT</h1>
+  </div>
+
+  <div class="checkout-content">
+
+    <!-- Customer Details -->
+
+    <div class="checkout-form">
+
+      <h2>Shipping Information</h2>
+<form>
+  <label>Full Name</label>
+  <input
+    type="text"
+    name="fullName"
+    [(ngModel)]="fullName"
+    placeholder="Enter your full name"
+  >
+
+  @if (submitted && !fullName) {
+    <small class="error">Full name is required</small>
+  }
+
+  <label>Address</label>
+  <input
+    type="text"
+    name="address"
+    [(ngModel)]="address"
+    placeholder="Enter your address"
+  >
+
+  @if (submitted && !address) {
+    <small class="error">Address is required</small>
+  }
+
+  <label>City</label>
+  <input
+    type="text"
+    name="city"
+    [(ngModel)]="city"
+    placeholder="Enter your city"
+  >
+
+  @if (submitted && !city) {
+    <small class="error">City is required</small>
+  }
+
+<input
+  type="text"
+  name="pincode"
+  [(ngModel)]="pincode"
+  placeholder="Enter PIN code"
+  maxlength="6"
+  inputmode="numeric"
+>
+
+@if (submitted && !isValidPin()) {
+  <small class="error">
+    PIN code must be exactly 6 digits
+  </small>
+}
+</form>
+    </div>
+
+    <!-- Order Summary -->
+
+    <div class="order-summary">
+
+      <h2>Order Summary</h2>
+
+      @if (cartItems | async; as items) {
+
+        @for (item of items; track item.product.id) {
+
+          <div class="order-item">
+
+            <div>
+              <h3>{{ item.product.name }}</h3>
+              <p>Quantity: {{ item.quantity }}</p>
+            </div>
+
+            <span>
+              ₹{{ item.product.price * item.quantity }}
+            </span>
+
+          </div>
+
+        }
+
+      }
+
+      <hr>
+
+      <div class="total">
+        <span>Total</span>
+        <strong>
+          ₹{{ cartTotal | async }}
+        </strong>
+      </div>
+
+<button class="place-order-btn"
+  (click)="placeOrder()">Place Order</button>
+
+    </div>
+
+  </div>
+
+</section>

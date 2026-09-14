@@ -1,0 +1,486 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Titan Neo",
+      "brand": "Titan",
+      "price": 4995,
+      "image": "images/titan/titan6.jpg",
+      "category": "Analog",
+      "description": "A stylish men's analog watch with a clean and elegant design."
+    },
+    {
+      "id": 2,
+      "name": "Titan Edge Black",
+      "brand": "Titan",
+      "price": 8995,
+      "image": "images/titan/titan5.jpg",
+      "category": "Analog",
+      "description": "A slim black men's watch designed for a modern and sophisticated look."
+    },
+    {
+      "id": 3,
+      "name": "Titan Chronograph",
+      "brand": "Titan",
+      "price": 7495,
+      "image": "images/titan/titan7.jpg",
+      "category": "Chronograph",
+      "description": "A bold chronograph watch with a premium men's fashion design."
+    },
+    {
+      "id": 4,
+      "name": "Titan Automatic Silver",
+      "brand": "Titan",
+      "price": 12995,
+      "image": "images/titan/titan4.jpg",
+      "category": "Automatic",
+      "description": "A premium automatic men's watch with a classic silver finish."
+    },
+    {
+      "id": 5,
+      "name": "Titan Maritime Blue",
+      "brand": "Titan",
+      "price": 5995,
+      "image": "images/titan/titan3.jpg",
+      "category": "Sports",
+      "description": "A sporty men's watch featuring a stylish blue dial and durable design."
+    },
+    {
+      "id": 6,
+      "name": "Titan Karishma Black",
+      "brand": "Titan",
+      "price": 4495,
+      "image": "images/titan/titan8.jpg",
+      "category": "Analog",
+      "description": "A classic black analog watch suitable for everyday men's wear."
+    },
+    {
+      "id": 7,
+      "name": "Casio Enticer Black",
+      "brand": "Casio",
+      "price": 3995,
+      "image": "images/casio/casio1.jpg",
+      "category": "Analog",
+      "description": "A classic men's analog watch with a bold black dial."
+    },
+    {
+      "id": 8,
+      "name": "Casio Edifice Blue",
+      "brand": "Casio",
+      "price": 8995,
+      "image": "images/casio/casio2.jpg",
+      "category": "Chronograph",
+      "description": "A sporty chronograph watch with a stylish blue dial."
+    },
+    {
+      "id": 9,
+      "name": "Casio Vintage Digital",
+      "brand": "Casio",
+      "price": 2995,
+      "image": "images/casio/casio3.jpg",
+      "category": "Digital",
+      "description": "A retro-inspired digital men's watch for everyday wear."
+    },
+    {
+      "id": 10,
+      "name": "Casio Gents Silver",
+      "brand": "Casio",
+      "price": 4495,
+      "image": "images/casio/casio.4.jpg",
+      "category": "Analog",
+      "description": "A refined silver men's watch with a timeless design."
+    },
+    {
+      "id": 11,
+      "name": "Casio Edifice Black",
+      "brand": "Casio",
+      "price": 9995,
+      "image": "images/casio/casio5.jpg",
+      "category": "Chronograph",
+      "description": "A powerful black chronograph designed for modern men's style."
+    },
+    {
+      "id": 12,
+      "name": "Casio Sports Digital",
+      "brand": "Casio",
+      "price": 3495,
+      "image": "images/casio/casio6.jpg",
+      "category": "Sports",
+      "description": "A durable digital sports watch built for an active lifestyle."
+    },
+    {
+      "id": 13,
+      "name": "Fastrack Streetwear Black",
+      "brand": "Fastrack",
+      "price": 2995,
+      "image": "images/fastrack/fasttrack1.jpg",
+      "category": "Analog",
+      "description": "A bold men's watch with a youthful streetwear-inspired design."
+    },
+    {
+      "id": 14,
+      "name": "Fastrack Chrono Black",
+      "brand": "Fastrack",
+      "price": 3995,
+      "image": "images/fastrack/fast2.jpg",
+      "category": "Chronograph",
+      "description": "A stylish chronograph watch designed for modern everyday wear."
+    },
+    {
+      "id": 15,
+      "name": "Fastrack Urban Blue",
+      "brand": "Fastrack",
+      "price": 3495,
+      "image": "images/fastrack/fast3.jpg",
+      "category": "Analog",
+      "description": "A modern men's watch featuring a striking blue dial."
+    },
+    {
+      "id": 16,
+      "name": "Fastrack Reflex Digital",
+      "brand": "Fastrack",
+      "price": 2495,
+      "image": "images/fastrack/fast4.jpg",
+      "category": "Digital",
+      "description": "A contemporary digital watch designed for an active lifestyle."
+    },
+    {
+      "id": 17,
+      "name": "Fastrack Sports Black",
+      "brand": "Fastrack",
+      "price": 2795,
+      "image": "images/fastrack/fast5.jpg",
+      "category": "Sports",
+      "description": "A sporty black men's watch with a durable everyday design."
+    },
+    {
+      "id": 18,
+      "name": "Fastrack Classic Silver",
+      "brand": "Fastrack",
+      "price": 3295,
+      "image": "images/fastrack/fast6.jpg",
+      "category": "Analog",
+      "description": "A versatile silver men's watch suitable for casual and formal outfits."
+    },
+    {
+      "id": 19,
+      "name": "Fossil Grant Black",
+      "brand": "Fossil",
+      "price": 10995,
+      "image": "images/fossil/fossil1.jpg",
+      "category": "Chronograph",
+      "description": "A sophisticated men's chronograph with a classic black dial."
+    },
+    {
+      "id": 20,
+      "name": "Fossil Machine Silver",
+      "brand": "Fossil",
+      "price": 11995,
+      "image": "images/fossil/fossil2.jpg",
+      "category": "Chronograph",
+      "description": "A bold stainless steel men's watch with a powerful modern design."
+    },
+    {
+      "id": 21,
+      "name": "Fossil Townsman Brown",
+      "brand": "Fossil",
+      "price": 9995,
+      "image": "images/fossil/fossil3.jpg",
+      "category": "Automatic",
+      "description": "A stylish automatic watch with a sophisticated brown leather look."
+    },
+    {
+      "id": 22,
+      "name": "Fossil Neutra Blue",
+      "brand": "Fossil",
+      "price": 8995,
+      "image": "images/fossil/fossil4.jpg",
+      "category": "Analog",
+      "description": "A clean and elegant men's watch with a contemporary blue dial."
+    },
+    {
+      "id": 23,
+      "name": "Fossil Defender Black",
+      "brand": "Fossil",
+      "price": 10495,
+      "image": "images/fossil/fossil5.jpg",
+      "category": "Sports",
+      "description": "A rugged men's watch designed for a confident outdoor-inspired style."
+    },
+    {
+      "id": 24,
+      "name": "Fossil Minimalist Silver",
+      "brand": "Fossil",
+      "price": 7995,
+      "image": "images/fossil/fossil5.jpg",
+      "category": "Analog",
+      "description": "A minimal silver men's watch with a simple and elegant appearance."
+    },
+    {
+      "id": 25,
+      "name": "Police Urban Black",
+      "brand": "Police",
+      "price": 7495,
+      "image": "images/police/police1.jpg",
+      "category": "Analog",
+      "description": "A bold men's watch with a distinctive black urban design."
+    },
+    {
+      "id": 26,
+      "name": "Police Ranger Chrono",
+      "brand": "Police",
+      "price": 8995,
+      "image": "images/police/police2.jpg",
+      "category": "Chronograph",
+      "description": "A rugged chronograph watch designed for a strong modern look."
+    },
+    {
+      "id": 27,
+      "name": "Police Blue Steel",
+      "brand": "Police",
+      "price": 7995,
+      "image": "images/police/police3.jpg",
+      "category": "Analog",
+      "description": "A striking men's watch featuring a deep blue dial and steel finish."
+    },
+    {
+      "id": 28,
+      "name": "Police Predator Black",
+      "brand": "Police",
+      "price": 9495,
+      "image": "images/police/police4.jpg",
+      "category": "Sports",
+      "description": "A powerful sports watch with a bold black case and modern styling."
+    },
+    {
+      "id": 29,
+      "name": "Police Prime Silver",
+      "brand": "Police",
+      "price": 6995,
+      "image": "images/police/police5.jpg",
+      "category": "Analog",
+      "description": "A sophisticated silver men's watch suitable for everyday wear."
+    },
+    {
+      "id": 30,
+      "name": "Police Digital Sport",
+      "brand": "Police",
+      "price": 5995,
+      "image": "images/police/police6.jpg",
+      "category": "Digital",
+      "description": "A contemporary digital sports watch with a rugged men's design."
+    },
+    {
+      "id": 31,
+      "name": "G-Shock GA Black",
+      "brand": "G-Shock",
+      "price": 8995,
+      "image": "images/gshock/g1.jpg",
+      "category": "Sports",
+      "description": "A rugged men's sports watch built for durability and everyday adventure."
+    },
+    {
+      "id": 32,
+      "name": "G-Shock Digital Black",
+      "brand": "G-Shock",
+      "price": 7495,
+      "image": "images/gshock/g2.jpg",
+      "category": "Digital",
+      "description": "A durable digital men's watch with a bold and sporty design."
+    },
+    {
+      "id": 33,
+      "name": "G-Shock GA Blue",
+      "brand": "G-Shock",
+      "price": 9495,
+      "image": "images/gshock/g3.jpg",
+      "category": "Sports",
+      "description": "A striking blue sports watch designed for an active lifestyle."
+    },
+    {
+      "id": 34,
+      "name": "G-Shock Analog Digital",
+      "brand": "G-Shock",
+      "price": 9995,
+      "image": "images/gshock/g4.jpg",
+      "category": "Digital",
+      "description": "A versatile analog-digital men's watch with a rugged construction."
+    },
+    {
+      "id": 35,
+      "name": "G-Shock Steel Black",
+      "brand": "G-Shock",
+      "price": 12995,
+      "image": "images/gshock/g5.jpg",
+      "category": "Sports",
+      "description": "A premium men's watch combining a strong steel finish with a sporty design."
+    },
+    {
+      "id": 36,
+      "name": "G-Shock Classic Digital",
+      "brand": "G-Shock",
+      "price": 6995,
+      "image": "images/gshock/g6.jpg",
+      "category": "Digital",
+      "description": "A classic rugged digital watch designed for reliable everyday use."
+    }
+  ],
+  "cart": [],
+  "wishlist": [],
+  "users": [
+    {
+      "username": "sanjay",
+      "password": "123456",
+      "id": 1
+    },
+    {
+      "username": "jayaraj",
+      "password": "123456",
+      "id": 2
+    }
+  ],
+  "orders": [
+    {
+      "userId": 1,
+      "fullName": "sanjay",
+      "address": "payyanur",
+      "city": "payyanur",
+      "pincode": "123445",
+      "items": [
+        {
+          "product": {
+            "id": 10,
+            "name": "Casio Gents Silver",
+            "brand": "Casio",
+            "price": 4495,
+            "image": "images/casio/casio.4.jpg",
+            "category": "Analog",
+            "description": "A refined silver men's watch with a timeless design."
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 4495,
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "fullName": "34455rfvfvvgbg",
+      "address": "fbgbgbgbg",
+      "city": "ggbb",
+      "pincode": "233455",
+      "items": [
+        {
+          "userId": 2,
+          "product": {
+            "id": 2,
+            "name": "Titan Edge Black",
+            "brand": "Titan",
+            "price": 8995,
+            "image": "images/titan/titan5.jpg",
+            "category": "Analog",
+            "description": "A slim black men's watch designed for a modern and sophisticated look."
+          },
+          "quantity": 5
+        }
+      ],
+      "total": 44975,
+      "id": 2
+    },
+    {
+      "userId": 2,
+      "fullName": "ddd",
+      "address": "ddddddd",
+      "city": "dddd",
+      "pincode": "234545",
+      "items": [
+        {
+          "userId": 2,
+          "product": {
+            "id": 2,
+            "name": "Titan Edge Black",
+            "brand": "Titan",
+            "price": 8995,
+            "image": "images/titan/titan5.jpg",
+            "category": "Analog",
+            "description": "A slim black men's watch designed for a modern and sophisticated look."
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 8995,
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "fullName": "sj",
+      "address": "pnr",
+      "city": "knr",
+      "pincode": "123456",
+      "items": [
+        {
+          "product": {
+            "id": 8,
+            "name": "Casio Edifice Blue",
+            "brand": "Casio",
+            "price": 8995,
+            "image": "images/casio/casio2.jpg",
+            "category": "Chronograph",
+            "description": "A sporty chronograph watch with a stylish blue dial."
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 8995,
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "fullName": "sanjah",
+      "address": "sddfsf",
+      "city": "dsfdsf",
+      "pincode": "123456",
+      "items": [
+        {
+          "userId": 1,
+          "product": {
+            "id": 3,
+            "name": "Titan Chronograph",
+            "brand": "Titan",
+            "price": 7495,
+            "image": "images/titan/titan7.jpg",
+            "category": "Chronograph",
+            "description": "A bold chronograph watch with a premium men's fashion design."
+          },
+          "quantity": 1,
+          "id": 10
+        }
+      ],
+      "total": 7495,
+      "id": 5
+    },
+    {
+      "userId": 2,
+      "fullName": "sfsfs",
+      "address": "sfsfdsw",
+      "city": "sfsfs",
+      "pincode": "123455",
+      "items": [
+        {
+          "product": {
+            "id": 3,
+            "name": "Titan Chronograph",
+            "brand": "Titan",
+            "price": 7495,
+            "image": "images/titan/titan7.jpg",
+            "category": "Chronograph",
+            "description": "A bold chronograph watch with a premium men's fashion design."
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 7495,
+      "id": 6
+    }
+  ]
+}
