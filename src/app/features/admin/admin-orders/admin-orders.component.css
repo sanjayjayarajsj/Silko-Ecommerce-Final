@@ -1,0 +1,150 @@
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filters input,
+.filters select {
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  background: var(--color-bg);
+}
+
+.loading {
+  color: var(--color-text-muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.orders-table th {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.orders-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.status-select {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.status-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.status-pending { background: #fff3cd; color: #8a6300; border-color: transparent; }
+.status-processing { background: #dbe9ff; color: #1a4fb4; border-color: transparent; }
+.status-shipped { background: #e3d9ff; color: #5b2fb4; border-color: transparent; }
+.status-delivered { background: #d7f5df; color: #1e7d3a; border-color: transparent; }
+.status-cancelled { background: #fde2e1; color: var(--color-danger); border-color: transparent; }
+
+.actions-cell {
+  display: flex;
+  gap: 12px;
+}
+
+.actions-cell a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.actions-cell a:hover {
+  text-decoration: underline;
+}
+
+.actions-cell button {
+  background: none;
+  border: none;
+  color: var(--color-danger);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+.actions-cell button:hover {
+  text-decoration: underline;
+}
+
+.empty-row {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 30px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination button:not(:disabled):hover {
+  background: var(--color-surface);
+}

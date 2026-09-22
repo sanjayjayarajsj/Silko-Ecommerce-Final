@@ -94,6 +94,12 @@
   background: var(--color-surface);
 }
 
+.quantity button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  background: var(--color-bg);
+}
+
 .quantity span {
   min-width: 20px;
   text-align: center;

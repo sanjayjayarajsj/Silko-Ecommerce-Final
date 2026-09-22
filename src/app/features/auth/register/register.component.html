@@ -6,25 +6,94 @@
 
     <p>Join our watch collection</p>
 
-    <form (ngSubmit)="register()">
+    <form #registerForm="ngForm" (ngSubmit)="register()">
 
       <input
         type="text"
-        name="username"
-        [(ngModel)]="username"
-        placeholder="Username"
+        name="name"
+        [(ngModel)]="name"
+        #nameField="ngModel"
+        placeholder="Full Name"
         required
+        minlength="2"
+        pattern="^[A-Za-z ]+$"
       >
+
+      @if (nameField.invalid && nameField.touched) {
+        <p class="field-hint">
+          Name can only contain letters
+        </p>
+      }
 
       <input
-        type="password"
-        name="password"
-        [(ngModel)]="password"
-        placeholder="Password"
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        #emailField="ngModel"
+        placeholder="Email"
         required
+        email
       >
 
-      <button type="submit">
+      @if (emailField.invalid && emailField.touched) {
+        <p class="field-hint">
+          Enter a valid email address
+        </p>
+      }
+
+      <div class="password-field">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          name="password"
+          [(ngModel)]="password"
+          #passwordField="ngModel"
+          placeholder="Password"
+          required
+          minlength="6"
+          pattern="^(?=.*[a-z])(?=.*[A-Z]).+$"
+        >
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+        >
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+
+      @if (passwordField.invalid && passwordField.touched) {
+        <p class="field-hint">
+          Password must be at least 6 characters and include both uppercase and lowercase letters
+        </p>
+      }
+
+      <div class="password-field">
+        <input
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          #confirmPasswordField="ngModel"
+          placeholder="Confirm Password"
+          required
+        >
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="toggleConfirmPasswordVisibility()"
+          [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+        >
+          {{ showConfirmPassword ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+
+      @if (passwordsMismatch && confirmPasswordField.touched) {
+        <p class="field-hint">
+          Passwords do not match
+        </p>
+      }
+
+      <button type="submit" [disabled]="registerForm.invalid || passwordsMismatch">
         Register
       </button>
 

@@ -1,5 +1,8 @@
-<app-navbar></app-navbar>
-
+@if (!(hideChrome$ | async)) {
+  <app-navbar></app-navbar>
+}
 <router-outlet></router-outlet>
 
-<app-footer></app-footer>
+@if (!(hideChrome$ | async)) {
+  <app-footer></app-footer>
+}

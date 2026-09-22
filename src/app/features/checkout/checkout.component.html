@@ -12,6 +12,29 @@
     <div class="checkout-form">
 
       <h2>Shipping Information</h2>
+
+      @if (savedAddresses$ | async; as savedAddresses) {
+        @if (savedAddresses.length > 0) {
+          <div class="saved-addresses">
+            <p class="saved-addresses-label">Choose a saved address</p>
+            <div class="saved-address-list">
+              @for (addr of savedAddresses; track addr.id) {
+                <button
+                  type="button"
+                  class="saved-address-card"
+                  [class.selected]="selectedAddressId === addr.id"
+                  (click)="selectAddress(addr)"
+                >
+                  <span class="saved-address-type">{{ addr.type }}</span>
+                  <span class="saved-address-name">{{ addr.fullName }}</span>
+                  <span class="saved-address-text">{{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        }
+      }
+
 <form>
   <label>Full Name</label>
   <input
@@ -64,6 +87,87 @@
   </small>
 }
 </form>
+
+      <h2 class="payment-heading">Payment Method</h2>
+
+      <div class="payment-options">
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'Card'"
+          (click)="paymentMethod = 'Card'"
+        >
+          💳 Card
+        </button>
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'UPI'"
+          (click)="paymentMethod = 'UPI'"
+        >
+          📱 UPI
+        </button>
+        <button
+          type="button"
+          class="payment-option"
+          [class.selected]="paymentMethod === 'COD'"
+          (click)="paymentMethod = 'COD'"
+        >
+          💵 Cash on Delivery
+        </button>
+      </div>
+
+      @if (submitted && !paymentMethod) {
+        <small class="error">Please choose a payment method</small>
+      }
+
+      @if (paymentMethod === 'Card') {
+        <div class="payment-details">
+          <input
+            type="text"
+            [(ngModel)]="cardNumber"
+            name="cardNumber"
+            placeholder="Card Number (16 digits)"
+            maxlength="19"
+            inputmode="numeric"
+          >
+          <div class="payment-details-row">
+            <input
+              type="text"
+              [(ngModel)]="cardExpiry"
+              name="cardExpiry"
+              placeholder="MM/YY"
+              maxlength="5"
+            >
+            <input
+              type="text"
+              [(ngModel)]="cardCvv"
+              name="cardCvv"
+              placeholder="CVV"
+              maxlength="3"
+              inputmode="numeric"
+            >
+          </div>
+          @if (submitted && !isValidCard()) {
+            <small class="error">Enter a valid 16-digit card number, MM/YY expiry and 3-digit CVV</small>
+          }
+        </div>
+      }
+
+      @if (paymentMethod === 'UPI') {
+        <div class="payment-details">
+          <input
+            type="text"
+            [(ngModel)]="upiId"
+            name="upiId"
+            placeholder="yourname@bank"
+          >
+          @if (submitted && !isValidUpi()) {
+            <small class="error">Enter a valid UPI ID, e.g. yourname&#64;bank</small>
+          }
+        </div>
+      }
+
     </div>
 
     <!-- Order Summary -->
@@ -103,7 +207,8 @@
       </div>
 
 <button class="place-order-btn"
-  (click)="placeOrder()">Place Order</button>
+  [disabled]="isPlacingOrder"
+  (click)="placeOrder()">{{ isPlacingOrder ? 'Placing Order...' : 'Place Order' }}</button>
 
     </div>
 

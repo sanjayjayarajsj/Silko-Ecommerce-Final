@@ -28,14 +28,11 @@ filterAndSortProducts(products: any[] | null) {
   if (!products) {
     return [];
   }
-
   const filtered = products.filter(product => {
-
     const matchesSearch =
       product.name
         .toLowerCase()
         .includes(this.searchText.toLowerCase());
-
     const matchesBrand =
       !this.selectedCategory ||
       product.brand === this.selectedCategory;
@@ -48,21 +45,17 @@ filterAndSortProducts(products: any[] | null) {
   } else if (this.sortOption === 'price-desc') {
     filtered.sort((a, b) => b.price - a.price);
   }
-
   return filtered;
 }
-
 pagedProducts(products: any[] | null) {
   const filtered = this.filterAndSortProducts(products);
   const start = (this.currentPage - 1) * this.pageSize;
   return filtered.slice(start, start + this.pageSize);
 }
-
 totalPages(products: any[] | null): number {
   const filtered = this.filterAndSortProducts(products);
   return Math.max(1, Math.ceil(filtered.length / this.pageSize));
 }
-
 goToPage(page: number, products: any[] | null) {
   const total = this.totalPages(products);
   if (page < 1 || page > total) {
@@ -70,11 +63,9 @@ goToPage(page: number, products: any[] | null) {
   }
   this.currentPage = page;
 }
-
 resetPage() {
   this.currentPage = 1;
 }
-
  constructor() {
   this.store.dispatch(loadProducts());
 

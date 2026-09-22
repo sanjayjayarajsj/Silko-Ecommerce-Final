@@ -256,6 +256,7 @@
   padding: 70px 5% 90px;
   text-align: center;
   background: var(--color-surface);
+  scroll-margin-top: var(--navbar-height);
 }
 
 .contact-content {

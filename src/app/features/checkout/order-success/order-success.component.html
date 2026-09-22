@@ -13,11 +13,32 @@
     <p>Thank you for shopping with us. Your order is being processed.</p>
 
     @if (orderId) {
-      <p class="order-meta">Order #{{ orderId }}</p>
+      <p class="order-meta">Order ID: #{{ orderId }}</p>
+    }
+
+    @if (paymentMethod) {
+      <p class="order-meta">Paid via {{ paymentMethod }}</p>
+    }
+
+    @if (items.length > 0) {
+      <div class="ordered-items">
+        @for (item of items; track item.product.id) {
+          <div class="ordered-item">
+            <img [src]="item.product.image" [alt]="item.product.name">
+            <div class="ordered-item-details">
+              <p class="ordered-item-name">{{ item.product.name }}</p>
+              <p class="ordered-item-qty">Qty: {{ item.quantity }}</p>
+            </div>
+            <p class="ordered-item-price">
+              {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
+            </p>
+          </div>
+        }
+      </div>
     }
 
     @if (total) {
-      <p class="order-meta">Total paid: {{ total | currency:'INR':'symbol':'1.0-0' }}</p>
+      <p class="order-meta total-line">Total paid: {{ total | currency:'INR':'symbol':'1.0-0' }}</p>
     }
 
     <button class="ok-btn" (click)="goHome()">OK</button>

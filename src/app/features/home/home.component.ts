@@ -65,7 +65,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     sections.forEach((section: Element) => this.scrollObserver?.observe(section));
   }
-
   ngOnDestroy() {
     if (this.heroInterval) {
       clearInterval(this.heroInterval);

@@ -1,0 +1,75 @@
+<div class="user-details-page">
+
+  <a class="back-link" (click)="back()">&larr; Back to Users</a>
+
+  @if (loading) {
+    <p class="loading">Loading...</p>
+  } @else if (user) {
+
+    <div class="page-header">
+      <div class="profile-summary">
+        <div class="avatar">{{ user.name.charAt(0) }}</div>
+        <div>
+          <h1>{{ user.name }}</h1>
+          <p class="subtitle">{{ user.email }}</p>
+        </div>
+      </div>
+
+      <div class="status-control">
+        <span class="badge" [class.active]="isActive()" [class.inactive]="!isActive()">
+          {{ isActive() ? 'Active' : 'Inactive' }}
+        </span>
+
+        @if (user.id === currentUserId) {
+          <span class="self-note">This is your own account</span>
+        } @else {
+          <button
+            [class.deactivate]="isActive()"
+            [class.activate]="!isActive()"
+            (click)="toggleActive()"
+          >
+            {{ isActive() ? 'Deactivate Account' : 'Activate Account' }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="details-grid">
+
+      <div class="card">
+        <p class="stat-label">Role</p>
+        <p class="stat-value role">{{ user.role ?? 'user' }}</p>
+      </div>
+
+      <div class="card">
+        <p class="stat-label">Total Orders</p>
+        <p class="stat-value">{{ orders.length }}</p>
+      </div>
+
+      <div class="card">
+        <p class="stat-label">Total Spent</p>
+        <p class="stat-value">₹{{ totalSpent() }}</p>
+      </div>
+
+    </div>
+
+    <div class="card orders-card">
+      <h2>Order History</h2>
+
+      @if (orders.length === 0) {
+        <p class="empty-note">This user hasn't placed any orders yet.</p>
+      } @else {
+        @for (order of orders; track order.id) {
+          <a class="order-row" [routerLink]="['/admin/orders', order.id]">
+            <span>#{{ order.id }}</span>
+            <span>{{ order.createdAt | date:'d MMM y' }}</span>
+            <span class="order-status" [class]="'status-' + order.status.toLowerCase()">{{ order.status }}</span>
+            <span>₹{{ order.total }}</span>
+          </a>
+        }
+      }
+    </div>
+
+  }
+
+</div>

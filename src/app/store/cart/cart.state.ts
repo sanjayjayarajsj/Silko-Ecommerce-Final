@@ -12,3 +12,4 @@ export interface CartState {
 export const initialCartState: CartState = {
   items: []
 };
+export const MAX_QUANTITY_PER_PRODUCT = 5;

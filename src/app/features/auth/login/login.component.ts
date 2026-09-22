@@ -5,6 +5,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { loadCart } from '../../../store/cart/cart.actions';
 import { loadwishlist } from '../../../store/wishlist/wishlist.actions';
+import { loadAddresses } from '../../../store/address/address.actions';
 import { ToastService } from '../../../core/services/toast.service';
 @Component({
   selector: 'app-login',
@@ -18,20 +19,33 @@ export class LoginComponent {
   private router = inject(Router);
   private store=inject(Store)
   private toast =inject(ToastService)
-  username = '';
+  email = '';
   password = '';
   errorMessage = '';
+  showPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   login() {
-    this.authService.login(this.username, this.password).subscribe(user => {
+    this.authService.login(this.email, this.password).subscribe(user => {
       if (user) {
         this.errorMessage = '';
+        this.toast.show("Login Successful")
+
+        if (user.role === 'admin') {
+          this.router.navigate(['/admin']);
+          return;
+        }
+
         this.store.dispatch(loadCart());
         this.store.dispatch(loadwishlist());
-        this.toast.show("Login Successful")
+        this.store.dispatch(loadAddresses());
         this.router.navigate(['/']);
       } else {
-        this.errorMessage = 'Invalid username or password';
-        this.toast.show("Invalid Username Or Password")
+        this.errorMessage = 'Invalid email or password';
+        this.toast.show("Invalid Email Or Password")
       }
     });
   }

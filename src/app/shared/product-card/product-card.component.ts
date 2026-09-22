@@ -1,13 +1,16 @@
 import { Component,input,inject } from '@angular/core';
 import { Product } from '../../features/products/product.model';
 import { addToCart } from '../../store/cart/cart.actions';
+import { selectCartItems } from '../../store/cart/cart.selectors';
 import { Store } from '@ngrx/store';
 import { Router, RouterLink } from '@angular/router';
 import { addToWishlist } from '../../store/wishlist/wishlist.actions';
+import { selectWishlistItems } from '../../store/wishlist/wishlist.selectors';
 import { AuthService } from '../../core/services/auth.service';
 import { BuyNowService } from '../../features/checkout/buy-now.service';
 import { handleImageError } from '../image-fallback';
 import { ToastService } from '../../core/services/toast.service';
+import { take } from 'rxjs';
 @Component({
   selector: 'app-product-card',
   standalone: true,
@@ -42,16 +45,29 @@ addToCart() {
   const userId = this.authService.getUserId();
 
   if (!userId) {
+    this.toast.show('Please login to continue');
+    this.router.navigate(['/login']);
     return;
   }
 
-  this.store.dispatch(
-    addToCart({
-      product: this.product(),
-      userId: userId
-    })
-  );
-   this.toast.show('Added to cart');
+  this.store.select(selectCartItems).pipe(take(1)).subscribe(items => {
+    const existingItem = items.find(
+      item => item.product.id === this.product().id
+    );
+
+    if (existingItem) {
+      this.toast.show('Product is already in your cart');
+      return;
+    }
+
+    this.store.dispatch(
+      addToCart({
+        product: this.product(),
+        userId: userId
+      })
+    );
+    this.toast.show('Added to cart');
+  });
 }
 addProductToWishlist(event: Event) {
   event.preventDefault();
@@ -60,16 +76,29 @@ addProductToWishlist(event: Event) {
   const userId = this.authService.getUserId();
 
   if (!userId) {
+    this.toast.show('Please login to continue');
+    this.router.navigate(['/login']);
     return;
   }
 
-  this.store.dispatch(
-    addToWishlist({
-      product: this.product(),
-      userId: userId
-    })
-  );
-   this.toast.show('Added to Wishlist');
+  this.store.select(selectWishlistItems).pipe(take(1)).subscribe(items => {
+    const existingItem = items.find(
+      item => item.product.id === this.product().id
+    );
+
+    if (existingItem) {
+      this.toast.show('Product is already in your wishlist');
+      return;
+    }
+
+    this.store.dispatch(
+      addToWishlist({
+        product: this.product(),
+        userId: userId
+      })
+    );
+    this.toast.show('Added to Wishlist');
+  });
 }
 
 buyNow(event: Event) {
@@ -78,6 +107,7 @@ buyNow(event: Event) {
 
   const userId = this.authService.getUserId();
   if (!userId) {
+    this.toast.show('Please login to continue');
     this.router.navigate(['/login']);
     return;
   }

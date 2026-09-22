@@ -14,15 +14,41 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private toast=inject(ToastService)
-  username = '';
+  name = '';
+  email = '';
   password = '';
+  confirmPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  get passwordsMismatch(): boolean {
+    return this.confirmPassword.length > 0 && this.password !== this.confirmPassword;
+  }
+
   register() {
-   this.authService.register(
-  this.username,
-  this.password
-).subscribe(() => {
-  this.toast.show('Registration successful!');
-  this.router.navigate(['/login']);
-});
-}
+    // Check if this email is already registered before creating an account.
+    this.authService.checkEmailExists(this.email).subscribe(exists => {
+      if (exists) {
+        this.toast.show('User already exists with this email');
+        return;
+      }
+
+      this.authService.register(
+        this.name,
+        this.email,
+        this.password
+      ).subscribe(() => {
+        this.toast.show('Registration successful!');
+        this.router.navigate(['/login']);
+      });
+    });
+  }
 }

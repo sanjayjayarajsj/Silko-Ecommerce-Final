@@ -62,6 +62,42 @@
   opacity: 0.85;
 }
 
+.auth-box button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.password-field {
+  position: relative;
+  display: flex;
+}
+
+.password-field input {
+  flex: 1;
+  padding-right: 56px;
+}
+
+.password-field .toggle-password {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.field-hint {
+  margin-top: calc(-1 * var(--space-2));
+  font-size: 12px;
+  color: var(--color-danger);
+  text-align: left;
+}
+
 .auth-box .error {
   margin-top: var(--space-3);
   color: var(--color-danger);

@@ -7,7 +7,6 @@ import { Observable, map, switchMap, forkJoin, of } from 'rxjs';
   providedIn: 'root'
 })
 export class CartService {
-
   private http = inject(HttpClient);
 
 getCart(userId: number): Observable<CartItem[]> {
@@ -15,7 +14,6 @@ getCart(userId: number): Observable<CartItem[]> {
     `http://localhost:3000/cart?userId=${userId}`
   );
 }
-
   addToCart(item: CartItem): Observable<CartItem> {
     return this.http.post<CartItem>(
       'http://localhost:3000/cart',
@@ -50,8 +48,6 @@ findCartItem(
     )
   );
 }
-// Deletes every persisted cart row for this user (called after an order
-// is placed, so the backend cart matches the emptied NgRx state).
 clearCart(userId: number): Observable<void[]> {
   return this.getCart(userId).pipe(
     switchMap(items => {

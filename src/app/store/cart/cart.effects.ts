@@ -18,7 +18,6 @@ private authService=inject(AuthService);
       if (!userId) {
         return [];
       }
-
       return this.cartService.getCart(userId).pipe(
         map(items =>
           loadCartSuccess({ items })
@@ -31,24 +30,18 @@ addToCart$ = createEffect(
   () =>
     this.actions$.pipe(
       ofType(addToCart),
-
       switchMap(({ product, userId }) =>
         this.cartService.findCartItem(product.id, userId).pipe(
-
           switchMap(items => {
-
             if (items.length > 0) {
               return [];
             }
-
             return this.cartService.addToCart({
               userId: userId,
               product: product,
               quantity: 1
             });
-
           })
-
         )
       )
     ),
@@ -64,13 +57,10 @@ removeFromCart$ = createEffect(
   productId,
   this.authService.getUserId()!
 ).pipe(
-
           switchMap(items => {
-
             if (items.length === 0) {
               return [];
             }
-
             return this.cartService.removeFromCart(
               items[0].id!
             );
@@ -85,7 +75,6 @@ updateCartQuantity$ = createEffect(
   () =>
     this.actions$.pipe(
       ofType(updateCartQuantity),
-
       switchMap(({ productId, quantity }) =>
        this.cartService.findCartItem(
   productId,
@@ -96,22 +85,17 @@ updateCartQuantity$ = createEffect(
             if (items.length === 0) {
               return [];
             }
-
             const item = items[0];
-
             return this.cartService.updateCart(
               item.id!,
               quantity
             );
-
           })
         )
       )
     ),
   { dispatch: false }
 );
-// Runs whenever clearCart is dispatched (e.g. after checkout succeeds).
-// Deletes the persisted cart rows so they don't reappear on next login.
 clearCart$ = createEffect(
   () =>
     this.actions$.pipe(

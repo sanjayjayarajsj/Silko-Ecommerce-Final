@@ -1,0 +1,70 @@
+<div class="order-details-page">
+
+  <a class="back-link" (click)="back()">&larr; Back to Orders</a>
+
+  @if (loading) {
+    <p class="loading">Loading...</p>
+  } @else if (order) {
+
+    <div class="page-header">
+      <div>
+        <h1>Order #{{ order.id }}</h1>
+        <p class="subtitle">Placed on {{ order.createdAt | date:'d MMM y, h:mm a' }}</p>
+      </div>
+
+      <div class="status-control">
+        <label>Status</label>
+        <select
+          [class]="'status-select status-' + order.status.toLowerCase()"
+          [(ngModel)]="order.status"
+          (ngModelChange)="changeStatus($event)"
+          [disabled]="order.status === 'Cancelled'"
+        >
+          @for (status of statuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+
+        @if (order.status !== 'Cancelled' && order.status !== 'Delivered') {
+          <button class="cancel-btn" (click)="cancelOrder()">Cancel Order</button>
+        }
+      </div>
+    </div>
+
+    <div class="details-grid">
+
+      <div class="card">
+        <h2>Customer &amp; Shipping</h2>
+        <p><strong>{{ order.fullName }}</strong></p>
+        <p>{{ order.address }}</p>
+        <p>{{ order.city }} - {{ order.pincode }}</p>
+      </div>
+
+      <div class="card">
+        <h2>Payment</h2>
+        <p>Method: <strong>{{ order.paymentMethod }}</strong></p>
+        <p>Total Paid: <strong>₹{{ order.total }}</strong></p>
+      </div>
+
+    </div>
+
+    <div class="card">
+      <h2>Items ({{ order.items.length }})</h2>
+
+      @for (item of order.items; track item.product.id) {
+        <div class="order-item-row">
+          <img [src]="item.product.image" [alt]="item.product.name">
+          <div class="item-info">
+            <p class="item-name">{{ item.product.name }}</p>
+            <p class="item-meta">{{ item.product.brand }} · Qty: {{ item.quantity }}</p>
+          </div>
+          <p class="item-price">₹{{ item.product.price * item.quantity }}</p>
+        </div>
+      }
+    </div>
+
+  } @else {
+    <p class="loading">Order not found.</p>
+  }
+
+</div>

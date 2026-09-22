@@ -39,6 +39,63 @@
   margin-bottom: 22px;
 }
 
+.saved-addresses-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.saved-address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.saved-address-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.saved-address-card:hover {
+  background: var(--color-surface);
+}
+
+.saved-address-card.selected {
+  border-color: var(--color-accent);
+  border-width: 2px;
+}
+
+.saved-address-type {
+  display: inline-block;
+  width: fit-content;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.saved-address-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.saved-address-text {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
 .checkout-form form {
   display: flex;
   flex-direction: column;
@@ -69,6 +126,68 @@
   margin-top: -14px;
   margin-bottom: 14px;
   font-size: 13px;
+}
+
+.payment-heading {
+  margin-top: 28px;
+  margin-bottom: 14px;
+  font-size: 18px;
+}
+
+.payment-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.payment-option {
+  flex: 1 1 140px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.payment-option:hover {
+  background: var(--color-surface);
+}
+
+.payment-option.selected {
+  border-color: var(--color-accent);
+  border-width: 2px;
+  font-weight: 500;
+}
+
+.payment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.payment-details input {
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  outline: none;
+}
+
+.payment-details input:focus {
+  border-color: var(--color-accent);
+}
+
+.payment-details-row {
+  display: flex;
+  gap: 10px;
+}
+
+.payment-details-row input {
+  flex: 1;
 }
 
 /* Order Summary */

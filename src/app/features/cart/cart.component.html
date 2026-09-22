@@ -54,6 +54,7 @@
 
                 <button
                   (click)="increase(item.product.id)"
+                  [disabled]="item.quantity >= maxQuantityPerProduct"
                 >
                   +
                 </button>

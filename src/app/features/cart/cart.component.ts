@@ -3,6 +3,7 @@ import { AsyncPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selectors';
 import { increaseQuantity,decreaseQuantity,removeFromCart,updateCartQuantity } from '../../store/cart/cart.actions';
+import { MAX_QUANTITY_PER_PRODUCT } from '../../store/cart/cart.state';
 import { RouterLink } from '@angular/router';
 import { take } from 'rxjs';
 import { ToastService } from '../../core/services/toast.service';
@@ -16,69 +17,65 @@ import { ToastService } from '../../core/services/toast.service';
 export class CartComponent {
   private store = inject(Store);
   private toast=inject(ToastService)
+  readonly maxQuantityPerProduct = MAX_QUANTITY_PER_PRODUCT;
   cartItems = this.store.select(selectCartItems);
   cartTotal = this.store.select(selectCartTotal);
 increase(productId: number) {
   this.cartItems.pipe(take(1)).subscribe(items => {
     const item = items.find(
-      item => item.product.id === productId
+      item=>item.product.id === productId
     );
-
-    if (item) {
-      const newQuantity = item.quantity + 1;
-
-      this.store.dispatch(
-        increaseQuantity({ productId })
-      );
-
-      this.store.dispatch(
-        updateCartQuantity({
-          productId,
-          quantity: newQuantity
-        })
-      );
+    if (!item) {
+      return;
     }
+    if (item.quantity >= MAX_QUANTITY_PER_PRODUCT) {
+      this.toast.show(`You can only add up to ${MAX_QUANTITY_PER_PRODUCT} of the same item`);
+      return;
+    }
+    const newQuantity = item.quantity + 1;
+    this.store.dispatch(
+      increaseQuantity({ productId })
+    );
+    this.store.dispatch(
+      updateCartQuantity({
+        productId,
+        quantity: newQuantity
+      })
+    );
   });
 }
 decrease(productId: number) {
   this.cartItems.pipe(take(1)).subscribe(items => {
-
-    const item = items.find(
-      item => item.product.id === productId
+   const item = items.find(
+      item=>item.product.id === productId
     );
-
     if (!item) {
       return;
     }
-
     const newQuantity = item.quantity - 1;
-
     this.store.dispatch(
       decreaseQuantity({ productId })
     );
-
     if (newQuantity > 0) {
-
       this.store.dispatch(
         updateCartQuantity({
           productId,
           quantity: newQuantity
         })
       );
-
-    } else {
-
+    }else{
       this.store.dispatch(
         removeFromCart({ productId })
       );
-
     }
-
   });
 }
 remove(productId:number){
+  const confirmed = window.confirm('Are you sure you want to remove this item from your cart?');
+  if (!confirmed) {
+    return;
+  }
   this.store.dispatch(removeFromCart({productId}));
   this.toast.show("Removed from cart")
 }
 }
-

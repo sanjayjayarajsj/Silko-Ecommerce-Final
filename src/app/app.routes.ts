@@ -10,6 +10,16 @@ import { authGuard } from './core/guards/auth.guard';
 import { CheckoutComponent } from './features/checkout/checkout.component';
 import { MyOrdersComponent } from './features/orders/my-orders/my-orders.component';
 import { OrderSuccessComponent } from './features/checkout/order-success/order-success.component';
+import { ProfileComponent } from './features/profile/profile.component';
+import { adminGuard } from './core/guards/admin.guard';
+import { AdminLayoutComponent } from './features/admin/admin-layout/admin-layout.component';
+import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
+import { AdminProductsComponent } from './features/admin/admin-products/admin-products.component';
+import { AdminProductFormComponent } from './features/admin/admin-product-form/admin-product-form.component';
+import { AdminOrdersComponent } from './features/admin/admin-orders/admin-orders.component';
+import { AdminOrderDetailsComponent } from './features/admin/admin-order-details/admin-order-details.component';
+import { AdminUsersComponent } from './features/admin/admin-users/admin-users.component';
+import { AdminUserDetailsComponent } from './features/admin/admin-user-details/admin-user-details.component';
 export const routes: Routes = [
   {
         path: '',
@@ -40,11 +50,13 @@ export const routes: Routes = [
 },
     {
         path:'login',
-        component:LoginComponent
+        component:LoginComponent,
+        data: { hideChrome: true }
     },
     {
         path:'register',
-        component:RegisterComponent
+        component:RegisterComponent,
+        data: { hideChrome: true }
     },
     {
         path:'checkout',
@@ -60,5 +72,27 @@ export const routes: Routes = [
     path:'order-success',
     component:OrderSuccessComponent,
     canActivate:[authGuard]
-}
+},
+    {
+    path:'profile',
+    component:ProfileComponent,
+    canActivate:[authGuard]
+},
+    {
+        path: 'admin',
+        component: AdminLayoutComponent,
+        canActivate: [adminGuard],
+        data: { hideChrome: true },
+        children: [
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            { path: 'dashboard', component: AdminDashboardComponent },
+            { path: 'products', component: AdminProductsComponent },
+            { path: 'products/add', component: AdminProductFormComponent },
+            { path: 'products/edit/:id', component: AdminProductFormComponent },
+            { path: 'orders', component: AdminOrdersComponent },
+            { path: 'orders/:id', component: AdminOrderDetailsComponent },
+            { path: 'users', component: AdminUsersComponent },
+            { path: 'users/:id', component: AdminUserDetailsComponent }
+        ]
+    }
 ];

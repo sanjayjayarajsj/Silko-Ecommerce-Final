@@ -3,11 +3,34 @@
   @if (product) {
 
     <div class="product-image">
-      <img
-        [src]="product.image"
-        [alt]="product.name"
-        (error)="handleImageError($event)"
+      <div
+        class="zoom-frame"
+        (mousemove)="onImageHover($event)"
+        (mouseleave)="resetZoom()"
       >
+        <img
+          [src]="selectedImage"
+          [alt]="product.name"
+          [style.transform-origin]="zoomOrigin"
+          [class.zoomed]="isZooming"
+          (error)="handleImageError($event)"
+        >
+      </div>
+
+      @if (product.images && product.images.length > 1) {
+        <div class="thumbnail-row">
+          @for (img of product.images; track img) {
+            <button
+              type="button"
+              class="thumbnail"
+              [class.active]="img === selectedImage"
+              (click)="selectImage(img)"
+            >
+              <img [src]="img" [alt]="product.name" (error)="handleImageError($event)">
+            </button>
+          }
+        </div>
+      }
     </div>
 
     <div class="product-info">
@@ -35,13 +58,29 @@
         {{ product.description }}
       </p>
 
+      @if (product.stock === 0) {
+        <p class="stock-status out-of-stock">Out of Stock</p>
+      } @else if (product.stock <= 5) {
+        <p class="stock-status low-stock">Only {{ product.stock }} left in stock — order soon</p>
+      } @else {
+        <p class="stock-status in-stock">In Stock</p>
+      }
+
       <div class="actions">
 
-        <button (click)="buyNow()" class="btn-buy-now">
+        <button (click)="buyNow()" class="btn-buy-now" [disabled]="product.stock === 0">
           Buy Now
         </button>
 
-        <button (click)="addToCart()" class="btn-cart">
+        <button (click)="addToCart()" class="btn-cart" [disabled]="product.stock === 0">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              d="M6 6h15l-1.5 9h-12z"/>
+            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              d="M6 6L4.5 2H2 M9 10v4 M13.5 10v4"/>
+            <circle cx="9.5" cy="19" r="1.4" fill="currentColor"/>
+            <circle cx="17" cy="19" r="1.4" fill="currentColor"/>
+          </svg>
           Add to Cart
         </button>
 

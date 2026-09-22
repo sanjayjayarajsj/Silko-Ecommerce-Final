@@ -1,0 +1,91 @@
+<section class="profile-page">
+
+  <div class="profile-header">
+    <p>YOUR ACCOUNT</p>
+    <h1>My Profile</h1>
+  </div>
+
+  @if (user$ | async; as user) {
+    <div class="info-card">
+      <div class="avatar">
+        {{ user.name.charAt(0) }}
+      </div>
+      <div>
+        <h2>{{ user.name }}</h2>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+  }
+
+  <a routerLink="/order" class="orders-link">
+    <span>My Orders</span>
+    <span>&rarr;</span>
+  </a>
+
+  <div class="address-section">
+
+    <div class="address-section-header">
+      <h2>Saved Addresses</h2>
+      <button class="add-address-btn" (click)="showAddForm = !showAddForm">
+        {{ showAddForm ? 'Cancel' : '+ Add Address' }}
+      </button>
+    </div>
+
+    @if (showAddForm) {
+      <form class="address-form" (ngSubmit)="saveAddress()">
+
+        <div class="type-toggle">
+          <button
+            type="button"
+            [class.active]="addressType === 'Home'"
+            (click)="addressType = 'Home'"
+          >
+            Home
+          </button>
+          <button
+            type="button"
+            [class.active]="addressType === 'Work'"
+            (click)="addressType = 'Work'"
+          >
+            Work
+          </button>
+        </div>
+
+        <input type="text" placeholder="Full Name" [(ngModel)]="fullName" name="fullName">
+        <input type="text" placeholder="Address" [(ngModel)]="address" name="address">
+        <input type="text" placeholder="City" [(ngModel)]="city" name="city">
+        <input
+          type="text"
+          placeholder="PIN code"
+          [(ngModel)]="pincode"
+          name="pincode"
+          maxlength="6"
+          inputmode="numeric"
+        >
+
+        <button type="submit" class="save-address-btn">Save Address</button>
+      </form>
+    }
+
+    @if (addresses$ | async; as addresses) {
+
+      @if (addresses.length > 0) {
+        <div class="address-list">
+          @for (addr of addresses; track addr.id) {
+            <div class="address-card">
+              <span class="address-type">{{ addr.type }}</span>
+              <p class="address-name">{{ addr.fullName }}</p>
+              <p>{{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}</p>
+              <button class="remove-address-btn" (click)="deleteAddress(addr.id)">Remove</button>
+            </div>
+          }
+        </div>
+      } @else if (!showAddForm) {
+        <p class="no-addresses">No saved addresses yet.</p>
+      }
+
+    }
+
+  </div>
+
+</section>

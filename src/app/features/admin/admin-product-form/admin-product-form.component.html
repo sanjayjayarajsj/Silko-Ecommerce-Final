@@ -1,0 +1,81 @@
+<div class="admin-form-page">
+
+  <h1>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h1>
+
+  @if (loading) {
+    <p class="loading">Loading product...</p>
+  } @else {
+
+    <form class="product-form" (ngSubmit)="save()">
+
+      <label>Product Name</label>
+      <input type="text" [(ngModel)]="name" name="name">
+      @if (submitted && !name.trim()) {
+        <small class="error">Name is required</small>
+      }
+
+      <label>Brand</label>
+      <input type="text" [(ngModel)]="brand" name="brand">
+      @if (submitted && !brand.trim()) {
+        <small class="error">Brand is required</small>
+      }
+
+      <label>Category</label>
+      <input type="text" [(ngModel)]="category" name="category" placeholder="e.g. Analog, Digital, Chronograph">
+      @if (submitted && !category.trim()) {
+        <small class="error">Category is required</small>
+      }
+
+      <div class="form-row">
+        <div>
+          <label>Price (₹)</label>
+          <input type="number" min="1" [(ngModel)]="price" name="price">
+          @if (submitted && (price === null || price <= 0)) {
+            <small class="error">Enter a valid price</small>
+          }
+        </div>
+        <div>
+          <label>Stock</label>
+          <input type="number" min="0" [(ngModel)]="stock" name="stock">
+          @if (submitted && (stock === null || stock < 0)) {
+            <small class="error">Enter a valid stock count</small>
+          }
+        </div>
+      </div>
+
+      <label>Description</label>
+      <textarea [(ngModel)]="description" name="description" rows="4"></textarea>
+      @if (submitted && !description.trim()) {
+        <small class="error">Description is required</small>
+      }
+
+      <label>Main Image (path or URL)</label>
+      <input type="text" [(ngModel)]="image" name="image" placeholder="images/titan/titan1.jpg">
+      @if (submitted && !image.trim()) {
+        <small class="error">A main image is required</small>
+      }
+
+      <label>Second Image <span class="optional">(optional — shown in the product gallery)</span></label>
+      <input type="text" [(ngModel)]="image2" name="image2" placeholder="images/titan/titan2.jpg">
+
+      @if (image) {
+        <div class="image-preview">
+          <img [src]="image" alt="Preview">
+          @if (image2) {
+            <img [src]="image2" alt="Preview 2">
+          }
+        </div>
+      }
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="submit" class="save-btn" [disabled]="saving">
+          {{ saving ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Add Product') }}
+        </button>
+      </div>
+
+    </form>
+
+  }
+
+</div>

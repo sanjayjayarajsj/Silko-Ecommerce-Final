@@ -153,6 +153,10 @@
   transition: background 0.15s ease;
 }
 
+.nav-link-text svg {
+  margin-right: 6px;
+}
+
 .nav-link-text:hover {
   background: rgba(255, 255, 255, 0.5);
 }

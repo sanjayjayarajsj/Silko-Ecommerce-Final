@@ -43,6 +43,10 @@
       <span class="review-count">({{ reviewCount }})</span>
     </div>
 
+    @if (product().stock <= 5) {
+      <p class="stock-warning">Only {{ product().stock }} left!</p>
+    }
+
     <div class="bottom">
 
       <span class="price">
@@ -51,9 +55,16 @@
 
 <button
   class="cart-btn"
-  (click)="addToCart()"> Add to Cart</button>
+  [disabled]="product().stock === 0"
+  (click)="addToCart()">{{ product().stock === 0 ? 'Out of Stock' : 'Add to Cart' }}</button>
     </div>
 
-    <button class="buy-now-btn" (click)="buyNow($event)">Buy Now</button>
+    <button
+      class="buy-now-btn"
+      [disabled]="product().stock === 0"
+      (click)="buyNow($event)"
+    >
+      Buy Now
+    </button>
   </div>
 </div>

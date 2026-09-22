@@ -1,6 +1,6 @@
 import { createReducer,on } from "@ngrx/store";
 import { addToCart,removeFromCart,increaseQuantity,decreaseQuantity,updateCartQuantity,clearCart,loadCart,loadCartSuccess } from "./cart.actions";
-import { CartState,initialCartState } from "./cart.state";
+import { CartState,initialCartState,MAX_QUANTITY_PER_PRODUCT } from "./cart.state";
 
 export const cartReducer = createReducer(initialCartState,
 
@@ -9,11 +9,9 @@ on(addToCart, (state, { product, userId }) => {
       item => item.product.id === product.id
     );
     if (existingItem) {
-      return {...state,
-        items: state.items.map(item =>
-          item.product.id === product.id?{...item,
-                quantity: item.quantity + 1}:item)
-      };
+      // Already in the cart — Add to Cart should not silently bump the
+      // quantity. Only the +/- controls on the cart page do that.
+      return state;
     }
    return {
   ...state,
@@ -39,7 +37,7 @@ on(addToCart, (state, { product, userId }) => {
       item.product.id === productId
         ? {
             ...item,
-            quantity: item.quantity + 1
+            quantity: Math.min(item.quantity + 1, MAX_QUANTITY_PER_PRODUCT)
           }
         :item)
   })),
@@ -62,7 +60,7 @@ on(addToCart, (state, { product, userId }) => {
     item.product.id === productId
       ? {
           ...item,
-          quantity: quantity
+          quantity: Math.min(quantity, MAX_QUANTITY_PER_PRODUCT)
         }
       : item
   )

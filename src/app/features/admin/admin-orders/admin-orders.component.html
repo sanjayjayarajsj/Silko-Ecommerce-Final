@@ -1,0 +1,102 @@
+<div class="admin-orders">
+
+  <div class="page-header">
+    <div>
+      <h1>Orders</h1>
+      <p class="subtitle">{{ filteredOrders.length }} of {{ allOrders.length }} orders</p>
+    </div>
+  </div>
+
+  <div class="filters">
+
+    <input
+      type="text"
+      placeholder="Search by customer or order ID"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onFilterChange()"
+      class="search-input"
+    >
+
+    <select [(ngModel)]="statusFilter" (ngModelChange)="onFilterChange()">
+      <option value="All">All Statuses</option>
+      @for (status of statuses; track status) {
+        <option [value]="status">{{ status }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="paymentFilter" (ngModelChange)="onFilterChange()">
+      <option value="All">All Payment Methods</option>
+      <option value="Card">Card</option>
+      <option value="UPI">UPI</option>
+      <option value="COD">Cash on Delivery</option>
+    </select>
+
+  </div>
+
+  @if (loading) {
+    <p class="loading">Loading...</p>
+  } @else {
+
+    <div class="table-wrap">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Payment</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          @for (order of pagedOrders; track order.id) {
+            <tr>
+              <td>#{{ order.id }}</td>
+              <td>{{ order.fullName }}</td>
+              <td>{{ order.createdAt | date:'d MMM y, h:mm a' }}</td>
+              <td>{{ order.paymentMethod }}</td>
+              <td>₹{{ order.total }}</td>
+              <td>
+                <select
+                  class="status-select"
+                  [class]="'status-' + order.status.toLowerCase()"
+                  [(ngModel)]="order.status"
+                  (ngModelChange)="changeStatus(order, $event)"
+                  [disabled]="order.status === 'Cancelled'"
+                >
+                  @for (status of statuses; track status) {
+                    <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+              </td>
+              <td class="actions-cell">
+                <a [routerLink]="['/admin/orders', order.id]">View</a>
+                @if (order.status !== 'Cancelled' && order.status !== 'Delivered') {
+                  <button (click)="cancelOrder(order)">Cancel</button>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="empty-row">No orders match your filters.</td>
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages > 1) {
+      <div class="pagination">
+        <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Prev</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+      </div>
+    }
+
+  }
+
+</div>

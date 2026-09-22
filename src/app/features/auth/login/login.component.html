@@ -6,25 +6,51 @@
 
     <p>Login to your account</p>
 
-    <form (ngSubmit)="login()">
+    <form #loginForm="ngForm" (ngSubmit)="login()">
 
       <input
-        type="text"
-        name="username"
-        [(ngModel)]="username"
-        placeholder="Username"
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        #emailField="ngModel"
+        placeholder="Email"
         required
+        email
       >
 
-      <input
-        type="password"
-        name="password"
-        [(ngModel)]="password"
-        placeholder="Password"
-        required
-      >
+      @if (emailField.invalid && emailField.touched) {
+        <p class="field-hint">
+          Enter a valid email address
+        </p>
+      }
 
-      <button type="submit">
+      <div class="password-field">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          name="password"
+          [(ngModel)]="password"
+          #passwordField="ngModel"
+          placeholder="Password"
+          required
+          minlength="6"
+        >
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+        >
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+
+      @if (passwordField.invalid && passwordField.touched) {
+        <p class="field-hint">
+          Password must be at least 6 characters
+        </p>
+      }
+
+      <button type="submit" [disabled]="loginForm.invalid">
         Login
       </button>
 

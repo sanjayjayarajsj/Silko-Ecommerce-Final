@@ -17,5 +17,5 @@ export const selectError = createSelector(
 );
 export const selectFeaturedProducts = createSelector(
   selectProducts,
-  (products) => products.slice(0, 4)
+  (products) => products.slice(0, 8)
 );

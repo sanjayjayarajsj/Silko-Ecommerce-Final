@@ -4,11 +4,14 @@ import { ProductService } from '../product.service';
 import { Product } from '../product.model';
 import { Store } from '@ngrx/store';
 import { addToCart } from '../../../store/cart/cart.actions';
+import { selectCartItems } from '../../../store/cart/cart.selectors';
 import { addToWishlist } from '../../../store/wishlist/wishlist.actions';
+import { selectWishlistItems } from '../../../store/wishlist/wishlist.selectors';
 import { AuthService } from '../../../core/services/auth.service';
 import { BuyNowService } from '../../checkout/buy-now.service';
 import { handleImageError } from '../../../shared/image-fallback';
 import { ToastService } from '../../../core/services/toast.service';
+import { take } from 'rxjs';
 @Component({
   selector: 'app-product-details',
   standalone: true,
@@ -26,6 +29,31 @@ private toast=inject(ToastService)
 product:Product|undefined;
 private store = inject(Store);
 handleImageError=handleImageError;
+
+// Which gallery image is currently shown as the main image.
+selectedImage = '';
+
+// Hover-to-zoom: track where the cursor is over the image so the
+// zoomed-in view centers on that exact spot.
+zoomOrigin = 'center';
+isZooming = false;
+
+selectImage(img: string) {
+  this.selectedImage = img;
+}
+
+onImageHover(event: MouseEvent) {
+  const target = event.currentTarget as HTMLElement;
+  const rect = target.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / rect.width) * 100;
+  const y = ((event.clientY - rect.top) / rect.height) * 100;
+  this.zoomOrigin = `${x}% ${y}%`;
+  this.isZooming = true;
+}
+
+resetZoom() {
+  this.isZooming = false;
+}
 
 get rating(): number {
   return this.product ? 3.5 + (this.product.id % 4) * 0.5 : 0;
@@ -46,16 +74,31 @@ addToCart() {
 
   const userId = this.authService.getUserId();
   if (!userId) {
+    this.toast.show('Please login to continue');
+    this.router.navigate(['/login']);
     return;
   }
 
-  this.store.dispatch(
-    addToCart({
-      product: this.product,
-      userId: userId
-    })
-  );
-   this.toast.show('Added to cart');
+  const product = this.product;
+
+  this.store.select(selectCartItems).pipe(take(1)).subscribe(items => {
+    const existingItem = items.find(
+      item => item.product.id === product.id
+    );
+
+    if (existingItem) {
+      this.toast.show('Product is already in your cart');
+      return;
+    }
+
+    this.store.dispatch(
+      addToCart({
+        product: product,
+        userId: userId
+      })
+    );
+    this.toast.show('Added to cart');
+  });
 }
 addToWishlist() {
   if (!this.product) {
@@ -65,16 +108,29 @@ addToWishlist() {
   const userId = this.authService.getUserId();
 
   if (!userId) {
+    this.toast.show('Please login to continue');
+    this.router.navigate(['/login']);
     return;
   }
 
-  this.store.dispatch(
-    addToWishlist({
-      product: this.product,
-      userId: userId
-    })
-  );
-   this.toast.show('Added to Wishlist');
+  this.store.select(selectWishlistItems).pipe(take(1)).subscribe(items => {
+    const existingItem = items.find(
+      item => item.product.id === this.product!.id
+    );
+
+    if (existingItem) {
+      this.toast.show('Product is already in your wishlist');
+      return;
+    }
+
+    this.store.dispatch(
+      addToWishlist({
+        product: this.product!,
+        userId: userId
+      })
+    );
+    this.toast.show('Added to Wishlist');
+  });
 }
 buyNow() {
   if (!this.product) {
@@ -83,6 +139,7 @@ buyNow() {
 
   const userId = this.authService.getUserId();
   if (!userId) {
+    this.toast.show('Please login to continue');
     this.router.navigate(['/login']);
     return;
   }
@@ -94,6 +151,9 @@ constructor(){
   const id=Number(this.route.snapshot.paramMap.get('id'));
   this.productService.getProducts().subscribe(products=>{
     this.product=products.find(product=>product.id===id)
+    if (this.product) {
+      this.selectedImage = this.product.image;
+    }
   });
 }
 }

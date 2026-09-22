@@ -1,0 +1,106 @@
+<div class="admin-products">
+
+  <div class="page-header">
+    <div>
+      <h1>Products</h1>
+      <p class="subtitle">{{ filteredProducts.length }} of {{ allProducts.length }} products</p>
+    </div>
+    <a routerLink="/admin/products/add" class="add-btn">+ Add Product</a>
+  </div>
+
+  <div class="filters">
+
+    <input
+      type="text"
+      placeholder="Search by name or brand"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onFilterChange()"
+      class="search-input"
+    >
+
+    <select [(ngModel)]="categoryFilter" (ngModelChange)="onFilterChange()">
+      <option value="All">All Categories</option>
+      @for (cat of categories; track cat) {
+        <option [value]="cat">{{ cat }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="stockFilter" (ngModelChange)="onFilterChange()">
+      <option value="All">All Stock</option>
+      <option value="In Stock">In Stock</option>
+      <option value="Low Stock">Low Stock (&le;5)</option>
+      <option value="Out of Stock">Out of Stock</option>
+    </select>
+
+  </div>
+
+  @if (loading) {
+    <p class="loading">Loading...</p>
+  } @else {
+
+    <div class="table-wrap">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          @for (product of pagedProducts; track product.id) {
+            <tr>
+              <td>
+                <img [src]="product.image" [alt]="product.name" class="row-image">
+              </td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.brand }}</td>
+              <td>{{ product.category }}</td>
+              <td>₹{{ product.price }}</td>
+              <td>
+                <div class="stock-cell">
+                  <input
+                    type="number"
+                    min="0"
+                    [(ngModel)]="product.stock"
+                    (change)="updateStock(product)"
+                    class="stock-input"
+                  >
+                  @if (product.stock === 0) {
+                    <span class="badge out">Out of stock</span>
+                  } @else if (product.stock <= 5) {
+                    <span class="badge low">Low</span>
+                  }
+                </div>
+              </td>
+              <td class="actions-cell">
+                <a [routerLink]="['/admin/products/edit', product.id]">Edit</a>
+                <button (click)="deleteProduct(product)">Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="empty-row">No products match your filters.</td>
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages > 1) {
+      <div class="pagination">
+        <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Prev</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+      </div>
+    }
+
+  }
+
+</div>

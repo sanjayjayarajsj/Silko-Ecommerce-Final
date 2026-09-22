@@ -22,6 +22,10 @@
   <div class="nav-icons">
 
     <a routerLink="/wishlist" routerLinkActive="active-link" class="nav-link-text" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24" width="16" height="16">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"
+          d="M12 21s-7.5-4.6-10-9.1C.5 8.4 2.3 5 5.7 5c2 0 3.4 1 4.3 2.4C10.9 6 12.3 5 14.3 5c3.4 0 5.2 3.4 3.7 6.9C19.5 16.4 12 21 12 21z"/>
+      </svg>
       WISHLIST
       @if ((wishlistCount | async); as count) {
         @if (count > 0) { <span>{{ count }}</span> }
@@ -29,13 +33,21 @@
     </a>
 
     <a routerLink="/cart" routerLinkActive="active-link" class="nav-link-text" aria-label="Cart">
+      <svg viewBox="0 0 24 24" width="16" height="16">
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          d="M6 6h15l-1.5 9h-12z"/>
+        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          d="M6 6L4.5 2H2 M9 10v4 M13.5 10v4"/>
+        <circle cx="9.5" cy="19" r="1.4" fill="currentColor"/>
+        <circle cx="17" cy="19" r="1.4" fill="currentColor"/>
+      </svg>
       CART
       @if ((cartCount | async); as count) {
         @if (count > 0) { <span>{{ count }}</span> }
       }
     </a>
 
-    <a routerLink="/contact-section" routerLinkActive="active-link" class="nav-link-text">
+    <a routerLink="/home" fragment="contact" routerLinkActive="active-link" class="nav-link-text">
       CONTACT US
     </a>
 
@@ -46,6 +58,7 @@
     @if (showAccount) {
       <div class="account-menu">
         @if (isLoggedIn()) {
+          <a routerLink="/profile" (click)="showAccount = false">My Profile</a>
           <a routerLink="/order" (click)="showAccount = false">My Orders</a>
           <button (click)="logout()">Logout</button>
         } @else {

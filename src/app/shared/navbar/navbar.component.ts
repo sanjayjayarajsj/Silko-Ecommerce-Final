@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { clearWishlist } from '../../store/wishlist/wishlist.actions';
 import { clearCart } from '../../store/cart/cart.actions';
+import { clearAddresses } from '../../store/address/address.actions';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -79,6 +80,7 @@ logout() {
   this.authService.logout();
   this.store.dispatch(clearCart());
   this.store.dispatch(clearWishlist());
+  this.store.dispatch(clearAddresses());
   this.showAccount = false;
   this.router.navigate(['/login']);
 }
