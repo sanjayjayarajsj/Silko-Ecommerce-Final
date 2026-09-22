@@ -1,74 +1,203 @@
 <section class="products-page">
 
+  <!-- Page Header -->
   <div class="heading">
-    <p>OUR COLLECTION</p>
-   <h1>
-  @if (searchText) {
-    Search Results
-  } @else {
-    All Watches
-  }
-</h1>
-@if (searchText) {
-  <p class="search-result">
-    Search results for "{{ searchText }}"
-  </p>
-   <button class="clear-search" (click)="clearSearch()">
-    Clear Search
-  </button>
-}
+
+    <p class="eyebrow">SILKO COLLECTION</p>
+
+    @if (searchText) {
+      <h1>Search Results</h1>
+
+      <p class="search-result">
+        Showing results for
+        <strong>"{{ searchText }}"</strong>
+      </p>
+
+      <button
+        type="button"
+        class="clear-search"
+        (click)="clearSearch()"
+      >
+        Clear Search
+      </button>
+
+    } @else {
+
+      <h1>All Watches</h1>
+
+      <p class="heading-description">
+        Explore our collection of premium men's watches.
+      </p>
+
+    }
+
   </div>
-  <div class="product-filters">
 
-<input
-  type="text"
-  placeholder="Search watches..."
-  [(ngModel)]="searchText"
-  (ngModelChange)="resetPage()"
->
 
-<select [(ngModel)]="selectedCategory" (ngModelChange)="resetPage()">
-  <option value="">All Brands</option>
-  <option value="Titan">Titan</option>
-  <option value="Casio">Casio</option>
-  <option value="Fastrack">Fastrack</option>
-  <option value="Fossil">Fossil</option>
-  <option value="Police">Police</option>
-  <option value="G-Shock">G-Shock</option>
-</select>
+  <!-- Filters -->
+  <div class="filter-wrapper">
 
-<select [(ngModel)]="sortOption" (ngModelChange)="resetPage()">
-  <option value="">Sort: Default</option>
-  <option value="price-asc">Price: Low to High</option>
-  <option value="price-desc">Price: High to Low</option>
-</select>
-</div>
+    <div class="filter-header">
+      <span class="filter-label">FILTER & SORT</span>
 
+      @if (selectedCategory || searchText || sortOption) {
+        <span class="filter-active">
+          Filters active
+        </span>
+      }
+    </div>
+
+    <div class="product-filters">
+
+      <!-- Search -->
+      <div class="filter-field search-field">
+
+        <span class="filter-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="M16 16L21 21"></path>
+          </svg>
+        </span>
+
+        <input
+          type="text"
+          placeholder="Search watches..."
+          [(ngModel)]="searchText"
+          (ngModelChange)="resetPage()"
+        >
+
+      </div>
+
+
+      <!-- Brand -->
+      <div class="filter-field">
+
+        <select
+          [(ngModel)]="selectedCategory"
+          (ngModelChange)="resetPage()"
+        >
+          <option value="">All Brands</option>
+          <option value="Titan">Titan</option>
+          <option value="Casio">Casio</option>
+          <option value="Fastrack">Fastrack</option>
+          <option value="Fossil">Fossil</option>
+          <option value="Police">Police</option>
+          <option value="G-Shock">G-Shock</option>
+        </select>
+
+      </div>
+
+
+      <!-- Sort -->
+      <div class="filter-field">
+
+        <select
+          [(ngModel)]="sortOption"
+          (ngModelChange)="resetPage()"
+        >
+          <option value="">Sort: Default</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Product Grid -->
   <div class="product-grid">
-@if (products | async; as productList) {
-  @for (product of pagedProducts(productList); track product.id) {
-    <app-product-card [product]="product"></app-product-card>
-  }
-}
+
+    @if (products | async; as productList) {
+
+      @for (
+        product of pagedProducts(productList);
+        track product.id
+      ) {
+
+        <app-product-card
+          [product]="product"
+        ></app-product-card>
+
+      }
+
+    } @else {
+
+      @for (i of skeletonCards; track i) {
+
+        <div class="product-skeleton">
+
+          <div class="skeleton skeleton-image"></div>
+
+          <div
+            class="skeleton skeleton-line"
+            style="width: 70%"
+          ></div>
+
+          <div
+            class="skeleton skeleton-line"
+            style="width: 45%"
+          ></div>
+
+          <div
+            class="skeleton skeleton-line price-skeleton"
+            style="width: 30%"
+          ></div>
+
+        </div>
+
+      }
+
+    }
 
   </div>
 
+
+  <!-- Pagination -->
   @if (products | async; as productList) {
+
     @if (totalPages(productList) > 1) {
+
       <div class="pagination">
+
         <button
+          type="button"
           [disabled]="currentPage === 1"
           (click)="goToPage(currentPage - 1, productList)"
-        >Prev</button>
+        >
+          <span>←</span>
+          Previous
+        </button>
 
-        <span>Page {{ currentPage }} of {{ totalPages(productList) }}</span>
+        <div class="page-info">
+
+          <span class="page-label">PAGE</span>
+
+          <strong>
+            {{ currentPage }}
+          </strong>
+
+          <span>
+            of {{ totalPages(productList) }}
+          </span>
+
+        </div>
 
         <button
+          type="button"
           [disabled]="currentPage === totalPages(productList)"
           (click)="goToPage(currentPage + 1, productList)"
-        >Next</button>
+        >
+          Next
+          <span>→</span>
+        </button>
+
       </div>
+
     }
+
   }
 
 </section>

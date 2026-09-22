@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private elementRef = inject(ElementRef);
   featuredProducts = this.store.select(selectFeaturedProducts);
+  skeletonCards = Array(4).fill(0);
 
   heroImages: string[] = [
     'images/hero/hero3.jpg.jpg',
@@ -65,6 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     sections.forEach((section: Element) => this.scrollObserver?.observe(section));
   }
+
   ngOnDestroy() {
     if (this.heroInterval) {
       clearInterval(this.heroInterval);

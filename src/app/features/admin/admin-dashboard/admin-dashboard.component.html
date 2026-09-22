@@ -4,7 +4,14 @@
   <p class="subtitle">Overview of your store</p>
 
   @if (loading) {
-    <p class="loading">Loading...</p>
+    <div class="stat-grid">
+      @for (i of [1,2,3,4,5]; track i) {
+        <div class="stat-card">
+          <div class="skeleton skeleton-label"></div>
+          <div class="skeleton skeleton-value"></div>
+        </div>
+      }
+    </div>
   } @else {
 
     <div class="stat-grid">
@@ -34,6 +41,81 @@
         <p class="stat-value">{{ totalUsers }}</p>
       </div>
 
+    </div>
+
+    <div class="panel-grid">
+
+      <div class="panel">
+        <h2>Revenue Overview <span class="panel-subtitle">Last 7 days</span></h2>
+
+        <div class="bar-chart">
+          @for (day of revenueByDay; track day.key) {
+            <div class="bar-col">
+              <div class="bar-track">
+                <div
+                  class="bar-fill"
+                  [style.height.%]="(day.amount / maxDailyRevenue) * 100"
+                  [title]="'₹' + day.amount"
+                ></div>
+              </div>
+              <span class="bar-label">{{ day.label }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Order Status</h2>
+
+        @if (totalOrders === 0) {
+          <p class="empty-note">No orders yet.</p>
+        } @else {
+          <div class="donut-wrap">
+            <div class="donut" [style.background]="statusGradient">
+              <div class="donut-hole">
+                <span class="donut-total">{{ totalOrders }}</span>
+                <span class="donut-caption">orders</span>
+              </div>
+            </div>
+
+            <div class="legend">
+              @for (slice of statusBreakdown; track slice.status) {
+                @if (slice.count > 0) {
+                  <div class="legend-row">
+                    <span class="legend-dot" [style.background]="slice.color"></span>
+                    <span class="legend-label">{{ slice.status }}</span>
+                    <span class="legend-count">{{ slice.count }}</span>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+
+    <div class="panel stock-alert-panel">
+      <h2>Stock Alerts</h2>
+
+      @if (lowStockProducts.length === 0) {
+        <p class="empty-note">All products are well stocked.</p>
+      } @else {
+        <div class="stock-alert-list">
+          @for (product of lowStockProducts; track product.id) {
+            <a class="stock-alert-row" [routerLink]="['/admin/products/edit', product.id]">
+              <img [src]="product.image" [alt]="product.name">
+              <div class="stock-alert-info">
+                <p class="stock-alert-name">{{ product.name }}</p>
+                <p class="stock-alert-brand">{{ product.brand }}</p>
+              </div>
+              <span class="stock-alert-badge" [class.out]="product.stock === 0">
+                {{ product.stock === 0 ? 'Out of stock' : product.stock + ' left' }}
+              </span>
+            </a>
+          }
+        </div>
+      }
     </div>
 
   }

@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withInMemoryScrolling, withRouterConfig } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -18,7 +18,8 @@ export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
-      withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })
+      withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
+      withRouterConfig({ paramsInheritanceStrategy: 'always' })
     ),
     provideHttpClient(), provideClientHydration(),
     provideStore({products:productsReducer,cart:cartReducer,wishlist:wishlistReducer,address:addressReducer}),

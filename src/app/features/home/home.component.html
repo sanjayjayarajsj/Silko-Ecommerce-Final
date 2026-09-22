@@ -1,3 +1,4 @@
+<!-- ==================== HERO ==================== -->
 <section class="hero">
 
   <div class="hero-bg">
@@ -8,32 +9,61 @@
         [style.background-image]="'url(' + img + ')'">
       </div>
     }
+
     <div class="hero-overlay"></div>
   </div>
 
   <div class="hero-content">
-    <p>PREMIUM MEN'S WATCHES</p>
+
+    <div class="hero-label">
+      <span></span>
+      PREMIUM MEN'S WATCHES
+      <span></span>
+    </div>
 
     <h1>
-      TIME THAT DEFINES YOU.
-     CHOOSE YOUR BRAND WITH SILKO. 
+      TIME THAT
+      <span>DEFINES YOU.</span>
     </h1>
 
     <p class="hero-text">
-      DISCOVER WATCHES CRAFTED FOR STYLE, CONFIDENCE AND EVERY OCCASION.
+      Discover watches crafted for style, confidence and
+      every occasion.
     </p>
 
-    <a routerLink="/products" class="shop-btn">
-      Shop Now
+    <div class="hero-actions">
+      <a routerLink="/products" class="shop-btn">
+        EXPLORE COLLECTION
+        <span>→</span>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="hero-bottom">
+    <span>SCROLL TO EXPLORE</span>
+
+    <a href="#video-section" class="scroll-cue" aria-label="Scroll down">
+      <svg viewBox="0 0 24 24" width="20" height="20">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 5v14M5 12l7 7 7-7"
+        />
+      </svg>
     </a>
   </div>
 
-  <a href="#video-section" class="scroll-cue" aria-label="Scroll down">
-    <svg viewBox="0 0 24 24" width="22" height="22"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12l7 7 7-7"/></svg>
-  </a>
-
 </section>
-<section class="video-section reveal-on-scroll" id="video-section">
+
+
+<!-- ==================== VIDEO ==================== -->
+<section
+  class="video-section reveal-on-scroll"
+  id="video-section">
 
   <video
     class="video-bg"
@@ -42,113 +72,345 @@
     loop
     playsinline
     [poster]="videoPoster">
-    <source [src]="videoSrc" type="video/mp4">
+
+    <source
+      [src]="videoSrc"
+      type="video/mp4">
+
   </video>
 
   <div class="video-overlay"></div>
 
   <div class="video-content">
-    <p>IN MOTION</p>
-    <h2>PRECISION, EVERY SECOND</h2>
-    <p class="video-text">
-      WATCH THE DETAILS THAT MAKE EVERY SILKO TIMEPIECE WORTH WEARING.
+
+    <div class="section-number">
+      01 / 03
+    </div>
+
+    <p class="video-label">
+      IN MOTION
     </p>
+
+    <h2>
+      PRECISION,
+      <span>EVERY SECOND.</span>
+    </h2>
+
+    <p class="video-text">
+      Watch the details that make every SILKO timepiece
+      worth wearing.
+    </p>
+
   </div>
 
 </section>
-<section class="featured-section reveal-on-scroll" id="featured">
 
-  <p>HANDPICKED FOR YOU</p>
 
-  <h2>FEATURED WATCHES</h2>
+<!-- ==================== FEATURED PRODUCTS ==================== -->
+<section
+  class="featured-section reveal-on-scroll"
+  id="featured">
+
+  <div class="section-heading">
+
+    <p class="section-label">
+      HANDPICKED FOR YOU
+    </p>
+
+    <h2>
+      FEATURED <span>WATCHES</span>
+    </h2>
+
+    <div class="heading-line"></div>
+
+  </div>
+
 
   <div class="featured-grid">
+
     @if (featuredProducts | async; as products) {
+
       @for (product of products; track product.id) {
-        <app-product-card [product]="product"></app-product-card>
+
+        <app-product-card
+          [product]="product">
+        </app-product-card>
+
       }
+
+    } @else {
+
+      @for (i of skeletonCards; track i) {
+
+        <div class="product-skeleton">
+
+          <div class="skeleton skeleton-image"></div>
+
+          <div
+            class="skeleton skeleton-line"
+            style="width: 70%">
+          </div>
+
+          <div
+            class="skeleton skeleton-line"
+            style="width: 45%">
+          </div>
+
+        </div>
+
+      }
+
     }
+
+  </div>
+
+
+  <div class="section-action">
+
+    <a
+      routerLink="/products"
+      class="outline-btn">
+
+      VIEW ALL WATCHES
+
+      <span>→</span>
+
+    </a>
+
   </div>
 
 </section>
+
+
+<!-- ==================== BRANDS ==================== -->
 <section class="brands-section reveal-on-scroll">
 
-  <p>SHOP BY BRAND</p>
+  <div class="section-heading">
 
-  <h2>FEATURED BRANDS</h2>
-<div class="brands">
+    <p class="section-label">
+      DISCOVER YOUR STYLE
+    </p>
 
-  <a routerLink="/products" [queryParams]="{ brand: 'Titan' }">
-    Titan
-  </a>
+    <h2>
+      SHOP BY <span>BRAND</span>
+    </h2>
 
-  <a routerLink="/products" [queryParams]="{ brand: 'Casio' }">
-    Casio
-  </a>
+    <div class="heading-line"></div>
 
-  <a routerLink="/products" [queryParams]="{ brand: 'Fastrack' }">
-    Fastrack
-  </a>
+  </div>
 
-  <a routerLink="/products" [queryParams]="{ brand: 'Fossil' }">
-    Fossil
-  </a>
 
-  <a routerLink="/products" [queryParams]="{ brand: 'Police' }">
-    Police
-  </a>
+  <div class="brands">
 
-  <a routerLink="/products" [queryParams]="{ brand: 'G-Shock' }">
-    G-Shock
-  </a>
+    <a
+      routerLink="/products"
+      [queryParams]="{ brand: 'Titan' }">
 
-</div>
+      <span class="brand-number">01</span>
+      <strong>TITAN</strong>
+      <span class="brand-arrow">→</span>
+
+    </a>
+
+
+    <a
+      routerLink="/products"
+      [queryParams]="{ brand: 'Casio' }">
+
+      <span class="brand-number">02</span>
+      <strong>CASIO</strong>
+      <span class="brand-arrow">→</span>
+
+    </a>
+
+
+    <a
+      routerLink="/products"
+      [queryParams]="{ brand: 'Fastrack' }">
+
+      <span class="brand-number">03</span>
+      <strong>FASTRACK</strong>
+      <span class="brand-arrow">→</span>
+
+    </a>
+
+
+    <a
+      routerLink="/products"
+      [queryParams]="{ brand: 'Fossil' }">
+
+      <span class="brand-number">04</span>
+      <strong>FOSSIL</strong>
+      <span class="brand-arrow">→</span>
+
+    </a>
+
+
+    <a
+      routerLink="/products"
+      [queryParams]="{ brand: 'Police' }">
+
+      <span class="brand-number">05</span>
+      <strong>POLICE</strong>
+      <span class="brand-arrow">→</span>
+
+    </a>
+
+
+    <a
+      routerLink="/products"
+      [queryParams]="{ brand: 'G-Shock' }">
+
+      <span class="brand-number">06</span>
+      <strong>G-SHOCK</strong>
+      <span class="brand-arrow">→</span>
+
+    </a>
+
+  </div>
 
 </section>
-<section class="about-section reveal-on-scroll" id="about">
-
-  <div class="about-content">
-    <p>OUR STORY</p>
-    <h2>CRAFTED FOR EVERY MOMENTS</h2>
-    <p class="about-text">
-      Silko brings together timeless design and everyday reliability.
-      Every watch in our collection is chosen for the same reason: it should
-      feel just as at home in a boardroom as it does on a weekend out.
-      No unnecessary complexity, just watches built to be worn.<br>
-
-      Our unique heritage is built on a disruptive mindset, an innovative approach and a cool and free-minded spirit to think ahead and establish records. TAG Heuer builds its future with employees driven by a taste for challenge, creativity and team spirit.
-      Since 1999, TAG Heuer is part of the leading French luxury-goods group LMVH Moet Hennessy Louis Vuitton. Headquartered in La Chaux-de-Fonds and in Eysins, TAG Heuer operates 4 productions sites: mastering the whole watchmaking process.
 
 
+<!-- ==================== ABOUT SILKO ==================== -->
+<section
+  class="about-section reveal-on-scroll"
+  id="about">
+
+  <div class="about-layout">
+
+    <div class="about-number">
+      02
+    </div>
 
 
+    <div class="about-content">
+
+      <p class="section-label">
+        THE SILKO STORY
+      </p>
+
+      <h2>
+        TIMELESS STYLE.
+        <span>MODERN CONFIDENCE.</span>
+      </h2>
+
+      <p class="about-text">
+        SILKO brings together some of the world's most
+        recognized watch brands in one carefully selected
+        collection.
+      </p>
+
+      <p class="about-text">
+        From everyday essentials to statement pieces,
+        every watch is selected for its design, reliability
+        and ability to complement the person wearing it.
+      </p>
+
+      <p class="about-text">
+        Whether you're heading to the office, stepping into
+        a special occasion or simply enjoying your day,
+        SILKO helps you find a watch that fits your style.
+      </p>
+
+      <a
+        routerLink="/products"
+        class="text-link">
+
+        EXPLORE THE COLLECTION
+        <span>→</span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==================== CONTACT ==================== -->
+<section
+  class="contact-section reveal-on-scroll"
+  id="contact">
+
+  <div class="contact-inner">
+
+    <p class="section-label">
+      WE ARE HERE FOR YOU
     </p>
+
+    <h2>
+      HAVE A QUESTION?
+      <span>LET'S TALK.</span>
+    </h2>
+
+    <p class="contact-intro">
+      Our team is here to help you with products,
+      orders and any questions about SILKO.
+    </p>
+
+
+    <div class="contact-grid">
+
+      <div class="contact-card">
+
+        <div class="contact-icon">
+          ✉
+        </div>
+
+        <h3>Email</h3>
+
+        <p>
+          silkotimeless&#64;gmail.com
+        </p>
+
       </div>
 
-</section>
+
+      <div class="contact-card">
+
+        <div class="contact-icon">
+          ☎
+        </div>
+
+        <h3>Appointments</h3>
+
+        <p>
+          1800 0000 1919
+        </p>
+
+      </div>
 
 
-<section class="contact-section reveal-on-scroll" id="contact">
-  <div class="contact-content">
-    <h2>CONTACT US</h2>
-    <p class="contact-text">
-      HOW WOULD YOU PREFER TO CONTACT US?<br>
+      <div class="contact-card">
 
-      ✉️Email : silkotimeless&gmail.com<br>
+        <div class="contact-icon">
+          ?
+        </div>
 
-      📑For Appoinments : 1800 0000 1919<br>
+        <h3>Customer Help</h3>
 
-      📱For Help Contact : 1800 8888 2200<br>
+        <p>
+          1800 8888 2200
+        </p>
 
-      Do you have a question about Silko products or services?<br>
-We are here for you.<br>
+      </div>
 
-READ OUR FAQ©<br>
-REPAIR MY WATCH🔗<br>
+    </div>
 
 
+    <div class="contact-note">
 
-    </p>
+      <span>NEED MORE HELP?</span>
+
+      <p>
+        Have questions about a SILKO product or your order?
+        Our support team is ready to assist you.
+      </p>
+
+    </div>
+
   </div>
 
 </section>

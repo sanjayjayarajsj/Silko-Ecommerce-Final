@@ -1,9 +1,11 @@
 <div class="product-card">
 
+  <!-- Product Image -->
   <a
     [routerLink]="['/products', product().id]"
     class="image-link"
   >
+
     <div class="image-container">
 
       <img
@@ -12,20 +14,36 @@
         (error)="handleImageError($event)"
       >
 
-<button
-  type="button"
-  class="wishlist-btn"
-  (click)="addProductToWishlist($event)"
-  aria-label="Add to wishlist">
-  <svg viewBox="0 0 24 24" width="18" height="18">
-    <path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"
-      d="M12 21s-7.5-4.6-10-9.1C.5 8.4 2.3 5 5.7 5c2 0 3.4 1 4.3 2.4C10.9 6 12.3 5 14.3 5c3.4 0 5.2 3.4 3.7 6.9C19.5 16.4 12 21 12 21z"/>
-  </svg>
-</button>
+      <!-- Wishlist -->
+      <button
+        type="button"
+        class="wishlist-btn"
+        (click)="addProductToWishlist($event)"
+        aria-label="Add to wishlist"
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18">
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linejoin="round"
+            d="M12 21s-7.5-4.6-10-9.1C.5 8.4 2.3 5 5.7 5c2 0 3.4 1 4.3 2.4C10.9 6 12.3 5 14.3 5c3.4 0 5.2 3.4 3.7 6.9C19.5 16.4 12 21 12 21z"
+          />
+        </svg>
+      </button>
+
+      <!-- View Product -->
+      <div class="view-product">
+        VIEW PRODUCT
+        <span>→</span>
+      </div>
 
     </div>
+
   </a>
 
+
+  <!-- Product Information -->
   <div class="product-info">
 
     <p class="brand">
@@ -36,35 +54,111 @@
       {{ product().name }}
     </h3>
 
+
+    <!-- Rating -->
     <div class="rating">
+
       @for (star of ratingStars; track star) {
-        <span [class.filled]="star <= rating">★</span>
+
+        <span [class.filled]="star <= rating">
+          ★
+        </span>
+
       }
-      <span class="review-count">({{ reviewCount }})</span>
-    </div>
 
-    @if (product().stock <= 5) {
-      <p class="stock-warning">Only {{ product().stock }} left!</p>
-    }
-
-    <div class="bottom">
-
-      <span class="price">
-        ₹{{ product().price }}
+      <span class="review-count">
+        ({{ reviewCount }})
       </span>
 
-<button
-  class="cart-btn"
-  [disabled]="product().stock === 0"
-  (click)="addToCart()">{{ product().stock === 0 ? 'Out of Stock' : 'Add to Cart' }}</button>
     </div>
 
+
+    <!-- Stock warning -->
+    @if (product().stock <= 5 && product().stock > 0) {
+
+      <p class="stock-warning">
+        Only {{ product().stock }} left
+      </p>
+
+    }
+
+
+    @if (product().stock === 0) {
+
+      <p class="out-stock">
+        Currently unavailable
+      </p>
+
+    }
+
+
+    <!-- Price + Cart -->
+    <div class="bottom">
+
+      <div class="price-wrapper">
+
+        <span class="price">
+          ₹{{ product().price }}
+        </span>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="cart-btn"
+        [disabled]="product().stock === 0"
+        (click)="addToCart()"
+      >
+
+        <span class="cart-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path
+              d="M3 4h2l2.2 11h10.9l2-8H7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+            <circle
+              cx="9"
+              cy="19"
+              r="1.3"
+              fill="currentColor"
+            />
+
+            <circle
+              cx="18"
+              cy="19"
+              r="1.3"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+
+        {{ product().stock === 0 ? 'Out of Stock' : 'Add to Cart' }}
+
+      </button>
+
+    </div>
+
+
+    <!-- Buy Now -->
     <button
+      type="button"
       class="buy-now-btn"
       [disabled]="product().stock === 0"
       (click)="buyNow($event)"
     >
-      Buy Now
+
+      BUY NOW
+
+      <span>→</span>
+
     </button>
+
   </div>
+
 </div>

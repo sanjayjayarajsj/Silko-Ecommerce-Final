@@ -44,3 +44,233 @@
 .stat-card.warn .stat-value {
   color: var(--color-danger);
 }
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+  .panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.panel h2 {
+  font-size: 15px;
+  margin: 0 0 18px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.panel-subtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.empty-note {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* Revenue bar chart */
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  height: 160px;
+}
+
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  height: 100%;
+}
+
+.bar-track {
+  flex: 1;
+  width: 100%;
+  max-width: 32px;
+  display: flex;
+  align-items: flex-end;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.bar-fill {
+  width: 100%;
+  background: var(--color-accent);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  min-height: 2px;
+  transition: height 0.2s ease;
+}
+
+.bar-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Order status donut */
+
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.donut {
+  width: 130px;
+  height: 130px;
+  min-width: 130px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-hole {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-total {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.donut-caption {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 140px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  flex: 1;
+  color: var(--color-text-muted);
+}
+
+.legend-count {
+  font-weight: 600;
+}
+
+/* Stock alerts */
+
+.stock-alert-panel {
+  margin-top: 16px;
+}
+
+.stock-alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stock-alert-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.stock-alert-row:hover {
+  background: var(--color-surface);
+}
+
+.stock-alert-row img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.stock-alert-info {
+  flex: 1;
+}
+
+.stock-alert-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.stock-alert-brand {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 2px 0 0;
+}
+
+.stock-alert-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff3cd;
+  color: #8a6300;
+  white-space: nowrap;
+}
+
+.stock-alert-badge.out {
+  background: #fde2e1;
+  color: var(--color-danger);
+}
+
+.skeleton-label {
+  height: 12px;
+  width: 60%;
+  margin-bottom: 10px;
+}
+
+.skeleton-value {
+  height: 28px;
+  width: 40%;
+}
