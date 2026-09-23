@@ -22,7 +22,7 @@
       "image": "images/titan/t 2.png",
       "category": "Analog",
       "description": "A slim black men's watch designed for a modern and sophisticated look.",
-      "stock": 3,
+      "stock": 6,
       "images": [
         "images/titan/t 2.png",
         "images/titan/t 2 2.png"
@@ -92,7 +92,7 @@
       "image": "images/casio/1 1.jpg",
       "category": "Analog",
       "description": "A classic men's analog watch with a bold black dial.",
-      "stock": 4,
+      "stock": 3,
       "images": [
         "images/casio/1 1.jpg",
         "images/casio/1 2.png"
@@ -456,7 +456,7 @@
       "image": "images/gshock/g 3.png",
       "category": "Sports",
       "description": "A striking blue sports watch designed for an active lifestyle.",
-      "stock": 4,
+      "stock": 0,
       "images": [
         "images/gshock/g 3.png",
         "images/gshock/g 3 2.png"
@@ -509,17 +509,17 @@
     {
       "userId": 3,
       "product": {
-        "id": 5,
-        "name": "Titan Maritime Blue",
+        "id": 2,
+        "name": "Titan Edge Black",
         "brand": "Titan",
-        "price": 5995,
-        "image": "images/titan/t 5.png",
-        "category": "Sports",
-        "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
-        "stock": 8,
+        "price": 8995,
+        "image": "images/titan/t 2.png",
+        "category": "Analog",
+        "description": "A slim black men's watch designed for a modern and sophisticated look.",
+        "stock": 3,
         "images": [
-          "images/titan/t 5.png",
-          "images/titan/t 5 2.png"
+          "images/titan/t 2.png",
+          "images/titan/t 2 2.png"
         ]
       },
       "quantity": 1,
@@ -562,6 +562,24 @@
         ]
       },
       "id": 2
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 5,
+        "name": "Titan Maritime Blue",
+        "brand": "Titan",
+        "price": 5995,
+        "image": "images/titan/t 5.png",
+        "category": "Sports",
+        "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
+        "stock": 8,
+        "images": [
+          "images/titan/t 5.png",
+          "images/titan/t 5 2.png"
+        ]
+      },
+      "id": 3
     }
   ],
   "users": [
@@ -596,7 +614,7 @@
       "city": "payyanur",
       "pincode": "670353",
       "paymentMethod": "COD",
-      "status": "Pending",
+      "status": "Delivered",
       "createdAt": "2026-09-22T05:56:34.261Z",
       "items": [
         {
@@ -629,7 +647,7 @@
       "city": "payyanur",
       "pincode": "670353",
       "paymentMethod": "Card",
-      "status": "Pending",
+      "status": "Delivered",
       "createdAt": "2026-09-22T08:09:09.727Z",
       "items": [
         {
@@ -660,7 +678,7 @@
       "city": "payyanur",
       "pincode": "670353",
       "paymentMethod": "COD",
-      "status": "Pending",
+      "status": "Cancelled",
       "createdAt": "2026-09-22T10:22:36.603Z",
       "items": [
         {
@@ -691,7 +709,7 @@
       "city": "payyanur",
       "pincode": "670353",
       "paymentMethod": "COD",
-      "status": "Pending",
+      "status": "Delivered",
       "createdAt": "2026-09-22T10:29:36.327Z",
       "items": [
         {
@@ -714,6 +732,69 @@
       ],
       "total": 5995,
       "id": 4
+    },
+    {
+      "userId": 3,
+      "fullName": "Fathima",
+      "address": "payyanur",
+      "city": "payyanur",
+      "pincode": "670353",
+      "paymentMethod": "COD",
+      "status": "Cancelled",
+      "createdAt": "2026-09-23T04:09:38.163Z",
+      "items": [
+        {
+          "userId": 3,
+          "product": {
+            "id": 2,
+            "name": "Titan Edge Black",
+            "brand": "Titan",
+            "price": 8995,
+            "image": "images/titan/t 2.png",
+            "category": "Analog",
+            "description": "A slim black men's watch designed for a modern and sophisticated look.",
+            "stock": 3,
+            "images": [
+              "images/titan/t 2.png",
+              "images/titan/t 2 2.png"
+            ]
+          },
+          "quantity": 3
+        }
+      ],
+      "total": 26985,
+      "id": 5
+    },
+    {
+      "userId": 3,
+      "fullName": "Sj",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T05:05:04.686Z",
+      "items": [
+        {
+          "product": {
+            "id": 7,
+            "name": "Casio Enticer Black",
+            "brand": "Casio",
+            "price": 3995,
+            "image": "images/casio/1 1.jpg",
+            "category": "Analog",
+            "description": "A classic men's analog watch with a bold black dial.",
+            "stock": 4,
+            "images": [
+              "images/casio/1 1.jpg",
+              "images/casio/1 2.png"
+            ]
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 3995,
+      "id": 6
     }
   ],
   "addresses": [
@@ -725,6 +806,15 @@
       "city": "payyanur",
       "pincode": "670353",
       "id": 1
+    },
+    {
+      "userId": 3,
+      "type": "Home",
+      "fullName": "Sj",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "id": 2
     }
   ]
 }

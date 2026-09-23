@@ -21,6 +21,10 @@ export class RegisterComponent {
   showPassword = false;
   showConfirmPassword = false;
 
+onNameInput(): void {
+  this.name = this.name.replace(/[^A-Za-z ]/g, '');
+}
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }

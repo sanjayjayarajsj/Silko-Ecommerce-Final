@@ -23,19 +23,29 @@ export class CartComponent {
 increase(productId: number) {
   this.cartItems.pipe(take(1)).subscribe(items => {
     const item = items.find(
-      item=>item.product.id === productId
+      item => item.product.id === productId
     );
+
     if (!item) {
       return;
     }
+
     if (item.quantity >= MAX_QUANTITY_PER_PRODUCT) {
       this.toast.show(`You can only add up to ${MAX_QUANTITY_PER_PRODUCT} of the same item`);
       return;
     }
+
+    if (item.quantity >= item.product.stock) {
+      this.toast.show(`Only ${item.product.stock} of ${item.product.name} left in stock`);
+      return;
+    }
+
     const newQuantity = item.quantity + 1;
+
     this.store.dispatch(
       increaseQuantity({ productId })
     );
+
     this.store.dispatch(
       updateCartQuantity({
         productId,
@@ -46,28 +56,38 @@ increase(productId: number) {
 }
 decrease(productId: number) {
   this.cartItems.pipe(take(1)).subscribe(items => {
-   const item = items.find(
-      item=>item.product.id === productId
+
+    const item = items.find(
+      item => item.product.id === productId
     );
+
     if (!item) {
       return;
     }
+
     const newQuantity = item.quantity - 1;
+
     this.store.dispatch(
       decreaseQuantity({ productId })
     );
+
     if (newQuantity > 0) {
+
       this.store.dispatch(
         updateCartQuantity({
           productId,
           quantity: newQuantity
         })
       );
-    }else{
+
+    } else {
+
       this.store.dispatch(
         removeFromCart({ productId })
       );
+
     }
+
   });
 }
 remove(productId:number){

@@ -1,9 +1,18 @@
 <section class="cart-page">
 
+  <!-- Header -->
   <div class="cart-header">
-    <p>YOUR SHOPPING BAG</p>
-    <h1>MY CART</h1>
+
+    <p class="eyebrow">YOUR SHOPPING BAG</p>
+
+    <h1>My Cart</h1>
+
+    <p class="cart-description">
+      Review your selected watches before checkout.
+    </p>
+
   </div>
+
 
   @if (cartItems | async; as items) {
 
@@ -11,22 +20,38 @@
 
       <div class="cart-content">
 
+        <!-- ==============================
+             CART ITEMS
+             ============================== -->
+
         <div class="cart-items">
+
+          <div class="items-heading">
+            <span>PRODUCT</span>
+            <span>QUANTITY</span>
+            <span>TOTAL</span>
+            <span></span>
+          </div>
+
 
           @for (item of items; track item.product.id) {
 
             <div class="cart-item">
 
+              <!-- Product -->
               <div class="product-info">
 
                 <div class="product-image">
+
                   <img
                     [src]="item.product.image"
                     [alt]="item.product.name"
                   >
+
                 </div>
 
-                <div>
+                <div class="product-details">
+
                   <p class="brand">
                     {{ item.product.brand }}
                   </p>
@@ -38,37 +63,52 @@
                   <p class="price">
                     ₹{{ item.product.price }}
                   </p>
+
                 </div>
 
               </div>
 
+
+              <!-- Quantity -->
               <div class="quantity">
 
                 <button
+                  type="button"
                   (click)="decrease(item.product.id)"
+                  aria-label="Decrease quantity"
                 >
                   −
                 </button>
 
-                <span>{{ item.quantity }}</span>
+                <span>
+                  {{ item.quantity }}
+                </span>
 
                 <button
+                  type="button"
                   (click)="increase(item.product.id)"
                   [disabled]="item.quantity >= maxQuantityPerProduct"
+                  aria-label="Increase quantity"
                 >
                   +
                 </button>
 
               </div>
 
+
+              <!-- Item Total -->
               <p class="item-total">
                 ₹{{ item.product.price * item.quantity }}
               </p>
 
+
+              <!-- Remove -->
               <button
+                type="button"
                 class="remove-btn"
                 (click)="remove(item.product.id)"
               >
+                <span>×</span>
                 Remove
               </button>
 
@@ -78,38 +118,154 @@
 
         </div>
 
-        <div class="cart-summary">
 
-          <h2>Order Summary</h2>
+        <!-- ==============================
+             ORDER SUMMARY
+             ============================== -->
 
-          <div class="summary-row">
-            <span>Subtotal</span>
-            <span>₹{{ cartTotal | async }}</span>
+        <aside class="cart-summary">
+
+          <div class="summary-header">
+
+            <p>ORDER SUMMARY</p>
+
+            <h2>
+              Your Order
+            </h2>
+
           </div>
 
+
           <div class="summary-row">
-            <span>Shipping</span>
-            <span>Free</span>
+
+            <span>
+              Subtotal
+            </span>
+
+            <span>
+              ₹{{ cartTotal | async }}
+            </span>
+
           </div>
 
-          <hr>
+
+          <div class="summary-row">
+
+            <span>
+              Shipping
+            </span>
+
+            <span class="free">
+              Free
+            </span>
+
+          </div>
+
+
+          <div class="summary-note">
+            Free shipping is included with your order.
+          </div>
+
+
+          <div class="summary-divider"></div>
+
 
           <div class="total-row">
-            <span>Total</span>
-            <span>₹{{ cartTotal | async }}</span>
+
+            <span>
+              Total
+            </span>
+
+            <strong>
+              ₹{{ cartTotal | async }}
+            </strong>
+
           </div>
 
-       <button class="checkout-btn"routerLink="/checkout">Checkout</button>
 
-        </div>
+          <button
+            type="button"
+            class="checkout-btn"
+            routerLink="/checkout"
+          >
+            Proceed to Checkout
+            <span>→</span>
+          </button>
+
+
+          <div class="secure-checkout">
+
+            <span>✓</span>
+
+            <p>
+              Secure checkout
+            </p>
+
+          </div>
+
+        </aside>
 
       </div>
 
+
     } @else {
 
+      <!-- ==============================
+           EMPTY CART
+           ============================== -->
+
       <div class="empty-cart">
-        <h2>Your cart is empty</h2>
-        <p>Add some watches to your cart.</p>
+
+        <div class="empty-icon">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+
+            <path
+              d="M6 6h15l-1.5 9h-12z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+
+            <path
+              d="M6 6L4.5 2H2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+
+            <circle
+              cx="9.5"
+              cy="19"
+              r="1.4"
+              fill="currentColor"
+            />
+
+            <circle
+              cx="17"
+              cy="19"
+              r="1.4"
+              fill="currentColor"
+            />
+
+          </svg>
+
+        </div>
+
+        <p class="empty-label">
+          YOUR SHOPPING BAG
+        </p>
+
+        <h2>
+          Your cart is empty
+        </h2>
+
+        <p>
+          Add some watches to your cart and they will appear here.
+        </p>
+
       </div>
 
     }

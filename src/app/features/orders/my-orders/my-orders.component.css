@@ -103,9 +103,35 @@
 }
 
 .order-card h3 {
-  text-align: right;
   font-size: 16px;
+  margin: 0;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 8px;
+}
+
+.cancel-order-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-danger);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-order-btn:hover {
+  background: var(--color-danger);
+  color: white;
+}
+
+.loading {
+  color: var(--color-text-muted);
 }
 
 .empty-orders {

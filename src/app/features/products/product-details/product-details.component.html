@@ -2,12 +2,19 @@
 
   @if (product) {
 
+    <!-- Product Image Section -->
     <div class="product-image">
+
       <div
         class="zoom-frame"
         (mousemove)="onImageHover($event)"
         (mouseleave)="resetZoom()"
       >
+
+        <span class="image-label">
+          SILKO
+        </span>
+
         <img
           [src]="selectedImage"
           [alt]="product.name"
@@ -15,78 +22,244 @@
           [class.zoomed]="isZooming"
           (error)="handleImageError($event)"
         >
+
       </div>
 
+
+      <!-- Thumbnails -->
       @if (product.images && product.images.length > 1) {
+
         <div class="thumbnail-row">
+
           @for (img of product.images; track img) {
+
             <button
               type="button"
               class="thumbnail"
               [class.active]="img === selectedImage"
               (click)="selectImage(img)"
             >
-              <img [src]="img" [alt]="product.name" (error)="handleImageError($event)">
+
+              <img
+                [src]="img"
+                [alt]="product.name"
+                (error)="handleImageError($event)"
+              >
+
             </button>
+
           }
+
         </div>
+
       }
+
+      <p class="zoom-hint">
+        Move over the image to zoom
+      </p>
+
     </div>
 
+
+    <!-- Product Information -->
     <div class="product-info">
 
       <p class="brand">
         {{ product.brand }}
       </p>
 
-      <h1>{{ product.name }}</h1>
+      <h1>
+        {{ product.name }}
+      </h1>
 
+
+      <!-- Rating -->
       <div class="rating">
-        @for (star of ratingStars; track star) {
-          <span [class.filled]="star <= rating">★</span>
-        }
-        <span class="review-count">({{ reviewCount }} reviews)</span>
+
+        <div class="stars">
+
+          @for (star of ratingStars; track star) {
+
+            <span [class.filled]="star <= rating">
+              ★
+            </span>
+
+          }
+
+        </div>
+
+        <span class="review-count">
+          {{ reviewCount }} reviews
+        </span>
+
       </div>
 
+
+      <!-- Category -->
       <p class="category">
         {{ product.category }}
       </p>
 
-      <h2>₹{{ product.price }}</h2>
 
+      <!-- Price -->
+      <div class="price-section">
+
+        <span class="price-label">
+          PRICE
+        </span>
+
+        <h2>
+          ₹{{ product.price }}
+        </h2>
+
+      </div>
+
+
+      <!-- Description -->
       <p class="description">
         {{ product.description }}
       </p>
 
+
+      <!-- Stock -->
       @if (product.stock === 0) {
-        <p class="stock-status out-of-stock">Out of Stock</p>
+
+        <div class="stock-status out-of-stock">
+          <span class="stock-dot"></span>
+          Out of Stock
+        </div>
+
       } @else if (product.stock <= 5) {
-        <p class="stock-status low-stock">Only {{ product.stock }} left in stock — order soon</p>
+
+        <div class="stock-status low-stock">
+          <span class="stock-dot"></span>
+          Only {{ product.stock }} left in stock — order soon
+        </div>
+
       } @else {
-        <p class="stock-status in-stock">In Stock</p>
+
+        <div class="stock-status in-stock">
+          <span class="stock-dot"></span>
+          In Stock
+        </div>
+
       }
 
+
+      <!-- Actions -->
       <div class="actions">
 
-        <button (click)="buyNow()" class="btn-buy-now" [disabled]="product.stock === 0">
-          Buy Now
+        <button
+          type="button"
+          (click)="buyNow()"
+          class="btn-buy-now"
+          [disabled]="product.stock === 0"
+        >
+          BUY NOW
+          <span>→</span>
         </button>
 
-        <button (click)="addToCart()" class="btn-cart" [disabled]="product.stock === 0">
-          <svg viewBox="0 0 24 24" width="16" height="16">
-            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              d="M6 6h15l-1.5 9h-12z"/>
-            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              d="M6 6L4.5 2H2 M9 10v4 M13.5 10v4"/>
-            <circle cx="9.5" cy="19" r="1.4" fill="currentColor"/>
-            <circle cx="17" cy="19" r="1.4" fill="currentColor"/>
+
+        <button
+          type="button"
+          (click)="addToCart()"
+          class="btn-cart"
+          [disabled]="product.stock === 0"
+        >
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 6h15l-1.5 9h-12z"
+            />
+
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              d="M6 6L4.5 2H2"
+            />
+
+            <circle
+              cx="9.5"
+              cy="19"
+              r="1.4"
+              fill="currentColor"
+            />
+
+            <circle
+              cx="17"
+              cy="19"
+              r="1.4"
+              fill="currentColor"
+            />
+
           </svg>
+
           Add to Cart
+
         </button>
 
-        <button (click)="addToWishlist()" class="btn-wishlist">
-          ♡ Add to Wishlist
+
+        <button
+          type="button"
+          (click)="addToWishlist()"
+          class="btn-wishlist"
+        >
+
+          <span class="heart">
+            ♡
+          </span>
+
+          Add to Wishlist
+
         </button>
+
+      </div>
+
+
+      <!-- Product Highlights -->
+      <div class="product-highlights">
+
+        <div class="highlight">
+
+          <span class="highlight-icon">✓</span>
+
+          <div>
+            <strong>Authentic Product</strong>
+            <small>100% genuine watches</small>
+          </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+          <span class="highlight-icon">✓</span>
+
+          <div>
+            <strong>Secure Shopping</strong>
+            <small>Safe & trusted checkout</small>
+          </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+          <span class="highlight-icon">✓</span>
+
+          <div>
+            <strong>Premium Quality</strong>
+            <small>Carefully selected watches</small>
+          </div>
+
+        </div>
 
       </div>
 

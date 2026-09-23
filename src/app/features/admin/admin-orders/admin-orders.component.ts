@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Order, OrderStatus } from '../../checkout/order.model';
 import { OrderService } from '../../checkout/order.service';
+import { ProductService } from '../../products/product.service';
 import { ToastService } from '../../../core/services/toast.service';
 
 const STATUSES: OrderStatus[] = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
@@ -17,6 +18,7 @@ const STATUSES: OrderStatus[] = ['Pending', 'Processing', 'Shipped', 'Delivered'
 })
 export class AdminOrdersComponent {
   private orderService = inject(OrderService);
+  private productService = inject(ProductService);
   private toast = inject(ToastService);
 
   loading = true;
@@ -102,6 +104,14 @@ export class AdminOrdersComponent {
     this.orderService.updateOrderStatus(order.id!, status).subscribe({
       next: () => {
         this.toast.show(`Order #${order.id} marked as ${status}`);
+
+        // Give the stock back, since this order is no longer being fulfilled.
+        if (status === 'Cancelled' && previousStatus !== 'Cancelled') {
+          order.items.forEach(item => {
+            const restored = item.product.stock + item.quantity;
+            this.productService.updateProduct(item.product.id, { stock: restored }).subscribe();
+          });
+        }
       },
       error: () => {
         order.status = previousStatus;

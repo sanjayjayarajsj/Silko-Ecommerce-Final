@@ -13,6 +13,7 @@ import { ToastService } from '../../core/services/toast.service';
 import { selectAddresses } from '../../store/address/address.selectors';
 import { loadAddresses } from '../../store/address/address.actions';
 import { Address } from '../address/address.model';
+import { ProductService } from '../products/product.service';
 @Component({
   selector: 'app-checkout',
   standalone: true,
@@ -26,6 +27,7 @@ private router=inject(Router)
 private orderService=inject(OrderService);
 private authService=inject(AuthService);
 private buyNowService=inject(BuyNowService);
+private productService=inject(ProductService);
 private toast=inject(ToastService)
 
 // A "buy now" purchase is a single item bought directly, bypassing the cart.
@@ -124,6 +126,19 @@ placeOrder() {
   }
 
   this.cartItems.pipe(take(1)).subscribe(items => {
+
+    // Don't let someone order more than what's actually left in stock.
+    const outOfStockItem = items.find(item => item.quantity > item.product.stock);
+    if (outOfStockItem) {
+      this.isPlacingOrder = false;
+      this.toast.show(
+        outOfStockItem.product.stock === 0
+          ? `${outOfStockItem.product.name} is now out of stock.`
+          : `Only ${outOfStockItem.product.stock} left of ${outOfStockItem.product.name}.`
+      );
+      return;
+    }
+
     this.cartTotal.pipe(take(1)).subscribe(total => {
 
       const order = {
@@ -141,6 +156,12 @@ placeOrder() {
 
           this.orderService.placeOrder(order).subscribe({
             next: placedOrder => {
+
+        // Reduce stock for each purchased item, now that the order is confirmed.
+        items.forEach(item => {
+          const remaining = Math.max(0, item.product.stock - item.quantity);
+          this.productService.updateProduct(item.product.id, { stock: remaining }).subscribe();
+        });
 
         if (!this.isBuyNow) {
           this.store.dispatch(clearCart());
