@@ -1,71 +1,181 @@
 <section class="auth-page">
 
-  <div class="auth-box">
+  <div class="auth-layout">
 
-    <h1>Welcome Back</h1>
+    <!-- Left Brand Section -->
 
-    <p>Login to your account</p>
+    <div class="auth-brand">
 
-    <form #loginForm="ngForm" (ngSubmit)="login()">
-
-      <input
-        type="email"
-        name="email"
-        [(ngModel)]="email"
-        #emailField="ngModel"
-        placeholder="Email"
-        required
-        email
-      >
-
-      @if (emailField.invalid && emailField.touched) {
-        <p class="field-hint">
-          Enter a valid email address
-        </p>
-      }
-
-      <div class="password-field">
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          name="password"
-          [(ngModel)]="password"
-          #passwordField="ngModel"
-          placeholder="Password"
-          required
-          minlength="6"
-        >
-        <button
-          type="button"
-          class="toggle-password"
-          (click)="togglePasswordVisibility()"
-          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-        >
-          {{ showPassword ? 'Hide' : 'Show' }}
-        </button>
+      <div class="brand-mark">
+        S
       </div>
 
-      @if (passwordField.invalid && passwordField.touched) {
-        <p class="field-hint">
-          Password must be at least 6 characters
-        </p>
-      }
-
-      <button type="submit" [disabled]="loginForm.invalid">
-        Login
-      </button>
-
-    </form>
-
-    @if (errorMessage) {
-      <p class="error">
-        {{ errorMessage }}
+      <p class="brand-label">
+        SILKO WATCHES
       </p>
-    }
 
-    <p>
-      Don't have an account?
-      <a routerLink="/register">Register</a>
-    </p>
+      <h2>
+        Time made<br>
+        <span>remarkable.</span>
+      </h2>
+
+      <p class="brand-description">
+        Discover a collection of watches designed
+        for those who value timeless style.
+      </p>
+
+    </div>
+
+
+    <!-- Login Card -->
+
+    <div class="auth-box">
+
+      <div class="auth-header">
+
+        <p class="eyebrow">
+          WELCOME BACK
+        </p>
+
+        <h1>
+          Sign in to SILKO
+        </h1>
+
+        <p>
+          Login to continue shopping your favourite watches.
+        </p>
+
+      </div>
+
+
+      <form
+        #loginForm="ngForm"
+        (ngSubmit)="login()"
+      >
+
+        <!-- Email -->
+
+        <div class="form-field">
+
+          <label for="email">
+            Email Address
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            #emailField="ngModel"
+            placeholder="Enter your email"
+            required
+            email
+          >
+
+          @if (emailField.invalid && emailField.touched) {
+
+            <p class="field-hint">
+              Enter a valid email address
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Password -->
+
+        <div class="form-field">
+
+          <label for="password">
+            Password
+          </label>
+
+          <div class="password-field">
+
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              #passwordField="ngModel"
+              placeholder="Enter your password"
+              required
+              minlength="6"
+            >
+
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            >
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+
+          </div>
+
+          @if (passwordField.invalid && passwordField.touched) {
+
+            <p class="field-hint">
+              Password must be at least 6 characters
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Error -->
+
+        @if (errorMessage) {
+
+          <div class="error-message">
+
+            <span>!</span>
+
+            <p>
+              {{ errorMessage }}
+            </p>
+
+          </div>
+
+        }
+
+
+        <!-- Login Button -->
+
+        <button
+          type="submit"
+          class="login-btn"
+          [disabled]="loginForm.invalid"
+        >
+          <span>
+            Login
+          </span>
+
+          <span class="arrow">
+            →
+          </span>
+        </button>
+
+      </form>
+
+
+      <!-- Register -->
+
+      <div class="auth-footer">
+
+        <p>
+          Don't have an account?
+          <a routerLink="/register">
+            Create an account
+          </a>
+        </p>
+
+      </div>
+
+    </div>
 
   </div>
 

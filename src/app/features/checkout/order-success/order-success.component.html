@@ -2,46 +2,176 @@
 
   <div class="success-card">
 
+    <!-- Success Icon -->
+
     <div class="check-circle">
-      <svg viewBox="0 0 24 24" width="34" height="34">
-        <path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5 13l4 4L19 7"
+        />
       </svg>
+
     </div>
 
-    <h1>Order Placed Successfully</h1>
 
-    <p>Thank you for shopping with us. Your order is being processed.</p>
+    <!-- Main Message -->
 
-    @if (orderId) {
-      <p class="order-meta">Order ID: #{{ orderId }}</p>
-    }
+    <p class="success-label">
+      ORDER CONFIRMED
+    </p>
 
-    @if (paymentMethod) {
-      <p class="order-meta">Paid via {{ paymentMethod }}</p>
-    }
+    <h1>
+      Order Placed Successfully
+    </h1>
+
+    <p class="success-message">
+      Thank you for shopping with SILKO.
+      Your order is being processed.
+    </p>
+
+
+    <!-- Order Information -->
+
+    <div class="order-information">
+
+      @if (orderId) {
+
+        <div class="order-info-item">
+
+          <span>ORDER ID</span>
+
+          <strong>
+            #{{ orderId }}
+          </strong>
+
+        </div>
+
+      }
+
+
+      @if (paymentMethod) {
+
+        <div class="order-info-item">
+
+          <span>PAYMENT</span>
+
+          <strong>
+            {{ paymentMethod }}
+          </strong>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Ordered Items -->
 
     @if (items.length > 0) {
+
       <div class="ordered-items">
+
+        <div class="items-heading">
+          <span>YOUR ITEMS</span>
+        </div>
+
+
         @for (item of items; track item.product.id) {
+
           <div class="ordered-item">
-            <img [src]="item.product.image" [alt]="item.product.name">
-            <div class="ordered-item-details">
-              <p class="ordered-item-name">{{ item.product.name }}</p>
-              <p class="ordered-item-qty">Qty: {{ item.quantity }}</p>
+
+            <div class="ordered-item-image">
+
+              <img
+                [src]="item.product.image"
+                [alt]="item.product.name"
+              >
+
             </div>
+
+
+            <div class="ordered-item-details">
+
+              <p class="ordered-item-brand">
+                {{ item.product.brand }}
+              </p>
+
+              <p class="ordered-item-name">
+                {{ item.product.name }}
+              </p>
+
+              <p class="ordered-item-qty">
+                Quantity: {{ item.quantity }}
+              </p>
+
+            </div>
+
+
             <p class="ordered-item-price">
               {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
             </p>
+
           </div>
+
         }
+
       </div>
+
     }
+
+
+    <!-- Total -->
 
     @if (total) {
-      <p class="order-meta total-line">Total paid: {{ total | currency:'INR':'symbol':'1.0-0' }}</p>
+
+      <div class="total-section">
+
+        <span>
+          Total Paid
+        </span>
+
+        <strong>
+          {{ total | currency:'INR':'symbol':'1.0-0' }}
+        </strong>
+
+      </div>
+
     }
 
-    <button class="ok-btn" (click)="goHome()">OK</button>
+
+    <!-- Continue Button -->
+
+    <button
+      type="button"
+      class="ok-btn"
+      (click)="goHome()"
+    >
+      Continue Shopping
+      <span>→</span>
+    </button>
+
+
+    <!-- Footer Note -->
+
+    <div class="confirmation-note">
+
+      <span>✓</span>
+
+      <p>
+        Thank you for choosing SILKO.
+      </p>
+
+    </div>
 
   </div>
 

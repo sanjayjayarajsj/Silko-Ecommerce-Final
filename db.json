@@ -22,7 +22,7 @@
       "image": "images/titan/t 2.png",
       "category": "Analog",
       "description": "A slim black men's watch designed for a modern and sophisticated look.",
-      "stock": 6,
+      "stock": 5,
       "images": [
         "images/titan/t 2.png",
         "images/titan/t 2 2.png"
@@ -106,7 +106,7 @@
       "image": "images/casio/2 1.png",
       "category": "Chronograph",
       "description": "A sporty chronograph watch with a stylish blue dial.",
-      "stock": 30,
+      "stock": 29,
       "images": [
         "images/casio/2 1.png",
         "images/casio/2 2.png"
@@ -524,44 +524,6 @@
       },
       "quantity": 1,
       "id": 1
-    }
-  ],
-  "wishlist": [
-    {
-      "userId": 3,
-      "product": {
-        "id": 2,
-        "name": "Titan Edge Black",
-        "brand": "Titan",
-        "price": 8995,
-        "image": "images/titan/t 2.png",
-        "category": "Analog",
-        "description": "A slim black men's watch designed for a modern and sophisticated look.",
-        "stock": 3,
-        "images": [
-          "images/titan/t 2.png",
-          "images/titan/t 2 2.png"
-        ]
-      },
-      "id": 1
-    },
-    {
-      "userId": 3,
-      "product": {
-        "id": 1,
-        "name": "Titan Neo",
-        "brand": "Titan",
-        "price": 4995,
-        "image": "images/titan/t 1.png",
-        "category": "Analog",
-        "description": "A stylish men's analog watch with a clean and elegant design.",
-        "stock": 4,
-        "images": [
-          "images/titan/t 1.png",
-          "images/titan/t 1 2.png"
-        ]
-      },
-      "id": 2
     },
     {
       "userId": 3,
@@ -579,7 +541,46 @@
           "images/titan/t 5 2.png"
         ]
       },
-      "id": 3
+      "quantity": 1,
+      "id": 2
+    }
+  ],
+  "wishlist": [
+    {
+      "userId": 3,
+      "product": {
+        "id": 2,
+        "name": "Titan Edge Black",
+        "brand": "Titan",
+        "price": 8995,
+        "image": "images/titan/t 2.png",
+        "category": "Analog",
+        "description": "A slim black men's watch designed for a modern and sophisticated look.",
+        "stock": 6,
+        "images": [
+          "images/titan/t 2.png",
+          "images/titan/t 2 2.png"
+        ]
+      },
+      "id": 1
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 3,
+        "name": "Titan Chronograph",
+        "brand": "Titan",
+        "price": 7495,
+        "image": "images/titan/t 3.png",
+        "category": "Chronograph",
+        "description": "A bold chronograph watch with a premium men's fashion design.",
+        "stock": 12,
+        "images": [
+          "images/titan/t 3.png",
+          "images/titan/t 3 2.png"
+        ]
+      },
+      "id": 2
     }
   ],
   "users": [
@@ -795,6 +796,68 @@
       ],
       "total": 3995,
       "id": 6
+    },
+    {
+      "userId": 3,
+      "fullName": "Sj",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T09:12:00.039Z",
+      "items": [
+        {
+          "product": {
+            "id": 8,
+            "name": "Casio Edifice Blue",
+            "brand": "Casio",
+            "price": 8995,
+            "image": "images/casio/2 1.png",
+            "category": "Chronograph",
+            "description": "A sporty chronograph watch with a stylish blue dial.",
+            "stock": 30,
+            "images": [
+              "images/casio/2 1.png",
+              "images/casio/2 2.png"
+            ]
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 8995,
+      "id": 7
+    },
+    {
+      "userId": 3,
+      "fullName": "Sj",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "paymentMethod": "UPI",
+      "status": "Pending",
+      "createdAt": "2026-09-23T13:56:17.731Z",
+      "items": [
+        {
+          "product": {
+            "id": 2,
+            "name": "Titan Edge Black",
+            "brand": "Titan",
+            "price": 8995,
+            "image": "images/titan/t 2.png",
+            "category": "Analog",
+            "description": "A slim black men's watch designed for a modern and sophisticated look.",
+            "stock": 6,
+            "images": [
+              "images/titan/t 2.png",
+              "images/titan/t 2 2.png"
+            ]
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 8995,
+      "id": 8
     }
   ],
   "addresses": [

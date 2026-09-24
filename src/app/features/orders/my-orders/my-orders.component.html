@@ -1,78 +1,171 @@
 <section class="orders-page">
 
   <div class="orders-header">
-    <p>YOUR PURCHASES</p>
+    <p class="eyebrow">YOUR PURCHASES</p>
     <h1>My Orders</h1>
+    <span class="header-line"></span>
+    <p class="orders-description">
+      View your recent purchases and track your order details.
+    </p>
   </div>
 
   @if (loading) {
 
-    <p class="loading">Loading your orders...</p>
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading your orders...</p>
+    </div>
 
   } @else if (orders.length > 0) {
 
-    @for (order of orders; track order.id) {
+    <div class="orders-list">
 
-      <div class="order-card">
+      @for (order of orders; track order.id) {
 
-        <div class="order-card-header">
-          <h2>Order #{{ order.id }}</h2>
-          <span class="status-badge" [class]="'status-' + order.status.toLowerCase()">
-            {{ order.status }}
-          </span>
-        </div>
+        <article class="order-card">
 
-        <p>{{ order.fullName }}</p>
-        <p>{{ order.address }}, {{ order.city }}</p>
-        <p class="payment-badge">Paid via {{ order.paymentMethod }}</p>
+          <!-- Order Header -->
+          <div class="order-card-header">
 
-        <div class="order-items">
+            <div class="order-heading">
+              <p class="order-label">ORDER</p>
+              <h2>#{{ order.id }}</h2>
+            </div>
 
-          @for (item of order.items; track item.product.id) {
+            <span
+              class="status-badge"
+              [class]="'status-' + order.status.toLowerCase()"
+            >
+              <span class="status-dot"></span>
+              {{ order.status }}
+            </span>
 
-            <div class="order-item">
-              <img
-                [src]="item.product.image"
-                [alt]="item.product.name"
-                class="order-item-image"
-              >
+          </div>
 
-              <span>
-                {{ item.product.name }}
-              </span>
+          <!-- Delivery Information -->
+          <div class="order-info">
 
-              <span>
-                × {{ item.quantity }}
-              </span>
+            <div class="info-block">
+              <span class="info-label">DELIVERY TO</span>
 
-              <span>
-                ₹{{ item.product.price * item.quantity }}
+              <p class="customer-name">
+                {{ order.fullName }}
+              </p>
+
+              <p class="customer-address">
+                {{ order.address }}, {{ order.city }}
+              </p>
+            </div>
+
+            <div class="payment-info">
+              <span class="info-label">PAYMENT</span>
+
+              <span class="payment-badge">
+                {{ order.paymentMethod }}
               </span>
             </div>
 
-          }
+          </div>
 
-        </div>
+          <!-- Products -->
+          <div class="order-items">
 
-        <div class="order-footer">
-          <h3>Total: ₹{{ order.total }}</h3>
+            <div class="items-header">
+              <span>ITEM</span>
+              <span>QTY</span>
+              <span>PRICE</span>
+            </div>
 
-          @if (canCancel(order)) {
-            <button class="cancel-order-btn" (click)="cancelOrder(order)">
-              Cancel Order
-            </button>
-          }
-        </div>
+            @for (item of order.items; track item.product.id) {
 
-      </div>
+              <div class="order-item">
 
-    }
+                <div class="product-info">
+
+                  <div class="product-image-wrapper">
+                    <img
+                      [src]="item.product.image"
+                      [alt]="item.product.name"
+                      class="order-item-image"
+                    >
+                  </div>
+
+                  <div class="product-details">
+                    <strong>{{ item.product.name }}</strong>
+
+                    @if (item.product.brand) {
+                      <span>{{ item.product.brand }}</span>
+                    }
+                  </div>
+
+                </div>
+
+                <span class="item-quantity">
+                  × {{ item.quantity }}
+                </span>
+
+                <span class="item-price">
+                  ₹{{ item.product.price * item.quantity }}
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+          <!-- Order Footer -->
+          <div class="order-footer">
+
+            <div class="total-section">
+              <span>Total Amount</span>
+              <h3>₹{{ order.total }}</h3>
+            </div>
+
+            @if (canCancel(order)) {
+              <button
+                type="button"
+                class="cancel-order-btn"
+                (click)="cancelOrder(order)"
+              >
+                Cancel Order
+              </button>
+            }
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
 
   } @else {
 
     <div class="empty-orders">
+
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 3H18V21H6Z"></path>
+          <path d="M9 7H15"></path>
+          <path d="M9 11H15"></path>
+          <path d="M9 15H13"></path>
+        </svg>
+      </div>
+
+      <p class="empty-label">NO PURCHASES</p>
+
       <h2>No orders yet</h2>
-      <p>Your completed orders will appear here.</p>
+
+      <p>
+        Your completed orders will appear here.
+      </p>
+
+      <a routerLink="/products" class="shop-btn">
+        Start Shopping
+        <span>→</span>
+      </a>
+
     </div>
 
   }

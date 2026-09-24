@@ -1,8 +1,11 @@
 <section class="wishlist-page">
 
   <div class="wishlist-header">
-    <p>YOUR FAVORITES</p>
-    <h1>MY WISHLIST</h1>
+    <p class="eyebrow">YOUR FAVORITES</p>
+    <h1>My Wishlist</h1>
+    <p class="wishlist-description">
+      Watches you love, saved in one place.
+    </p>
   </div>
 
   @if (wishlistItems | async; as items) {
@@ -11,51 +14,127 @@
 
       <div class="wishlist-grid">
 
-@for (item of items; track item.product.id) {
+        @for (item of items; track item.product.id) {
 
-  <div class="wishlist-card">
+          <article class="wishlist-card">
 
-    <img
-      [src]="item.product.image"
-      [alt]="item.product.name"
-    >
+            <div class="wishlist-image">
 
-    <div class="wishlist-info">
+              <img
+                [src]="item.product.image"
+                [alt]="item.product.name"
+              >
 
-      <p>{{ item.product.brand }}</p>
+              <button
+                type="button"
+                class="remove-icon"
+                (click)="removeFromWishlist(item.product.id)"
+                aria-label="Remove from wishlist"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M18 6L6 18M6 6L18 18"
+                  />
+                </svg>
+              </button>
 
-      <h2>{{ item.product.name }}</h2>
+              <div class="image-overlay">
+                <span>VIEW WATCH</span>
+                <span>→</span>
+              </div>
 
-      <h3>₹{{ item.product.price }}</h3>
+            </div>
 
-      <div class="actions">
+            <div class="wishlist-info">
 
-        <button (click)="addToCart(item.product)">
-          Add to Cart
-        </button>
+              <p class="brand">
+                {{ item.product.brand }}
+              </p>
 
-        <button
-          class="remove-btn"
-          (click)="removeFromWishlist(item.product.id)"
-        >
-          Remove
-        </button>
+              <h2>
+                {{ item.product.name }}
+              </h2>
 
-      </div>
+              <div class="price-row">
+                <span class="price">
+                  ₹{{ item.product.price }}
+                </span>
+              </div>
 
-    </div>
+              <div class="actions">
 
-  </div>
+                <button
+                  type="button"
+                  class="cart-btn"
+                  (click)="addToCart(item.product)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 4H5L7.5 16H18L21 7H6"></path>
+                    <circle cx="9" cy="20" r="1.5"></circle>
+                    <circle cx="17" cy="20" r="1.5"></circle>
+                  </svg>
 
-}
+                  Add to Cart
+                </button>
+
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeFromWishlist(item.product.id)"
+                >
+                  Remove
+                </button>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        }
 
       </div>
 
     } @else {
 
       <div class="empty-wishlist">
+
+        <div class="empty-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M20.8 8.6C20.8 13.5 12 19 12 19S3.2 13.5 3.2 8.6A4.6 4.6 0 0 1 12 6.1a4.6 4.6 0 0 1 8.8 2.5Z"
+            />
+          </svg>
+        </div>
+
+        <p class="empty-label">YOUR FAVORITES</p>
+
         <h2>Your wishlist is empty</h2>
-        <p>Add watches you love to see them here.</p>
+
+        <p>
+          Save watches you love and come back to them anytime.
+        </p>
+
+        <a
+          routerLink="/products"
+          class="browse-btn"
+        >
+          Explore Watches
+          <span>→</span>
+        </a>
+
       </div>
 
     }

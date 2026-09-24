@@ -1,87 +1,345 @@
 <section class="profile-page">
 
+  <!-- Page Header -->
+
   <div class="profile-header">
-    <p>YOUR ACCOUNT</p>
-    <h1>My Profile</h1>
+
+    <p class="eyebrow">
+      YOUR ACCOUNT
+    </p>
+
+    <h1>
+      My Profile
+    </h1>
+
+    <p class="profile-description">
+      Manage your account and saved delivery addresses.
+    </p>
+
   </div>
 
+
+  <!-- User Information -->
+
   @if (user$ | async; as user) {
+
     <div class="info-card">
+
       <div class="avatar">
         {{ user.name.charAt(0) }}
       </div>
-      <div>
-        <h2>{{ user.name }}</h2>
-        <p>{{ user.email }}</p>
+
+      <div class="user-info">
+
+        <p class="user-label">
+          ACCOUNT
+        </p>
+
+        <h2>
+          {{ user.name }}
+        </h2>
+
+        <p>
+          {{ user.email }}
+        </p>
+
       </div>
+
     </div>
+
   }
 
-  <a routerLink="/order" class="orders-link">
-    <span>My Orders</span>
-    <span>&rarr;</span>
+
+  <!-- Orders -->
+
+  <a
+    routerLink="/order"
+    class="orders-link"
+  >
+
+    <div class="orders-icon">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path d="M6 3H18V21H6Z"></path>
+        <path d="M9 7H15"></path>
+        <path d="M9 11H15"></path>
+        <path d="M9 15H13"></path>
+      </svg>
+
+    </div>
+
+    <div class="orders-content">
+
+      <p>
+        ORDERS
+      </p>
+
+      <strong>
+        My Orders
+      </strong>
+
+    </div>
+
+    <span class="orders-arrow">
+      →
+    </span>
+
   </a>
+
+
+  <!-- Address Section -->
 
   <div class="address-section">
 
     <div class="address-section-header">
-      <h2>Saved Addresses</h2>
-      <button class="add-address-btn" (click)="showAddForm = !showAddForm">
+
+      <div>
+
+        <p class="section-label">
+          DELIVERY
+        </p>
+
+        <h2>
+          Saved Addresses
+        </h2>
+
+      </div>
+
+      <button
+        type="button"
+        class="add-address-btn"
+        (click)="showAddForm = !showAddForm"
+      >
         {{ showAddForm ? 'Cancel' : '+ Add Address' }}
       </button>
+
     </div>
 
-    @if (showAddForm) {
-      <form class="address-form" (ngSubmit)="saveAddress()">
 
-        <div class="type-toggle">
-          <button
-            type="button"
-            [class.active]="addressType === 'Home'"
-            (click)="addressType = 'Home'"
-          >
-            Home
-          </button>
-          <button
-            type="button"
-            [class.active]="addressType === 'Work'"
-            (click)="addressType = 'Work'"
-          >
-            Work
-          </button>
+    <!-- Add Address Form -->
+
+    @if (showAddForm) {
+
+      <form
+        class="address-form"
+        (ngSubmit)="saveAddress()"
+      >
+
+        <div class="form-heading">
+
+          <h3>
+            Add New Address
+          </h3>
+
+          <p>
+            Save an address for faster checkout.
+          </p>
+
         </div>
 
-        <input type="text" placeholder="Full Name" [(ngModel)]="fullName" name="fullName">
-        <input type="text" placeholder="Address" [(ngModel)]="address" name="address">
-        <input type="text" placeholder="City" [(ngModel)]="city" name="city">
-        <input
-          type="text"
-          placeholder="PIN code"
-          [(ngModel)]="pincode"
-          name="pincode"
-          maxlength="6"
-          inputmode="numeric"
-        >
 
-        <button type="submit" class="save-address-btn">Save Address</button>
+        <!-- Address Type -->
+
+        <div class="type-section">
+
+          <label>
+            Address Type
+          </label>
+
+          <div class="type-toggle">
+
+            <button
+              type="button"
+              [class.active]="addressType === 'Home'"
+              (click)="addressType = 'Home'"
+            >
+              Home
+            </button>
+
+            <button
+              type="button"
+              [class.active]="addressType === 'Work'"
+              (click)="addressType = 'Work'"
+            >
+              Work
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- Full Name -->
+
+        <div class="form-field">
+
+          <label for="fullName">
+            Full Name
+          </label>
+
+          <input
+            id="fullName"
+            type="text"
+            placeholder="Enter full name"
+            [(ngModel)]="fullName"
+            name="fullName"
+          >
+
+        </div>
+
+
+        <!-- Address -->
+
+        <div class="form-field">
+
+          <label for="address">
+            Address
+          </label>
+
+          <input
+            id="address"
+            type="text"
+            placeholder="Enter your address"
+            [(ngModel)]="address"
+            name="address"
+          >
+
+        </div>
+
+
+        <!-- City / PIN -->
+
+        <div class="form-row">
+
+          <div class="form-field">
+
+            <label for="city">
+              City
+            </label>
+
+            <input
+              id="city"
+              type="text"
+              placeholder="Enter city"
+              [(ngModel)]="city"
+              name="city"
+            >
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="pincode">
+              PIN Code
+            </label>
+
+            <input
+              id="pincode"
+              type="text"
+              placeholder="6-digit PIN"
+              [(ngModel)]="pincode"
+              name="pincode"
+              maxlength="6"
+              inputmode="numeric"
+            >
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="save-address-btn"
+        >
+          Save Address
+          <span>→</span>
+        </button>
+
       </form>
+
     }
+
+
+    <!-- Saved Addresses -->
 
     @if (addresses$ | async; as addresses) {
 
       @if (addresses.length > 0) {
+
         <div class="address-list">
+
           @for (addr of addresses; track addr.id) {
+
             <div class="address-card">
-              <span class="address-type">{{ addr.type }}</span>
-              <p class="address-name">{{ addr.fullName }}</p>
-              <p>{{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}</p>
-              <button class="remove-address-btn" (click)="deleteAddress(addr.id)">Remove</button>
+
+              <div class="address-card-header">
+
+                <span class="address-type">
+                  {{ addr.type }}
+                </span>
+
+                <button
+                  type="button"
+                  class="remove-address-btn"
+                  (click)="deleteAddress(addr.id)"
+                >
+                  Remove
+                </button>
+
+              </div>
+
+
+              <div class="address-content">
+
+                <p class="address-name">
+                  {{ addr.fullName }}
+                </p>
+
+                <p class="address-text">
+                  {{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}
+                </p>
+
+              </div>
+
             </div>
+
           }
+
         </div>
+
       } @else if (!showAddForm) {
-        <p class="no-addresses">No saved addresses yet.</p>
+
+        <div class="no-addresses">
+
+          <div class="empty-address-icon">
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path d="M12 21S19 14.8 19 9.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"></path>
+              <circle cx="12" cy="9.5" r="2.2"></circle>
+            </svg>
+
+          </div>
+
+          <h3>
+            No saved addresses
+          </h3>
+
+          <p>
+            Add a delivery address to make checkout faster.
+          </p>
+
+        </div>
+
       }
 
     }

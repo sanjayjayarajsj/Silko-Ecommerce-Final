@@ -1,119 +1,244 @@
 <section class="auth-page">
 
-  <div class="auth-box">
+  <div class="auth-layout">
 
-    <h1>Create Account</h1>
+    <!-- Brand Section -->
 
-    <p>Join our watch collection</p>
+    <div class="auth-brand">
 
-    <form
-      #registerForm="ngForm"
-      (ngSubmit)="register()"
-      autocomplete="off"
-    >
-
-      <input 
-        type="text" 
-        name="name" 
-        [(ngModel)]="name" 
-        #nameField="ngModel" 
-        placeholder="Full Name" 
-        required 
-        minlength="1" 
-        pattern="^[A-Za-z ]+$"
-        autocomplete="off"
-        (input)="onNameInput()"
-      >
-
-      @if (nameField.invalid && nameField.touched && nameField.dirty) { 
-        <p class="field-hint"> 
-          Name can only contain letters
-        </p> 
-      }
-
-      <input
-        type="email"
-        name="email"
-        [(ngModel)]="email"
-        #emailField="ngModel"
-        placeholder="Email"
-        required
-        email
-        autocomplete="off"
-      >
-
-      @if (emailField.invalid && emailField.touched) {
-        <p class="field-hint">
-          Enter a valid email address
-        </p>
-      }
-
-      <div class="password-field">
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          name="password"
-          [(ngModel)]="password"
-          #passwordField="ngModel"
-          placeholder="Password"
-          required
-          minlength="6"
-          pattern="^(?=.*[a-z])(?=.*[A-Z]).+$"
-          autocomplete="new-password"
-        >
-
-        <button
-          type="button"
-          class="toggle-password"
-          (click)="togglePasswordVisibility()"
-          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-        >
-          {{ showPassword ? 'Hide' : 'Show' }}
-        </button>
+      <div class="brand-mark">
+        S
       </div>
 
-      @if (passwordField.invalid && passwordField.touched) {
-        <p class="field-hint">
-          Password must be at least 6 characters and include both uppercase and lowercase letters
+      <p class="brand-label">
+        SILKO WATCHES
+      </p>
+
+      <h2>
+        Your style.<br>
+        <span>Your time.</span>
+      </h2>
+
+      <p class="brand-description">
+        Create your SILKO account and discover
+        watches designed for timeless everyday style.
+      </p>
+
+    </div>
+
+
+    <!-- Register Card -->
+
+    <div class="auth-box">
+
+      <div class="auth-header">
+
+        <p class="eyebrow">
+          JOIN SILKO
         </p>
-      }
 
-      <div class="password-field">
-        <input
-          [type]="showConfirmPassword ? 'text' : 'password'"
-          name="confirmPassword"
-          [(ngModel)]="confirmPassword"
-          #confirmPasswordField="ngModel"
-          placeholder="Confirm Password"
-          required
-          autocomplete="new-password"
-        >
+        <h1>
+          Create your account
+        </h1>
 
-        <button
-          type="button"
-          class="toggle-password"
-          (click)="toggleConfirmPasswordVisibility()"
-          [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
-        >
-          {{ showConfirmPassword ? 'Hide' : 'Show' }}
-        </button>
+        <p>
+          Register to explore and shop our watch collection.
+        </p>
+
       </div>
 
-      @if (passwordsMismatch && confirmPasswordField.touched) {
-        <p class="field-hint">
-          Passwords do not match
+
+      <form
+        #registerForm="ngForm"
+        (ngSubmit)="register()"
+        autocomplete="off"
+      >
+
+        <!-- Name -->
+
+        <div class="form-field">
+
+          <label for="name">
+            Full Name
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            name="name"
+            [(ngModel)]="name"
+            #nameField="ngModel"
+            placeholder="Enter your full name"
+            required
+            minlength="1"
+            pattern="^[A-Za-z ]+$"
+            autocomplete="off"
+            (input)="onNameInput()"
+          >
+
+          @if (nameField.invalid && nameField.touched && nameField.dirty) {
+
+            <p class="field-hint">
+              Name can only contain letters
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Email -->
+
+        <div class="form-field">
+
+          <label for="email">
+            Email Address
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            #emailField="ngModel"
+            placeholder="Enter your email"
+            required
+            email
+            autocomplete="off"
+          >
+
+          @if (emailField.invalid && emailField.touched) {
+
+            <p class="field-hint">
+              Enter a valid email address
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Password -->
+
+        <div class="form-field">
+
+          <label for="password">
+            Password
+          </label>
+
+          <div class="password-field">
+
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              #passwordField="ngModel"
+              placeholder="Create a password"
+              required
+              minlength="6"
+              pattern="^(?=.*[a-z])(?=.*[A-Z]).+$"
+              autocomplete="new-password"
+            >
+
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            >
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+
+          </div>
+
+          @if (passwordField.invalid && passwordField.touched) {
+
+            <p class="field-hint">
+              Password must be at least 6 characters and include both uppercase and lowercase letters
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Confirm Password -->
+
+        <div class="form-field">
+
+          <label for="confirmPassword">
+            Confirm Password
+          </label>
+
+          <div class="password-field">
+
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              #confirmPasswordField="ngModel"
+              placeholder="Confirm your password"
+              required
+              autocomplete="new-password"
+            >
+
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="toggleConfirmPasswordVisibility()"
+              [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+            >
+              {{ showConfirmPassword ? 'Hide' : 'Show' }}
+            </button>
+
+          </div>
+
+          @if (passwordsMismatch && confirmPasswordField.touched) {
+
+            <p class="field-hint">
+              Passwords do not match
+            </p>
+
+          }
+
+        </div>
+
+
+        <!-- Register Button -->
+
+        <button
+          type="submit"
+          class="register-btn"
+          [disabled]="registerForm.invalid || passwordsMismatch"
+        >
+          <span>
+            Create Account
+          </span>
+
+          <span class="arrow">
+            →
+          </span>
+        </button>
+
+      </form>
+
+
+      <!-- Login Link -->
+
+      <div class="auth-footer">
+
+        <p>
+          Already have an account?
+          <a routerLink="/login">
+            Login
+          </a>
         </p>
-      }
 
-      <button type="submit" [disabled]="registerForm.invalid || passwordsMismatch">
-        Register
-      </button>
+      </div>
 
-    </form>
-
-    <p>
-      Already have an account?
-      <a routerLink="/login">Login</a>
-    </p>
+    </div>
 
   </div>
 

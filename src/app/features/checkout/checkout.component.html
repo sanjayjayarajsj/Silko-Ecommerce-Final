@@ -1,216 +1,531 @@
 <section class="checkout-page">
 
+  <!-- Header -->
+
   <div class="checkout-header">
-    <p>COMPLETE YOUR ORDER</p>
-    <h1>CHECKOUT</h1>
+    <p class="eyebrow">COMPLETE YOUR ORDER</p>
+    <h1>Checkout</h1>
+    <p class="checkout-description">
+      Securely complete your purchase and get your watch on its way.
+    </p>
   </div>
+
 
   <div class="checkout-content">
 
-    <!-- Customer Details -->
+    <!-- =========================================
+         SHIPPING & PAYMENT
+    ========================================== -->
 
     <div class="checkout-form">
 
-      <h2>Shipping Information</h2>
+      <div class="section-title">
+        <span class="section-number">01</span>
+
+        <div>
+          <p>DELIVERY</p>
+          <h2>Shipping Information</h2>
+        </div>
+      </div>
+
+
+      <!-- Saved Addresses -->
 
       @if (savedAddresses$ | async; as savedAddresses) {
+
         @if (savedAddresses.length > 0) {
+
           <div class="saved-addresses">
-            <p class="saved-addresses-label">Choose a saved address</p>
+
+            <p class="saved-addresses-label">
+              Choose a saved address
+            </p>
+
             <div class="saved-address-list">
+
               @for (addr of savedAddresses; track addr.id) {
+
                 <button
                   type="button"
                   class="saved-address-card"
                   [class.selected]="selectedAddressId === addr.id"
                   (click)="selectAddress(addr)"
                 >
-                  <span class="saved-address-type">{{ addr.type }}</span>
-                  <span class="saved-address-name">{{ addr.fullName }}</span>
-                  <span class="saved-address-text">{{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}</span>
+
+                  <span class="saved-address-top">
+                    <span class="saved-address-type">
+                      {{ addr.type }}
+                    </span>
+
+                    @if (selectedAddressId === addr.id) {
+                      <span class="selected-mark">✓</span>
+                    }
+                  </span>
+
+                  <span class="saved-address-name">
+                    {{ addr.fullName }}
+                  </span>
+
+                  <span class="saved-address-text">
+                    {{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}
+                  </span>
+
                 </button>
+
               }
+
             </div>
+
           </div>
+
         }
+
       }
 
-<form>
-  <label>Full Name</label>
-  <input
-    type="text"
-    name="fullName"
-    [(ngModel)]="fullName"
-    placeholder="Enter your full name"
-  >
 
-  @if (submitted && !fullName) {
-    <small class="error">Full name is required</small>
-  }
+      <!-- Shipping Form -->
 
-  <label>Address</label>
-  <input
-    type="text"
-    name="address"
-    [(ngModel)]="address"
-    placeholder="Enter your address"
-  >
+      <form class="shipping-form">
 
-  @if (submitted && !address) {
-    <small class="error">Address is required</small>
-  }
+        <div class="form-field">
 
-  <label>City</label>
-  <input
-    type="text"
-    name="city"
-    [(ngModel)]="city"
-    placeholder="Enter your city"
-  >
+          <label for="fullName">
+            Full Name
+          </label>
 
-  @if (submitted && !city) {
-    <small class="error">City is required</small>
-  }
-
-<input
-  type="text"
-  name="pincode"
-  [(ngModel)]="pincode"
-  placeholder="Enter PIN code"
-  maxlength="6"
-  inputmode="numeric"
->
-
-@if (submitted && !isValidPin()) {
-  <small class="error">
-    PIN code must be exactly 6 digits
-  </small>
-}
-</form>
-
-      <h2 class="payment-heading">Payment Method</h2>
-
-      <div class="payment-options">
-        <button
-          type="button"
-          class="payment-option"
-          [class.selected]="paymentMethod === 'Card'"
-          (click)="paymentMethod = 'Card'"
-        >
-          💳 Card
-        </button>
-        <button
-          type="button"
-          class="payment-option"
-          [class.selected]="paymentMethod === 'UPI'"
-          (click)="paymentMethod = 'UPI'"
-        >
-          📱 UPI
-        </button>
-        <button
-          type="button"
-          class="payment-option"
-          [class.selected]="paymentMethod === 'COD'"
-          (click)="paymentMethod = 'COD'"
-        >
-          💵 Cash on Delivery
-        </button>
-      </div>
-
-      @if (submitted && !paymentMethod) {
-        <small class="error">Please choose a payment method</small>
-      }
-
-      @if (paymentMethod === 'Card') {
-        <div class="payment-details">
           <input
+            id="fullName"
             type="text"
-            [(ngModel)]="cardNumber"
-            name="cardNumber"
-            placeholder="Card Number (16 digits)"
-            maxlength="19"
-            inputmode="numeric"
+            name="fullName"
+            [(ngModel)]="fullName"
+            placeholder="Enter your full name"
           >
-          <div class="payment-details-row">
+
+          @if (submitted && !fullName) {
+            <small class="error">
+              Full name is required
+            </small>
+          }
+
+        </div>
+
+
+        <div class="form-field">
+
+          <label for="address">
+            Address
+          </label>
+
+          <input
+            id="address"
+            type="text"
+            name="address"
+            [(ngModel)]="address"
+            placeholder="Enter your address"
+          >
+
+          @if (submitted && !address) {
+            <small class="error">
+              Address is required
+            </small>
+          }
+
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-field">
+
+            <label for="city">
+              City
+            </label>
+
             <input
+              id="city"
               type="text"
-              [(ngModel)]="cardExpiry"
-              name="cardExpiry"
-              placeholder="MM/YY"
-              maxlength="5"
+              name="city"
+              [(ngModel)]="city"
+              placeholder="Enter your city"
             >
+
+            @if (submitted && !city) {
+              <small class="error">
+                City is required
+              </small>
+            }
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="pincode">
+              PIN Code
+            </label>
+
             <input
+              id="pincode"
               type="text"
-              [(ngModel)]="cardCvv"
-              name="cardCvv"
-              placeholder="CVV"
-              maxlength="3"
+              name="pincode"
+              [(ngModel)]="pincode"
+              placeholder="6-digit PIN code"
+              maxlength="6"
               inputmode="numeric"
             >
-          </div>
-          @if (submitted && !isValidCard()) {
-            <small class="error">Enter a valid 16-digit card number, MM/YY expiry and 3-digit CVV</small>
-          }
-        </div>
-      }
 
-      @if (paymentMethod === 'UPI') {
-        <div class="payment-details">
-          <input
-            type="text"
-            [(ngModel)]="upiId"
-            name="upiId"
-            placeholder="yourname@bank"
-          >
-          @if (submitted && !isValidUpi()) {
-            <small class="error">Enter a valid UPI ID, e.g. yourname&#64;bank</small>
-          }
+            @if (submitted && !isValidPin()) {
+              <small class="error">
+                PIN code must be exactly 6 digits
+              </small>
+            }
+
+          </div>
+
         </div>
-      }
+
+      </form>
+
+
+      <!-- =========================================
+           PAYMENT
+      ========================================== -->
+
+      <div class="payment-section">
+
+        <div class="section-title payment-title">
+
+          <span class="section-number">02</span>
+
+          <div>
+            <p>PAYMENT</p>
+            <h2>Payment Method</h2>
+          </div>
+
+        </div>
+
+
+        <div class="payment-options">
+
+          <button
+            type="button"
+            class="payment-option"
+            [class.selected]="paymentMethod === 'Card'"
+            (click)="paymentMethod = 'Card'"
+          >
+
+            <span class="payment-icon">💳</span>
+
+            <span class="payment-option-content">
+              <strong>Card</strong>
+              <small>Credit or debit card</small>
+            </span>
+
+            <span class="payment-check">
+              {{ paymentMethod === 'Card' ? '✓' : '' }}
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="payment-option"
+            [class.selected]="paymentMethod === 'UPI'"
+            (click)="paymentMethod = 'UPI'"
+          >
+
+            <span class="payment-icon">📱</span>
+
+            <span class="payment-option-content">
+              <strong>UPI</strong>
+              <small>Pay using UPI</small>
+            </span>
+
+            <span class="payment-check">
+              {{ paymentMethod === 'UPI' ? '✓' : '' }}
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="payment-option"
+            [class.selected]="paymentMethod === 'COD'"
+            (click)="paymentMethod = 'COD'"
+          >
+
+            <span class="payment-icon">💵</span>
+
+            <span class="payment-option-content">
+              <strong>Cash on Delivery</strong>
+              <small>Pay when your order arrives</small>
+            </span>
+
+            <span class="payment-check">
+              {{ paymentMethod === 'COD' ? '✓' : '' }}
+            </span>
+
+          </button>
+
+        </div>
+
+
+        @if (submitted && !paymentMethod) {
+          <small class="error payment-error">
+            Please choose a payment method
+          </small>
+        }
+
+
+        <!-- Card Details -->
+
+        @if (paymentMethod === 'Card') {
+
+          <div class="payment-details">
+
+            <div class="form-field">
+
+              <label for="cardNumber">
+                Card Number
+              </label>
+
+              <input
+                id="cardNumber"
+                type="text"
+                [(ngModel)]="cardNumber"
+                name="cardNumber"
+                placeholder="16-digit card number"
+                maxlength="19"
+                inputmode="numeric"
+              >
+
+            </div>
+
+
+            <div class="payment-details-row">
+
+              <div class="form-field">
+
+                <label for="cardExpiry">
+                  Expiry
+                </label>
+
+                <input
+                  id="cardExpiry"
+                  type="text"
+                  [(ngModel)]="cardExpiry"
+                  name="cardExpiry"
+                  placeholder="MM/YY"
+                  maxlength="5"
+                >
+
+              </div>
+
+
+              <div class="form-field">
+
+                <label for="cardCvv">
+                  CVV
+                </label>
+
+                <input
+                  id="cardCvv"
+                  type="text"
+                  [(ngModel)]="cardCvv"
+                  name="cardCvv"
+                  placeholder="CVV"
+                  maxlength="3"
+                  inputmode="numeric"
+                >
+
+              </div>
+
+            </div>
+
+
+            @if (submitted && !isValidCard()) {
+              <small class="error">
+                Enter a valid 16-digit card number, MM/YY expiry and 3-digit CVV
+              </small>
+            }
+
+          </div>
+
+        }
+
+
+        <!-- UPI Details -->
+
+        @if (paymentMethod === 'UPI') {
+
+          <div class="payment-details">
+
+            <div class="form-field">
+
+              <label for="upiId">
+                UPI ID
+              </label>
+
+              <input
+                id="upiId"
+                type="text"
+                [(ngModel)]="upiId"
+                name="upiId"
+                placeholder="yourname@bank"
+              >
+
+            </div>
+
+
+            @if (submitted && !isValidUpi()) {
+              <small class="error">
+                Enter a valid UPI ID, e.g. yourname&#64;bank
+              </small>
+            }
+
+          </div>
+
+        }
+
+      </div>
 
     </div>
 
-    <!-- Order Summary -->
 
-    <div class="order-summary">
+    <!-- =========================================
+         ORDER SUMMARY
+    ========================================== -->
 
-      <h2>Order Summary</h2>
+    <aside class="order-summary">
+
+      <div class="summary-header">
+
+        <p>YOUR ORDER</p>
+
+        <h2>Order Summary</h2>
+
+      </div>
+
 
       @if (cartItems | async; as items) {
 
-        @for (item of items; track item.product.id) {
+        <div class="order-items">
 
-          <div class="order-item">
+          @for (item of items; track item.product.id) {
 
-            <div>
-              <h3>{{ item.product.name }}</h3>
-              <p>Quantity: {{ item.quantity }}</p>
+            <div class="order-item">
+
+              <div class="order-product">
+
+                <div class="order-product-image">
+
+                  <img
+                    [src]="item.product.image"
+                    [alt]="item.product.name"
+                  >
+
+                </div>
+
+                <div class="order-product-info">
+
+                  <p class="order-brand">
+                    {{ item.product.brand }}
+                  </p>
+
+                  <h3>
+                    {{ item.product.name }}
+                  </h3>
+
+                  <p class="order-quantity">
+                    Qty: {{ item.quantity }}
+                  </p>
+
+                </div>
+
+              </div>
+
+              <span class="order-price">
+                ₹{{ item.product.price * item.quantity }}
+              </span>
+
             </div>
 
-            <span>
-              ₹{{ item.product.price * item.quantity }}
-            </span>
+          }
 
-          </div>
-
-        }
+        </div>
 
       }
 
-      <hr>
+
+      <div class="summary-divider"></div>
+
+
+      <div class="summary-row">
+
+        <span>Subtotal</span>
+
+        <span>
+          ₹{{ cartTotal | async }}
+        </span>
+
+      </div>
+
+
+      <div class="summary-row">
+
+        <span>Shipping</span>
+
+        <span class="free">
+          Free
+        </span>
+
+      </div>
+
+
+      <div class="summary-divider"></div>
+
 
       <div class="total">
+
         <span>Total</span>
+
         <strong>
           ₹{{ cartTotal | async }}
         </strong>
+
       </div>
 
-<button class="place-order-btn"
-  [disabled]="isPlacingOrder"
-  (click)="placeOrder()">{{ isPlacingOrder ? 'Placing Order...' : 'Place Order' }}</button>
 
-    </div>
+      <button
+        type="button"
+        class="place-order-btn"
+        [disabled]="isPlacingOrder"
+        (click)="placeOrder()"
+      >
+
+        {{ isPlacingOrder ? 'Placing Order...' : 'Place Order' }}
+
+        @if (!isPlacingOrder) {
+          <span>→</span>
+        }
+
+      </button>
+
+
+      <div class="secure-checkout">
+
+        <span>✓</span>
+
+        <div>
+          <strong>Secure Checkout</strong>
+          <small>Your information is protected</small>
+        </div>
+
+      </div>
+
+    </aside>
 
   </div>
 

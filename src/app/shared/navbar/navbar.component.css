@@ -1,21 +1,22 @@
 /* =========================================================
    SILKO NAVBAR
-   ========================================================= */
+   Dark Blue / White / Black Theme
+========================================================= */
 
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 
   height: var(--navbar-height);
-
   padding: 0 5%;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
 
   border-bottom: 1px solid transparent;
 
@@ -33,8 +34,8 @@
 
 
 /* =========================================================
-   HIDE NAVBAR ON SCROLL DOWN
-   ========================================================= */
+   HIDE NAVBAR
+========================================================= */
 
 .navbar.nav-hidden {
   transform: translateY(-100%);
@@ -43,24 +44,24 @@
 
 /* =========================================================
    SCROLLED NAVBAR
-   ========================================================= */
+========================================================= */
 
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.96);
 
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
-  border-bottom-color: rgba(0, 0, 0, 0.07);
+  border-bottom-color: var(--color-border);
 
   box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.06);
+    0 8px 30px rgba(11, 31, 51, 0.08);
 }
 
 
 /* =========================================================
    NAVBAR OVER HERO
-   ========================================================= */
+========================================================= */
 
 .navbar.over-hero {
   background: transparent;
@@ -77,12 +78,14 @@
 }
 
 
-/* Search over hero */
+/* =========================================================
+   SEARCH OVER HERO
+========================================================= */
 
 .navbar.over-hero .search-inline {
   background: rgba(255, 255, 255, 0.12);
 
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.28);
 
   color: #ffffff;
 }
@@ -92,11 +95,13 @@
 }
 
 .navbar.over-hero .search-inline input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 
-/* Hero hover */
+/* =========================================================
+   HERO HOVER
+========================================================= */
 
 .navbar.over-hero .nav-link-text:hover {
   background: rgba(255, 255, 255, 0.14);
@@ -107,27 +112,29 @@
 }
 
 
-/* Hero badges */
+/* =========================================================
+   HERO BADGES
+========================================================= */
 
-.navbar.over-hero .nav-link-text span {
+.navbar.over-hero .count-badge {
   background: #ffffff;
-
   color: var(--color-text);
 }
 
 
 /* =========================================================
    LOGO
-   ========================================================= */
+========================================================= */
 
 .logo {
   position: relative;
 
   display: inline-flex;
-
   align-items: center;
 
   gap: 9px;
+
+  flex-shrink: 0;
 
   color: var(--color-text);
 
@@ -162,7 +169,7 @@
 .logo:hover {
   letter-spacing: 5px;
 
-  opacity: 0.9;
+  opacity: 0.88;
 }
 
 .logo:hover .logo-mark {
@@ -170,7 +177,7 @@
 }
 
 
-/* Gold underline */
+/* Blue underline */
 
 .logo::after {
   content: '';
@@ -178,14 +185,12 @@
   position: absolute;
 
   left: 50%;
-
   bottom: -8px;
 
   width: 0;
+  height: 2px;
 
-  height: 1px;
-
-  background:var(--color-primary-accent);
+  background: var(--color-primary);
 
   transition:
     width 0.3s ease,
@@ -194,18 +199,16 @@
 
 .logo:hover::after {
   width: 100%;
-
   left: 0;
 }
 
 
 /* =========================================================
    SEARCH
-   ========================================================= */
+========================================================= */
 
 .search-inline {
   display: flex;
-
   align-items: center;
 
   gap: 10px;
@@ -220,7 +223,7 @@
 
   border-radius: var(--radius-pill);
 
-  background: var(--color-surface);
+  background: var(--color-soft-white);
 
   border: 1px solid var(--color-border);
 
@@ -237,7 +240,7 @@
 /* Search hover */
 
 .search-inline:hover {
-  border-color: #d5d5d0;
+  border-color: #c9d2da;
 }
 
 
@@ -246,10 +249,10 @@
 .search-inline:focus-within {
   background: #ffffff;
 
-  border-color: var(--color-gold);
+  border-color: var(--color-primary);
 
   box-shadow:
-    0 0 0 3px rgba(184, 154, 90, 0.1);
+    0 0 0 3px rgba(30, 90, 134, 0.10);
 }
 
 
@@ -260,8 +263,7 @@
 
   opacity: 0.55;
 
-  transition:
-    opacity 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .search-inline:focus-within svg {
@@ -279,7 +281,6 @@
   padding: 0;
 
   border: none;
-
   outline: none;
 
   background: transparent;
@@ -304,7 +305,7 @@
 
 /* =========================================================
    NAVIGATION AREA
-   ========================================================= */
+========================================================= */
 
 .nav-icons {
   display: flex;
@@ -314,12 +315,14 @@
   gap: 4px;
 
   position: relative;
+
+  flex-shrink: 0;
 }
 
 
 /* =========================================================
    NAVIGATION LINKS
-   ========================================================= */
+========================================================= */
 
 .nav-link-text {
   position: relative;
@@ -353,7 +356,7 @@
 }
 
 
-/* Icons inside links */
+/* Icons */
 
 .nav-link-text svg {
   margin-right: 2px;
@@ -369,9 +372,9 @@
 /* Hover */
 
 .nav-link-text:hover {
-  background: rgba(0, 0, 0, 0.045);
+  background: rgba(11, 31, 51, 0.05);
 
-  color: var(--color-text);
+  color: var(--color-primary);
 
   transform: translateY(-1px);
 }
@@ -386,13 +389,13 @@
 /* Active */
 
 .nav-link-text.active-link {
-  color: var(--color-text);
+  color: var(--color-primary);
 
   font-weight: 600;
 }
 
 
-/* Gold active underline */
+/* Active indicator */
 
 .nav-link-text.active-link::after {
   content: '';
@@ -400,16 +403,14 @@
   position: absolute;
 
   left: 50%;
-
   bottom: 3px;
 
   width: 4px;
-
   height: 4px;
 
   border-radius: 50%;
 
-  background: var(--color-primary-accent);
+  background: var(--color-primary);
 
   transform: translateX(-50%);
 }
@@ -417,30 +418,28 @@
 
 /* =========================================================
    COUNT BADGES
-   ========================================================= */
+========================================================= */
 
-.nav-link-text span {
+.count-badge {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   width: 17px;
-
   height: 17px;
 
   margin-left: 2px;
 
   border-radius: 50%;
 
-  background: var(--color-text);
+  background: var(--color-primary);
 
   color: #ffffff;
 
   font-size: 9px;
 
-  font-weight: 600;
+  font-weight: 700;
 
   line-height: 1;
 
@@ -449,8 +448,8 @@
     background 0.2s ease;
 }
 
-.nav-link-text:hover span {
-  background: var(--color-primary-accent);
+.nav-link-text:hover .count-badge {
+  background: var(--color-secondary);
 
   transform: scale(1.08);
 }
@@ -458,7 +457,7 @@
 
 /* =========================================================
    ACCOUNT BUTTON
-   ========================================================= */
+========================================================= */
 
 .icon-btn {
   position: relative;
@@ -466,11 +465,9 @@
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   width: 40px;
-
   height: 40px;
 
   margin-left: 3px;
@@ -482,6 +479,8 @@
   color: var(--color-text);
 
   border-radius: 50%;
+
+  cursor: pointer;
 
   transform: scale(1);
 
@@ -496,9 +495,11 @@
 /* Account hover */
 
 .icon-btn:hover {
-  background: rgba(0, 0, 0, 0.045);
+  background: rgba(11, 31, 51, 0.05);
 
   border-color: var(--color-border);
+
+  color: var(--color-primary);
 
   transform: translateY(-1px);
 }
@@ -513,7 +514,7 @@
 
 /* =========================================================
    ACCOUNT DROPDOWN
-   ========================================================= */
+========================================================= */
 
 .account-menu {
   position: absolute;
@@ -524,19 +525,19 @@
 
   min-width: 190px;
 
-  padding: 6px;
+  padding: 8px;
 
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.97);
 
   backdrop-filter: blur(18px);
-
   -webkit-backdrop-filter: blur(18px);
 
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border);
 
   border-radius: var(--radius-md);
 
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    0 16px 40px rgba(11, 31, 51, 0.12);
 
   overflow: hidden;
 
@@ -546,7 +547,7 @@
 }
 
 
-/* Dropdown small gold accent */
+/* Blue accent */
 
 .account-menu::before {
   content: '';
@@ -554,16 +555,17 @@
   display: block;
 
   width: 28px;
-
   height: 2px;
 
-  margin: 4px 12px 6px;
+  margin: 4px 12px 7px;
 
-  background: var(--color-primary-accent);
+  background: var(--color-primary);
+
+  border-radius: 999px;
 }
 
 
-/* Dropdown links */
+/* Dropdown links/buttons */
 
 .account-menu a,
 .account-menu button {
@@ -585,6 +587,8 @@
 
   text-decoration: none;
 
+  font-family: inherit;
+
   font-size: 13px;
 
   font-weight: 500;
@@ -602,13 +606,30 @@
 
 .account-menu a:hover,
 .account-menu button:hover {
-  background: var(--color-surface);
+  background: var(--color-soft-white);
 
-  color: var(--color-primary-light);
+  color: var(--color-primary);
 
   padding-left: 18px;
 }
 
+
+/* Logout */
+
+.account-menu button:last-child {
+  color: var(--color-danger);
+}
+
+.account-menu button:last-child:hover {
+  background: #fff1f0;
+
+  color: var(--color-danger);
+}
+
+
+/* =========================================================
+   DROPDOWN ANIMATION
+========================================================= */
 
 @keyframes account-menu-in {
 
@@ -623,17 +644,20 @@
 
     transform: translateY(0);
   }
+
 }
 
 
 /* =========================================================
    TABLET
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 1000px) {
 
   .navbar {
     padding: 0 3%;
+
+    gap: 12px;
   }
 
   .search-inline {
@@ -650,15 +674,15 @@
 
   .nav-link-text svg {
     width: 15px;
-
     height: 15px;
   }
+
 }
 
 
 /* =========================================================
    MOBILE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 760px) {
 
@@ -684,7 +708,7 @@
   }
 
 
-  /* Navigation icons */
+  /* Navigation */
 
   .nav-icons {
     gap: 2px;
@@ -704,11 +728,10 @@
   }
 
 
-  /* Hide text labels on smaller screens */
+  /* Hide text labels */
 
   .nav-link-text {
     width: 38px;
-
     height: 38px;
 
     padding: 0;
@@ -718,10 +741,8 @@
     font-size: 0;
   }
 
-
   .nav-link-text svg {
     width: 18px;
-
     height: 18px;
 
     margin: 0;
@@ -730,15 +751,13 @@
 
   /* Badge */
 
-  .nav-link-text span {
+  .count-badge {
     position: absolute;
 
     top: 1px;
-
     right: 1px;
 
     width: 15px;
-
     height: 15px;
 
     font-size: 8px;
@@ -756,7 +775,6 @@
 
   .icon-btn {
     width: 38px;
-
     height: 38px;
   }
 
@@ -768,12 +786,13 @@
 
     min-width: 180px;
   }
+
 }
 
 
 /* =========================================================
    SMALL MOBILE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 420px) {
 
@@ -785,11 +804,12 @@
     font-size: 17px;
 
     letter-spacing: 2px;
+
+    gap: 7px;
   }
 
   .logo-mark {
     width: 20px;
-
     height: 20px;
   }
 
@@ -800,7 +820,11 @@
   .nav-link-text,
   .icon-btn {
     width: 35px;
-
     height: 35px;
   }
+
+  .search-inline {
+    padding: 9px 13px;
+  }
+
 }
