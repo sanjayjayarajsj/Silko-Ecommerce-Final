@@ -83,7 +83,7 @@
 ========================================================= */
 
 .navbar.over-hero .search-inline {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0);
 
   border-color: rgba(255, 255, 255, 0.28);
 
@@ -142,7 +142,7 @@
 
   font-size: 22px;
 
-  font-weight: 700;
+  font-weight: 200;
 
   letter-spacing: 4px;
 
@@ -343,7 +343,7 @@
 
   font-size: 12px;
 
-  font-weight: 500;
+  font-weight: 300;
 
   letter-spacing: 0.06em;
 
@@ -413,6 +413,9 @@
   background: var(--color-primary);
 
   transform: translateX(-50%);
+}
+.nav-text{
+  font-weight: 300;
 }
 
 

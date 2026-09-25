@@ -98,12 +98,17 @@
             type="text"
             name="fullName"
             [(ngModel)]="fullName"
+            (input)="onFullNameInput()"
             placeholder="Enter your full name"
           >
 
           @if (submitted && !fullName) {
             <small class="error">
               Full name is required
+            </small>
+          } @else if (submitted && !isValidFullName()) {
+            <small class="error">
+              Enter a valid name (letters only, at least 3 characters)
             </small>
           }
 
@@ -121,12 +126,17 @@
             type="text"
             name="address"
             [(ngModel)]="address"
+            (input)="onAddressInput()"
             placeholder="Enter your address"
           >
 
           @if (submitted && !address) {
             <small class="error">
               Address is required
+            </small>
+          } @else if (submitted && !isValidAddressLine()) {
+            <small class="error">
+              Enter a valid address (at least 5 characters)
             </small>
           }
 
@@ -146,12 +156,17 @@
               type="text"
               name="city"
               [(ngModel)]="city"
+              (input)="onCityInput()"
               placeholder="Enter your city"
             >
 
             @if (submitted && !city) {
               <small class="error">
                 City is required
+              </small>
+            } @else if (submitted && !isValidCityName()) {
+              <small class="error">
+                Letters only
               </small>
             }
 
@@ -169,6 +184,7 @@
               type="text"
               name="pincode"
               [(ngModel)]="pincode"
+              (input)="onPincodeInput()"
               placeholder="6-digit PIN code"
               maxlength="6"
               inputmode="numeric"

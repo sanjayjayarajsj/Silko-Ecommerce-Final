@@ -268,3 +268,28 @@
   }
 
 </section>
+
+
+<!-- Similar Products -->
+@if (similarProducts.length > 0) {
+
+  <section class="similar-products">
+
+    <div class="similar-heading">
+      <p class="similar-label">YOU MAY ALSO LIKE</p>
+      <h2>Similar Watches</h2>
+    </div>
+
+    <div class="similar-grid">
+
+      @for (item of similarProducts; track item.id) {
+
+        <app-product-card [product]="item"></app-product-card>
+
+      }
+
+    </div>
+
+  </section>
+
+}

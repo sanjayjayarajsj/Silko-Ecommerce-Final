@@ -14,6 +14,15 @@ import { selectAddresses } from '../../store/address/address.selectors';
 import { loadAddresses } from '../../store/address/address.actions';
 import { Address } from '../address/address.model';
 import { ProductService } from '../products/product.service';
+import {
+  sanitizeNameInput,
+  sanitizeAddressInput,
+  sanitizePincodeInput,
+  isValidName,
+  isValidCity,
+  isValidAddress,
+  isValidPincode
+} from '../../shared/form-validators';
 @Component({
   selector: 'app-checkout',
   standalone: true,
@@ -71,8 +80,41 @@ selectAddress(addr: Address) {
   this.pincode = addr.pincode;
 }
 
+// Called from (input) on the Full Name field - strips anything that
+// isn't a letter/space as the user types.
+onFullNameInput(): void {
+  this.fullName = sanitizeNameInput(this.fullName);
+}
+
+// City follows the same letters-only rule as the name field.
+onCityInput(): void {
+  this.city = sanitizeNameInput(this.city);
+}
+
+// Address allows letters, numbers and normal address punctuation.
+onAddressInput(): void {
+  this.address = sanitizeAddressInput(this.address);
+}
+
+// PIN code: digits only, capped at 6 while typing.
+onPincodeInput(): void {
+  this.pincode = sanitizePincodeInput(this.pincode);
+}
+
+isValidFullName(): boolean {
+  return isValidName(this.fullName);
+}
+
+isValidCityName(): boolean {
+  return isValidCity(this.city);
+}
+
+isValidAddressLine(): boolean {
+  return isValidAddress(this.address);
+}
+
 isValidPin(): boolean {
-  return /^\d{6}$/.test(this.pincode);
+  return isValidPincode(this.pincode);
 }
 
 isValidCard(): boolean {
@@ -101,9 +143,9 @@ placeOrder() {
   this.submitted = true;
 
   if (
-    !this.fullName ||
-    !this.address ||
-    !this.city ||
+    !this.isValidFullName() ||
+    !this.isValidAddressLine() ||
+    !this.isValidCityName() ||
     !this.isValidPin() ||
     !this.isPaymentValid()
   ) {

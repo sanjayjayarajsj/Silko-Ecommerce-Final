@@ -12,4 +12,7 @@ export interface WishlistState {
 
 export const initialWishlistState: WishlistState = {
   items: []
-};;
+};
+
+// How many products the wishlist can hold at once.
+export const MAX_PRODUCTS_IN_WISHLIST = 5;

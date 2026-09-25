@@ -418,6 +418,13 @@
 /* =========================================
    FORM FIELDS
 ========================================= */
+.error {
+  display: block;
+  margin-top: 7px;
+  color: var(--color-danger);
+  font-size: 11px;
+  line-height: 1.4;
+}
 
 .form-field {
   display: flex;

@@ -17,6 +17,8 @@ export class ProductListComponent {
   searchText = '';
   selectedCategory = '';
   sortOption = '';
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
   currentPage = 1;
   pageSize = 8;
   skeletonCards = Array(8).fill(0);
@@ -41,7 +43,17 @@ filterAndSortProducts(products: any[] | null) {
       !this.selectedCategory ||
       product.brand === this.selectedCategory;
 
-    return matchesSearch && matchesBrand;
+    const matchesMinPrice =
+      this.minPrice === null ||
+      this.minPrice === undefined ||
+      product.price >= this.minPrice;
+
+    const matchesMaxPrice =
+      this.maxPrice === null ||
+      this.maxPrice === undefined ||
+      product.price <= this.maxPrice;
+
+    return matchesSearch && matchesBrand && matchesMinPrice && matchesMaxPrice;
   });
 
   if (this.sortOption === 'price-asc') {
@@ -89,5 +101,23 @@ clearSearch() {
   this.searchText = '';
   this.currentPage = 1;
   this.router.navigate(['/products']);
+}
+
+clearFilters() {
+  this.selectedCategory = '';
+  this.minPrice = null;
+  this.maxPrice = null;
+  this.sortOption = '';
+  this.currentPage = 1;
+}
+
+get hasActiveFilters(): boolean {
+  return !!(
+    this.selectedCategory ||
+    this.searchText ||
+    this.sortOption ||
+    this.minPrice !== null ||
+    this.maxPrice !== null
+  );
 }
 }

@@ -8,6 +8,15 @@ import { ToastService } from '../../core/services/toast.service';
 import { Address } from '../address/address.model';
 import { selectAddresses } from '../../store/address/address.selectors';
 import { loadAddresses, addAddress, removeAddress } from '../../store/address/address.actions';
+import {
+  sanitizeNameInput,
+  sanitizeAddressInput,
+  sanitizePincodeInput,
+  isValidName,
+  isValidCity,
+  isValidAddress,
+  isValidPincode
+} from '../../shared/form-validators';
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +34,7 @@ export class ProfileComponent {
   addresses$ = this.store.select(selectAddresses);
 
   showAddForm = false;
+  addressSubmitted = false;
   addressType: 'Home' | 'Work' = 'Home';
   fullName = '';
   address = '';
@@ -35,12 +45,47 @@ export class ProfileComponent {
     this.store.dispatch(loadAddresses());
   }
 
+  onFullNameInput(): void {
+    this.fullName = sanitizeNameInput(this.fullName);
+  }
+
+  onCityInput(): void {
+    this.city = sanitizeNameInput(this.city);
+  }
+
+  onAddressInput(): void {
+    this.address = sanitizeAddressInput(this.address);
+  }
+
+  onPincodeInput(): void {
+    this.pincode = sanitizePincodeInput(this.pincode);
+  }
+
+  isValidFullName(): boolean {
+    return isValidName(this.fullName);
+  }
+
+  isValidCityName(): boolean {
+    return isValidCity(this.city);
+  }
+
+  isValidAddressLine(): boolean {
+    return isValidAddress(this.address);
+  }
+
   isValidPin(): boolean {
-    return /^\d{6}$/.test(this.pincode);
+    return isValidPincode(this.pincode);
   }
 
   saveAddress() {
-    if (!this.fullName || !this.address || !this.city || !this.isValidPin()) {
+    this.addressSubmitted = true;
+
+    if (
+      !this.isValidFullName() ||
+      !this.isValidAddressLine() ||
+      !this.isValidCityName() ||
+      !this.isValidPin()
+    ) {
       this.toast.show('Please fill all address fields correctly');
       return;
     }
@@ -68,6 +113,12 @@ export class ProfileComponent {
     this.pincode = '';
     this.addressType = 'Home';
     this.showAddForm = false;
+    this.addressSubmitted = false;
+  }
+
+  toggleAddForm(): void {
+    this.showAddForm = !this.showAddForm;
+    this.addressSubmitted = false;
   }
 
   deleteAddress(id: string | number | undefined) {

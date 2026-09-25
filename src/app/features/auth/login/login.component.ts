@@ -35,14 +35,14 @@ export class LoginComponent {
         this.toast.show("Login Successful")
 
         if (user.role === 'admin') {
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/admin'], { replaceUrl: true });
           return;
         }
 
         this.store.dispatch(loadCart());
         this.store.dispatch(loadwishlist());
         this.store.dispatch(loadAddresses());
-        this.router.navigate(['/']);
+        this.router.navigate(['/home'], { replaceUrl: true });
       } else {
         this.errorMessage = 'Invalid email or password';
         this.toast.show("Invalid Email Or Password")

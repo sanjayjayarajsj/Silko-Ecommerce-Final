@@ -22,7 +22,7 @@
       "image": "images/titan/t 2.png",
       "category": "Analog",
       "description": "A slim black men's watch designed for a modern and sophisticated look.",
-      "stock": 5,
+      "stock": 4,
       "images": [
         "images/titan/t 2.png",
         "images/titan/t 2 2.png"
@@ -543,6 +543,82 @@
       },
       "quantity": 1,
       "id": 2
+    },
+    {
+      "userId": 1,
+      "product": {
+        "id": 2,
+        "name": "Titan Edge Black",
+        "brand": "Titan",
+        "price": 8995,
+        "image": "images/titan/t 2.png",
+        "category": "Analog",
+        "description": "A slim black men's watch designed for a modern and sophisticated look.",
+        "stock": 5,
+        "images": [
+          "images/titan/t 2.png",
+          "images/titan/t 2 2.png"
+        ]
+      },
+      "quantity": 1,
+      "id": 3
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 6,
+        "name": "Titan Karishma Black",
+        "brand": "Titan",
+        "price": 4495,
+        "image": "images/titan/t 6.png",
+        "category": "Analog",
+        "description": "A classic black analog watch suitable for everyday men's wear.",
+        "stock": 5,
+        "images": [
+          "images/titan/t 6.png",
+          "images/titan/t 6 2.png"
+        ]
+      },
+      "quantity": 1,
+      "id": 4
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 7,
+        "name": "Casio Enticer Black",
+        "brand": "Casio",
+        "price": 3995,
+        "image": "images/casio/1 1.jpg",
+        "category": "Analog",
+        "description": "A classic men's analog watch with a bold black dial.",
+        "stock": 3,
+        "images": [
+          "images/casio/1 1.jpg",
+          "images/casio/1 2.png"
+        ]
+      },
+      "quantity": 1,
+      "id": 5
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 8,
+        "name": "Casio Edifice Blue",
+        "brand": "Casio",
+        "price": 8995,
+        "image": "images/casio/2 1.png",
+        "category": "Chronograph",
+        "description": "A sporty chronograph watch with a stylish blue dial.",
+        "stock": 29,
+        "images": [
+          "images/casio/2 1.png",
+          "images/casio/2 2.png"
+        ]
+      },
+      "quantity": 1,
+      "id": 6
     }
   ],
   "wishlist": [
@@ -581,6 +657,24 @@
         ]
       },
       "id": 2
+    },
+    {
+      "userId": 1,
+      "product": {
+        "id": 2,
+        "name": "Titan Edge Black",
+        "brand": "Titan",
+        "price": 8995,
+        "image": "images/titan/t 2.png",
+        "category": "Analog",
+        "description": "A slim black men's watch designed for a modern and sophisticated look.",
+        "stock": 5,
+        "images": [
+          "images/titan/t 2.png",
+          "images/titan/t 2 2.png"
+        ]
+      },
+      "id": 3
     }
   ],
   "users": [
@@ -598,13 +692,20 @@
       "email": "jayaraj@example.com",
       "password": "123456",
       "role": "user",
-      "active": true
+      "active": false
     },
     {
       "name": "fathima",
       "email": "fathima@gmail.com",
       "password": "Zz123456",
       "id": 3
+    },
+    {
+      "name": "Aman",
+      "email": "amanpm@gmail.com",
+      "password": "Zz123456",
+      "id": 4,
+      "active": true
     }
   ],
   "orders": [
@@ -804,7 +905,7 @@
       "city": "mahe",
       "pincode": "570765",
       "paymentMethod": "COD",
-      "status": "Pending",
+      "status": "Shipped",
       "createdAt": "2026-09-23T09:12:00.039Z",
       "items": [
         {
@@ -835,7 +936,7 @@
       "city": "mahe",
       "pincode": "570765",
       "paymentMethod": "UPI",
-      "status": "Pending",
+      "status": "Processing",
       "createdAt": "2026-09-23T13:56:17.731Z",
       "items": [
         {
@@ -858,6 +959,37 @@
       ],
       "total": 8995,
       "id": 8
+    },
+    {
+      "userId": 3,
+      "fullName": "sass",
+      "address": "payyanur",
+      "city": "kannur",
+      "pincode": "123342",
+      "paymentMethod": "COD",
+      "status": "Processing",
+      "createdAt": "2026-09-25T06:00:11.558Z",
+      "items": [
+        {
+          "product": {
+            "id": 2,
+            "name": "Titan Edge Black",
+            "brand": "Titan",
+            "price": 8995,
+            "image": "images/titan/t 2.png",
+            "category": "Analog",
+            "description": "A slim black men's watch designed for a modern and sophisticated look.",
+            "stock": 5,
+            "images": [
+              "images/titan/t 2.png",
+              "images/titan/t 2 2.png"
+            ]
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 8995,
+      "id": 9
     }
   ],
   "addresses": [

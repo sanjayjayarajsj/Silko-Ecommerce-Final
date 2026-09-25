@@ -1,6 +1,6 @@
 import { createReducer,on } from "@ngrx/store";
 import { addToCart,removeFromCart,increaseQuantity,decreaseQuantity,updateCartQuantity,clearCart,loadCart,loadCartSuccess } from "./cart.actions";
-import { CartState,initialCartState,MAX_QUANTITY_PER_PRODUCT } from "./cart.state";
+import { CartState,initialCartState,MAX_QUANTITY_PER_PRODUCT,MAX_PRODUCTS_IN_CART } from "./cart.state";
 
 export const cartReducer = createReducer(initialCartState,
 
@@ -11,6 +11,12 @@ on(addToCart, (state, { product, userId }) => {
     if (existingItem) {
       // Already in the cart — Add to Cart should not silently bump the
       // quantity. Only the +/- controls on the cart page do that.
+      return state;
+    }
+    if (state.items.length >= MAX_PRODUCTS_IN_CART) {
+      // Cart already has the maximum number of different products.
+      // (The UI is expected to check this first and show a toast; this
+      // is just a hard backstop so the limit can never be bypassed.)
       return state;
     }
    return {

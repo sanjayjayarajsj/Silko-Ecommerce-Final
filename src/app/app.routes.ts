@@ -7,6 +7,7 @@ import { WishlistComponent } from './features/wishlist/wishlist.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
 import { CheckoutComponent } from './features/checkout/checkout.component';
 import { MyOrdersComponent } from './features/orders/my-orders/my-orders.component';
 import { OrderSuccessComponent } from './features/checkout/order-success/order-success.component';
@@ -51,11 +52,13 @@ export const routes: Routes = [
     {
         path:'login',
         component:LoginComponent,
+        canActivate: [guestGuard],
         data: { hideChrome: true }
     },
     {
         path:'register',
         component:RegisterComponent,
+        canActivate: [guestGuard],
         data: { hideChrome: true }
     },
     {

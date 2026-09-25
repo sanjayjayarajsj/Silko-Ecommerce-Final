@@ -2,13 +2,9 @@
 <section class="hero">
 
   <div class="hero-bg">
-    @for (img of heroImages; track img; let i = $index) {
-      <div
-        class="hero-bg-slide"
-        [class.active]="i === currentHeroIndex"
-        [style.background-image]="'url(' + img + ')'">
-      </div>
-    }
+   <video class="hero-video" autoplay muted loop playsinline>
+  <source src="images/hero-video.mp4.mp4" type="video/mp4">
+</video>
 
     <div class="hero-overlay"></div>
   </div>
@@ -84,7 +80,6 @@
   <div class="video-content">
 
     <div class="section-number">
-      01 / 03
     </div>
 
     <p class="video-label">
@@ -97,8 +92,8 @@
     </h2>
 
     <p class="video-text">
-      Watch the details that make every SILKO timepiece
-      worth wearing.
+      WATCH THE DETAILS THAT MAKE EVERY SILKO TIMEPIECE
+      
     </p>
 
   </div>

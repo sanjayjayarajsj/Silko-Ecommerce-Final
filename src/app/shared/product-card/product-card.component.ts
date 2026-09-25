@@ -2,10 +2,12 @@ import { Component,input,inject } from '@angular/core';
 import { Product } from '../../features/products/product.model';
 import { addToCart } from '../../store/cart/cart.actions';
 import { selectCartItems } from '../../store/cart/cart.selectors';
+import { MAX_PRODUCTS_IN_CART } from '../../store/cart/cart.state';
 import { Store } from '@ngrx/store';
 import { Router, RouterLink } from '@angular/router';
 import { addToWishlist } from '../../store/wishlist/wishlist.actions';
 import { selectWishlistItems } from '../../store/wishlist/wishlist.selectors';
+import { MAX_PRODUCTS_IN_WISHLIST } from '../../store/wishlist/wishlist.state';
 import { AuthService } from '../../core/services/auth.service';
 import { BuyNowService } from '../../features/checkout/buy-now.service';
 import { handleImageError } from '../image-fallback';
@@ -60,6 +62,11 @@ addToCart() {
       return;
     }
 
+    if (items.length >= MAX_PRODUCTS_IN_CART) {
+      this.toast.show(`Your cart is full. You can add up to ${MAX_PRODUCTS_IN_CART} different products.`);
+      return;
+    }
+
     this.store.dispatch(
       addToCart({
         product: this.product(),
@@ -88,6 +95,11 @@ addProductToWishlist(event: Event) {
 
     if (existingItem) {
       this.toast.show('Product is already in your wishlist');
+      return;
+    }
+
+    if (items.length >= MAX_PRODUCTS_IN_WISHLIST) {
+      this.toast.show(`Your wishlist is full. You can add up to ${MAX_PRODUCTS_IN_WISHLIST} products.`);
       return;
     }
 

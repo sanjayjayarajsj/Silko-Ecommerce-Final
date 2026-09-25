@@ -112,7 +112,7 @@
       <button
         type="button"
         class="add-address-btn"
-        (click)="showAddForm = !showAddForm"
+        (click)="toggleAddForm()"
       >
         {{ showAddForm ? 'Cancel' : '+ Add Address' }}
       </button>
@@ -186,8 +186,15 @@
             type="text"
             placeholder="Enter full name"
             [(ngModel)]="fullName"
+            (input)="onFullNameInput()"
             name="fullName"
           >
+
+          @if (addressSubmitted && !fullName) {
+            <small class="error">Full name is required</small>
+          } @else if (addressSubmitted && !isValidFullName()) {
+            <small class="error">Enter a valid name (letters only, at least 3 characters)</small>
+          }
 
         </div>
 
@@ -205,8 +212,15 @@
             type="text"
             placeholder="Enter your address"
             [(ngModel)]="address"
+            (input)="onAddressInput()"
             name="address"
           >
+
+          @if (addressSubmitted && !address) {
+            <small class="error">Address is required</small>
+          } @else if (addressSubmitted && !isValidAddressLine()) {
+            <small class="error">Enter a valid address (at least 5 characters)</small>
+          }
 
         </div>
 
@@ -226,8 +240,15 @@
               type="text"
               placeholder="Enter city"
               [(ngModel)]="city"
+              (input)="onCityInput()"
               name="city"
             >
+
+            @if (addressSubmitted && !city) {
+              <small class="error">City is required</small>
+            } @else if (addressSubmitted && !isValidCityName()) {
+              <small class="error">Letters only</small>
+            }
 
           </div>
 
@@ -243,10 +264,15 @@
               type="text"
               placeholder="6-digit PIN"
               [(ngModel)]="pincode"
+              (input)="onPincodeInput()"
               name="pincode"
               maxlength="6"
               inputmode="numeric"
             >
+
+            @if (addressSubmitted && !isValidPin()) {
+              <small class="error">PIN code must be exactly 6 digits</small>
+            }
 
           </div>
 

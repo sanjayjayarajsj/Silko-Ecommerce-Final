@@ -12,10 +12,11 @@ import { BuyNowService } from '../../checkout/buy-now.service';
 import { handleImageError } from '../../../shared/image-fallback';
 import { ToastService } from '../../../core/services/toast.service';
 import { take } from 'rxjs';
+import { ProductCardComponent } from '../../../shared/product-card/product-card.component';
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [],
+  imports: [ProductCardComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })
@@ -27,6 +28,8 @@ private productService=inject(ProductService);
 private buyNowService=inject(BuyNowService);
 private toast=inject(ToastService)
 product:Product|undefined;
+// Other products from the same category, shown as "You may also like".
+similarProducts: Product[] = [];
 private store = inject(Store);
 handleImageError=handleImageError;
 
@@ -153,6 +156,10 @@ constructor(){
     this.product=products.find(product=>product.id===id)
     if (this.product) {
       this.selectedImage = this.product.image;
+
+      this.similarProducts = products
+        .filter(p => p.category === this.product!.category && p.id !== this.product!.id)
+        .slice(0, 4);
     }
   });
 }
