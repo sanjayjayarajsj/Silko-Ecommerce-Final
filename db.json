@@ -64,7 +64,7 @@
       "image": "images/titan/t 5.png",
       "category": "Sports",
       "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
-      "stock": 8,
+      "stock": 7,
       "images": [
         "images/titan/t 5.png",
         "images/titan/t 5 2.png"
@@ -503,6 +503,20 @@
         "images/gshock/g 6.png",
         "images/gshock/g 6 2.png"
       ]
+    },
+    {
+      "name": "Dummy",
+      "brand": "zero",
+      "category": "Sports",
+      "price": 999,
+      "stock": 0,
+      "description": "for test",
+      "image": "images/titan/titan3.jpg",
+      "images": [
+        "images/titan/titan3.jpg",
+        "images/titan/titan5.jpg"
+      ],
+      "id": 37
     }
   ],
   "cart": [
@@ -675,6 +689,60 @@
         ]
       },
       "id": 3
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 16,
+        "name": "Fastrack Reflex Digital",
+        "brand": "Fastrack",
+        "price": 2495,
+        "image": "images/fastrack/f 4.png",
+        "category": "Digital",
+        "description": "A contemporary digital watch designed for an active lifestyle.",
+        "stock": 30,
+        "images": [
+          "images/fastrack/f 4.png",
+          "images/fastrack/f 4 2.png"
+        ]
+      },
+      "id": 4
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 30,
+        "name": "Police Digital Sport",
+        "brand": "Police",
+        "price": 5995,
+        "image": "images/police/po 6.png",
+        "category": "Digital",
+        "description": "A contemporary digital sports watch with a rugged men's design.",
+        "stock": 5,
+        "images": [
+          "images/police/po 6.png",
+          "images/police/po 6 2.png"
+        ]
+      },
+      "id": 5
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 34,
+        "name": "G-Shock Analog Digital",
+        "brand": "G-Shock",
+        "price": 9995,
+        "image": "images/gshock/g 4.png",
+        "category": "Digital",
+        "description": "A versatile analog-digital men's watch with a rugged construction.",
+        "stock": 4,
+        "images": [
+          "images/gshock/g 4.png",
+          "images/gshock/g 4 2.png"
+        ]
+      },
+      "id": 6
     }
   ],
   "users": [
@@ -990,6 +1058,37 @@
       ],
       "total": 8995,
       "id": 9
+    },
+    {
+      "userId": 3,
+      "fullName": "Fathima",
+      "address": "payyanur",
+      "city": "payyanur",
+      "pincode": "670353",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-25T10:08:31.735Z",
+      "items": [
+        {
+          "product": {
+            "id": 5,
+            "name": "Titan Maritime Blue",
+            "brand": "Titan",
+            "price": 5995,
+            "image": "images/titan/t 5.png",
+            "category": "Sports",
+            "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
+            "stock": 8,
+            "images": [
+              "images/titan/t 5.png",
+              "images/titan/t 5 2.png"
+            ]
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 5995,
+      "id": 10
     }
   ],
   "addresses": [
