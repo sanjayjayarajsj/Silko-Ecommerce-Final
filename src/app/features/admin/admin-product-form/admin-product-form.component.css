@@ -35,6 +35,62 @@
   font-weight: 400;
   color: var(--color-text-muted);
 }
+.image-field-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.image-field-row input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.upload-btn {
+  position: relative;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  margin-top: 0 !important;
+  padding: 0 16px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+
+  background: var(--color-bg);
+
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.upload-btn:hover {
+  border-color: var(--color-accent);
+}
+
+.upload-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.upload-btn input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+
+  opacity: 0;
+  pointer-events: none;
+}
 
 .product-form input,
 .product-form textarea {

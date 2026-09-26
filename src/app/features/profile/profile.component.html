@@ -21,12 +21,39 @@
 
   <!-- User Information -->
 
-  @if (user$ | async; as user) {
+   @if (user$ | async; as user) {
 
     <div class="info-card">
 
-      <div class="avatar">
-        {{ user.name.charAt(0) }}
+      <div class="avatar-upload">
+
+        <label class="avatar" [class.has-photo]="!!user.profilePicture" for="profilePictureInput">
+
+          @if (user.profilePicture) {
+            <img [src]="user.profilePicture" alt="Your profile picture">
+          } @else {
+            {{ user.name.charAt(0) }}
+          }
+
+          <span class="avatar-edit-badge">
+            @if (uploadingPicture) {
+              ...
+            } @else {
+              📷
+            }
+          </span>
+
+        </label>
+
+        <input
+          id="profilePictureInput"
+          type="file"
+          accept="image/*"
+          class="avatar-file-input"
+          [disabled]="uploadingPicture"
+          (change)="onProfilePictureSelected($event)"
+        >
+
       </div>
 
       <div class="user-info">

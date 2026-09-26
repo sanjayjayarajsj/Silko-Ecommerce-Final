@@ -77,11 +77,15 @@
   box-shadow: var(--shadow-sm);
 }
 
+.avatar-upload {
+  position: relative;
+
+  flex-shrink: 0;
+}
+
 .avatar {
   width: 58px;
   height: 58px;
-
-  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -96,6 +100,53 @@
   font-weight: 700;
 
   text-transform: uppercase;
+
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.avatar.has-photo {
+  background: var(--color-border);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.avatar-edit-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+
+  background: var(--color-accent);
+
+  font-size: 11px;
+
+  pointer-events: none;
+}
+
+.avatar-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+
+  opacity: 0;
+  pointer-events: none;
 }
 
 .user-info {

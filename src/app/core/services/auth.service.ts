@@ -137,4 +137,13 @@ getUserId(): number | null {
       { active }
     );
   }
+
+  // Saves the (already resized/compressed) base64 image string as the
+  // user's profile picture.
+  updateProfilePicture(id: number, profilePicture: string): Observable<User> {
+    return this.http.patch<User>(
+      `http://localhost:3000/users/${id}`,
+      { profilePicture }
+    );
+  }
 }

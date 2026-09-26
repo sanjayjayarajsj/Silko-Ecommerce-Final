@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../products/product.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { validateImageFile, fileToResizedDataUrl } from '../../../shared/image-file';
 
 @Component({
   selector: 'app-admin-product-form',
@@ -31,6 +32,8 @@ export class AdminProductFormComponent {
   description = '';
   image = '';
   image2 = '';
+  uploadingImage = false;
+  uploadingImage2 = false;
 
   constructor() {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -52,6 +55,49 @@ export class AdminProductFormComponent {
         this.loading = false;
       });
     }
+  }
+
+  // slot 1 = main image, slot 2 = second (gallery) image. Shared by both
+  // file inputs so uploading works the same way for either.
+  onImageFileSelected(event: Event, slot: 1 | 2): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    const error = validateImageFile(file);
+    if (error) {
+      this.toast.show(error.message);
+      input.value = '';
+      return;
+    }
+
+    if (slot === 1) {
+      this.uploadingImage = true;
+    } else {
+      this.uploadingImage2 = true;
+    }
+
+    fileToResizedDataUrl(file, 900)
+      .then(dataUrl => {
+        if (slot === 1) {
+          this.image = dataUrl;
+        } else {
+          this.image2 = dataUrl;
+        }
+      })
+      .catch(() => {
+        this.toast.show('Could not process that image. Please try another one.');
+      })
+      .finally(() => {
+        if (slot === 1) {
+          this.uploadingImage = false;
+        } else {
+          this.uploadingImage2 = false;
+        }
+        input.value = '';
+      });
   }
 
   isFormValid(): boolean {

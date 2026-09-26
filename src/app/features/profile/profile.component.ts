@@ -17,6 +17,7 @@ import {
   isValidAddress,
   isValidPincode
 } from '../../shared/form-validators';
+import { validateImageFile, fileToResizedDataUrl } from '../../shared/image-file';
 
 @Component({
   selector: 'app-profile',
@@ -40,9 +41,57 @@ export class ProfileComponent {
   address = '';
   city = '';
   pincode = '';
+  uploadingPicture = false;
 
   constructor() {
     this.store.dispatch(loadAddresses());
+  }
+
+  // Fired when the user picks a file from the hidden <input type="file">
+  // behind the avatar / "Change photo" button.
+  onProfilePictureSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    const error = validateImageFile(file);
+    if (error) {
+      this.toast.show(error.message);
+      input.value = '';
+      return;
+    }
+
+    const userId = this.authService.getUserId();
+    if (!userId) {
+      input.value = '';
+      return;
+    }
+
+    this.uploadingPicture = true;
+
+    fileToResizedDataUrl(file, 300)
+      .then(dataUrl => this.authService.updateProfilePicture(userId, dataUrl).subscribe({
+        next: () => {
+          this.uploadingPicture = false;
+          this.toast.show('Profile picture updated');
+          // Reassign so the async pipe in the template re-fetches the
+          // now-updated user record.
+          this.user$ = this.authService.getCurrentUser();
+        },
+        error: () => {
+          this.uploadingPicture = false;
+          this.toast.show('Something went wrong. Please try again.');
+        }
+      }))
+      .catch(() => {
+        this.uploadingPicture = false;
+        this.toast.show('Could not process that image. Please try another one.');
+      })
+      .finally(() => {
+        input.value = '';
+      });
   }
 
   onFullNameInput(): void {

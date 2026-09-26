@@ -49,14 +49,36 @@
         <small class="error">Description is required</small>
       }
 
-      <label>Main Image (path or URL)</label>
-      <input type="text" [(ngModel)]="image" name="image" placeholder="images/titan/titan1.jpg">
+      <label>Main Image</label>
+      <div class="image-field-row">
+        <input type="text" [(ngModel)]="image" name="image" placeholder="images/titan/titan1.jpg or upload a file ->">
+        <label class="upload-btn" [class.disabled]="uploadingImage">
+          {{ uploadingImage ? 'Uploading...' : '⬆ Upload' }}
+          <input
+            type="file"
+            accept="image/*"
+            [disabled]="uploadingImage"
+            (change)="onImageFileSelected($event, 1)"
+          >
+        </label>
+      </div>
       @if (submitted && !image.trim()) {
         <small class="error">A main image is required</small>
       }
 
       <label>Second Image <span class="optional">(optional — shown in the product gallery)</span></label>
-      <input type="text" [(ngModel)]="image2" name="image2" placeholder="images/titan/titan2.jpg">
+      <div class="image-field-row">
+        <input type="text" [(ngModel)]="image2" name="image2" placeholder="images/titan/titan2.jpg or upload a file ->">
+        <label class="upload-btn" [class.disabled]="uploadingImage2">
+          {{ uploadingImage2 ? 'Uploading...' : '⬆ Upload' }}
+          <input
+            type="file"
+            accept="image/*"
+            [disabled]="uploadingImage2"
+            (change)="onImageFileSelected($event, 2)"
+          >
+        </label>
+      </div>
 
       @if (image) {
         <div class="image-preview">
