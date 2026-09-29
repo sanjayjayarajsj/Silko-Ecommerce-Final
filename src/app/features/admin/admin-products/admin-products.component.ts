@@ -38,10 +38,28 @@ export class AdminProductsComponent {
   loadProducts() {
     this.loading = true;
     this.productService.getProducts().subscribe(products => {
-      this.allProducts = products;
+      this.allProducts = this.sortByBrandNewestFirst(products);
       this.categories = [...new Set(products.map(p => p.category))];
       this.applyFilters();
       this.loading = false;
+    });
+  }
+    // Keeps products grouped by brand (in the order each brand first appears),
+  // and inside each brand shows the newest product (highest id) first.
+  private sortByBrandNewestFirst(products: Product[]): Product[] {
+    const brandKey = (p: Product) => p.brand.trim().toLowerCase();
+
+    const brandOrder: string[] = [];
+    products.forEach(p => {
+      const key = brandKey(p);
+      if (!brandOrder.includes(key)) {
+        brandOrder.push(key);
+      }
+    });
+
+    return [...products].sort((a, b) => {
+      const brandDiff = brandOrder.indexOf(brandKey(a)) - brandOrder.indexOf(brandKey(b));
+      return brandDiff !== 0 ? brandDiff : b.id - a.id;
     });
   }
 

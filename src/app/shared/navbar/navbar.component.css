@@ -288,6 +288,8 @@
   box-shadow: none;
 
   font-size: 13px;
+  font-weight: 100;
+  letter-spacing: 0.06em;
 
   color: var(--color-text);
 }

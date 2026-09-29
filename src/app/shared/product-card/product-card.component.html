@@ -11,6 +11,7 @@
       <img
         [src]="product().image"
         [alt]="product().name"
+        loading="lazy"
         (error)="handleImageError($event)"
       >
 

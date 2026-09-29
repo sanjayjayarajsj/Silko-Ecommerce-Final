@@ -2,25 +2,10 @@ import {  Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 import { ProductListComponent } from './features/products/product-list/product-list.component';
 import { ProductDetailsComponent } from './features/products/product-details/product-details.component';
-import { CartComponent } from './features/cart/cart.component';
-import { WishlistComponent } from './features/wishlist/wishlist.component';
-import { LoginComponent } from './features/auth/login/login.component';
-import { RegisterComponent } from './features/auth/register/register.component';
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
-import { CheckoutComponent } from './features/checkout/checkout.component';
-import { MyOrdersComponent } from './features/orders/my-orders/my-orders.component';
-import { OrderSuccessComponent } from './features/checkout/order-success/order-success.component';
-import { ProfileComponent } from './features/profile/profile.component';
 import { adminGuard } from './core/guards/admin.guard';
-import { AdminLayoutComponent } from './features/admin/admin-layout/admin-layout.component';
-import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
-import { AdminProductsComponent } from './features/admin/admin-products/admin-products.component';
-import { AdminProductFormComponent } from './features/admin/admin-product-form/admin-product-form.component';
-import { AdminOrdersComponent } from './features/admin/admin-orders/admin-orders.component';
-import { AdminOrderDetailsComponent } from './features/admin/admin-order-details/admin-order-details.component';
-import { AdminUsersComponent } from './features/admin/admin-users/admin-users.component';
-import { AdminUserDetailsComponent } from './features/admin/admin-user-details/admin-user-details.component';
+import { noAdminGuard } from './core/guards/no-admin.guard';
 export const routes: Routes = [
   {
         path: '',
@@ -28,74 +13,132 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        // Kept eager - this (or /products) is what almost every visitor
+        // lands on first, so there's nothing to gain by lazy-loading it.
+        // noAdminGuard keeps a logged-in admin off it - they get sent
+        // back to /admin instead of browsing as a customer.
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [noAdminGuard]
     },
     {
+    // Kept eager for the same reason - core browsing pages.
     path:'products',
-    component:ProductListComponent
+    component:ProductListComponent,
+    canActivate: [noAdminGuard]
     },
     {
         path:'products/:id',
-        component:ProductDetailsComponent
+        component:ProductDetailsComponent,
+        canActivate: [noAdminGuard]
     },
 {
+    // Not needed until the user opens the cart, so it's lazy - same
+    // treatment as the admin section.
     path: 'cart',
-    component: CartComponent,
-    canActivate: [authGuard]
+    loadComponent: () =>
+        import('./features/cart/cart.component').then(m => m.CartComponent),
+    canActivate: [authGuard, noAdminGuard]
 },
  {
   path: 'wishlist',
-  component: WishlistComponent,
-  canActivate: [authGuard]
+  loadComponent: () =>
+      import('./features/wishlist/wishlist.component').then(m => m.WishlistComponent),
+  canActivate: [authGuard, noAdminGuard]
 },
-    {
-        path:'login',
-        component:LoginComponent,
-        canActivate: [guestGuard],
-        data: { hideChrome: true }
-    },
-    {
-        path:'register',
-        component:RegisterComponent,
-        canActivate: [guestGuard],
-        data: { hideChrome: true }
-    },
+     {
+    path: 'login',
+    loadComponent: () => import('./features/auth/auth/auth.component').then(m => m.AuthComponent),
+    canActivate: [guestGuard],
+    data: { hideChrome: true, mode: 'login' }
+  },
+  {
+    path: 'register',
+    loadComponent: () => import('./features/auth/auth/auth.component').then(m => m.AuthComponent),
+    canActivate: [guestGuard],
+    data: { hideChrome: true, mode: 'register' }
+  },
     {
         path:'checkout',
-        component:CheckoutComponent,
-        canActivate:[authGuard]
+        loadComponent: () =>
+            import('./features/checkout/checkout.component').then(m => m.CheckoutComponent),
+        canActivate:[authGuard, noAdminGuard]
     },
     {
         path:'order',
-        component:MyOrdersComponent,
-        canActivate:[authGuard]
+        loadComponent: () =>
+            import('./features/orders/my-orders/my-orders.component').then(m => m.MyOrdersComponent),
+        canActivate:[authGuard, noAdminGuard]
     },
     {
     path:'order-success',
-    component:OrderSuccessComponent,
-    canActivate:[authGuard]
+    loadComponent: () =>
+        import('./features/checkout/order-success/order-success.component').then(m => m.OrderSuccessComponent),
+    canActivate:[authGuard, noAdminGuard]
 },
     {
     path:'profile',
-    component:ProfileComponent,
-    canActivate:[authGuard]
+    loadComponent: () =>
+        import('./features/profile/profile.component').then(m => m.ProfileComponent),
+    canActivate:[authGuard, noAdminGuard]
 },
     {
         path: 'admin',
-        component: AdminLayoutComponent,
+        loadComponent: () =>
+            import('./features/admin/admin-layout/admin-layout.component')
+                .then(m => m.AdminLayoutComponent),
         canActivate: [adminGuard],
         data: { hideChrome: true },
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: AdminDashboardComponent },
-            { path: 'products', component: AdminProductsComponent },
-            { path: 'products/add', component: AdminProductFormComponent },
-            { path: 'products/edit/:id', component: AdminProductFormComponent },
-            { path: 'orders', component: AdminOrdersComponent },
-            { path: 'orders/:id', component: AdminOrderDetailsComponent },
-            { path: 'users', component: AdminUsersComponent },
-            { path: 'users/:id', component: AdminUserDetailsComponent }
+            {
+                path: 'dashboard',
+                loadComponent: () =>
+                    import('./features/admin/admin-dashboard/admin-dashboard.component')
+                        .then(m => m.AdminDashboardComponent)
+            },
+            {
+                path: 'products',
+                loadComponent: () =>
+                    import('./features/admin/admin-products/admin-products.component')
+                        .then(m => m.AdminProductsComponent)
+            },
+            {
+                path: 'products/add',
+                loadComponent: () =>
+                    import('./features/admin/admin-product-form/admin-product-form.component')
+                        .then(m => m.AdminProductFormComponent)
+            },
+            {
+                path: 'products/edit/:id',
+                loadComponent: () =>
+                    import('./features/admin/admin-product-form/admin-product-form.component')
+                        .then(m => m.AdminProductFormComponent)
+            },
+            {
+                path: 'orders',
+                loadComponent: () =>
+                    import('./features/admin/admin-orders/admin-orders.component')
+                        .then(m => m.AdminOrdersComponent)
+            },
+            {
+                path: 'orders/:id',
+                loadComponent: () =>
+                    import('./features/admin/admin-order-details/admin-order-details.component')
+                        .then(m => m.AdminOrderDetailsComponent)
+            },
+            {
+                path: 'users',
+                loadComponent: () =>
+                    import('./features/admin/admin-users/admin-users.component')
+                        .then(m => m.AdminUsersComponent)
+            },
+            {
+                path: 'users/:id',
+                loadComponent: () =>
+                    import('./features/admin/admin-user-details/admin-user-details.component')
+                        .then(m => m.AdminUserDetailsComponent)
+            }
         ]
     }
 ];

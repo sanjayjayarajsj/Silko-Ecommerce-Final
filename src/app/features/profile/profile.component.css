@@ -740,6 +740,174 @@
 
   font-size: 11px;
 }
+/* =========================================
+   LOGOUT BUTTON (top right)
+========================================= */
+
+.profile-header {
+  position: relative;
+}
+
+.logout-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  min-height: 36px;
+  padding: 8px 16px;
+
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+
+  background: #ffffff;
+  color: var(--color-danger);
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: var(--color-danger);
+  color: #ffffff;
+}
+
+
+/* =========================================
+   EDIT PROFILE
+========================================= */
+
+.info-card .user-info {
+  flex: 1;
+}
+
+.edit-profile-btn {
+  flex-shrink: 0;
+
+  min-height: 36px;
+  padding: 8px 16px;
+
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+
+  background: #ffffff;
+  color: var(--color-primary);
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.edit-profile-btn:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-bottom: 8px;
+}
+
+.edit-form label {
+  color: var(--color-text);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+}
+
+.edit-form input {
+  width: 100%;
+  box-sizing: border-box;
+
+  min-height: 42px;
+  padding: 10px 13px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+
+  background: #ffffff;
+  color: var(--color-text);
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.edit-form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(11, 31, 51, 0.06);
+}
+
+.edit-note {
+  margin: 0;
+
+  color: var(--color-text-muted);
+
+  font-size: 10px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+
+  margin-top: 4px;
+}
+
+.save-profile-btn,
+.cancel-profile-btn {
+  min-height: 36px;
+  padding: 8px 18px;
+
+  border-radius: var(--radius-sm);
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.save-profile-btn {
+  border: none;
+
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.save-profile-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancel-profile-btn {
+  border: 1px solid var(--color-border);
+
+  background: #ffffff;
+  color: var(--color-text);
+}
 
 
 /* =========================================

@@ -20,7 +20,7 @@ export class ProductListComponent {
   minPrice: number | null = null;
   maxPrice: number | null = null;
   currentPage = 1;
-  pageSize = 8;
+  pageSize = 6;
   skeletonCards = Array(8).fill(0);
   private store = inject(Store);
   private route=inject(ActivatedRoute);
@@ -56,10 +56,26 @@ filterAndSortProducts(products: any[] | null) {
     return matchesSearch && matchesBrand && matchesMinPrice && matchesMaxPrice;
   });
 
-  if (this.sortOption === 'price-asc') {
+   if (this.sortOption === 'price-asc') {
     filtered.sort((a, b) => a.price - b.price);
   } else if (this.sortOption === 'price-desc') {
     filtered.sort((a, b) => b.price - a.price);
+  } else {
+    // Default order: grouped by brand, newest product first inside each brand.
+    const brandKey = (p: any) => p.brand.trim().toLowerCase();
+
+    const brandOrder: string[] = [];
+    products.forEach(p => {
+      const key = brandKey(p);
+      if (!brandOrder.includes(key)) {
+        brandOrder.push(key);
+      }
+    });
+
+    filtered.sort((a, b) => {
+      const brandDiff = brandOrder.indexOf(brandKey(a)) - brandOrder.indexOf(brandKey(b));
+      return brandDiff !== 0 ? brandDiff : b.id - a.id;
+    });
   }
 
   return filtered;

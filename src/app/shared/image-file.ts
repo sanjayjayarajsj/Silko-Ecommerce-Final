@@ -23,7 +23,6 @@ export function validateImageFile(file: File): ImageFileError | null {
   }
   return null;
 }
-
 export function fileToResizedDataUrl(
   file: File,
   maxDimension: number,
@@ -36,9 +35,7 @@ export function fileToResizedDataUrl(
 
     reader.onload = () => {
       const img = new Image();
-
       img.onerror = () => reject(new Error('Could not read that image.'));
-
       img.onload = () => {
         let { width, height } = img;
 

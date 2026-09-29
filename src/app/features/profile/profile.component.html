@@ -4,6 +4,16 @@
 
   <div class="profile-header">
 
+    <!-- Logout (top right) -->
+
+    <button
+      type="button"
+      class="logout-btn"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+
     <p class="eyebrow">
       YOUR ACCOUNT
     </p>
@@ -21,7 +31,7 @@
 
   <!-- User Information -->
 
-   @if (user$ | async; as user) {
+  @if (user$ | async; as user) {
 
     <div class="info-card">
 
@@ -62,15 +72,84 @@
           ACCOUNT
         </p>
 
-        <h2>
-          {{ user.name }}
-        </h2>
+        @if (editing) {
+
+          <form
+            class="edit-form"
+            (ngSubmit)="saveName(user)"
+            autocomplete="off"
+          >
+
+            <label for="editName">
+              Full Name
+            </label>
+
+            <input
+              id="editName"
+              type="text"
+              name="editName"
+              [(ngModel)]="editName"
+              (input)="onEditNameInput()"
+              maxlength="40"
+              placeholder="Enter your full name"
+              autocomplete="off"
+            >
+
+            @if (editSubmitted && !isValidEditName()) {
+              <small class="error">Enter a valid name (letters only, at least 3 characters)</small>
+            }
+
+            <p class="edit-note">
+              Only your name can be edited. Email cannot be changed.
+            </p>
+
+            <div class="edit-actions">
+
+              <button
+                type="submit"
+                class="save-profile-btn"
+                [disabled]="savingName"
+              >
+                {{ savingName ? 'Saving...' : 'Save' }}
+              </button>
+
+              <button
+                type="button"
+                class="cancel-profile-btn"
+                (click)="cancelEdit()"
+              >
+                Cancel
+              </button>
+
+            </div>
+
+          </form>
+
+        } @else {
+
+          <h2>
+            {{ user.name }}
+          </h2>
+
+        }
 
         <p>
           {{ user.email }}
         </p>
 
       </div>
+
+      @if (!editing) {
+
+        <button
+          type="button"
+          class="edit-profile-btn"
+          (click)="startEdit(user)"
+        >
+          Edit
+        </button>
+
+      }
 
     </div>
 

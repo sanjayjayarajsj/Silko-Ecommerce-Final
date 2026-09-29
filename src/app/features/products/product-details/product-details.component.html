@@ -20,6 +20,7 @@
           [alt]="product.name"
           [style.transform-origin]="zoomOrigin"
           [class.zoomed]="isZooming"
+          fetchpriority="high"
           (error)="handleImageError($event)"
         >
 
@@ -43,6 +44,7 @@
               <img
                 [src]="img"
                 [alt]="product.name"
+                loading="lazy"
                 (error)="handleImageError($event)"
               >
 

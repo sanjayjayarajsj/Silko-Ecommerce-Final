@@ -56,7 +56,7 @@
           @for (product of pagedProducts; track product.id) {
             <tr>
               <td>
-                <img [src]="product.image" [alt]="product.name" class="row-image">
+                <img [src]="product.image" [alt]="product.name" class="row-image" loading="lazy">
               </td>
               <td>{{ product.name }}</td>
               <td>{{ product.brand }}</td>

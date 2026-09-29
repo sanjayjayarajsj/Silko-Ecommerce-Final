@@ -104,7 +104,7 @@
         <div class="stock-alert-list">
           @for (product of lowStockProducts; track product.id) {
             <a class="stock-alert-row" [routerLink]="['/admin/products/edit', product.id]">
-              <img [src]="product.image" [alt]="product.name">
+              <img [src]="product.image" [alt]="product.name" loading="lazy">
               <div class="stock-alert-info">
                 <p class="stock-alert-name">{{ product.name }}</p>
                 <p class="stock-alert-brand">{{ product.brand }}</p>

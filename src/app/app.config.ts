@@ -25,3 +25,5 @@ export const appConfig: ApplicationConfig = {
     provideStore({products:productsReducer,cart:cartReducer,wishlist:wishlistReducer,address:addressReducer}),
     provideEffects(ProductsEffects,CartEffects,WishlistEffects,AddressEffects), provideAnimationsAsync()
   ]};
+
+  

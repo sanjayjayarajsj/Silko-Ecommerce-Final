@@ -131,6 +131,14 @@ getUserId(): number | null {
     return this.http.get<User>(`http://localhost:3000/users/${id}`);
   }
 
+    // Used by the profile page. Only the name is sent, so email/password/role
+  // are never touched by this call.
+  updateName(id: number, name: string): Observable<User> {
+    return this.http.patch<User>(
+      `http://localhost:3000/users/${id}`,
+      { name }
+    );
+  }
   setUserActive(id: number, active: boolean): Observable<User> {
     return this.http.patch<User>(
       `http://localhost:3000/users/${id}`,

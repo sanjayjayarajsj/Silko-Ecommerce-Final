@@ -4,8 +4,45 @@
 
 .products-page {
   min-height: 100vh;
-  padding: 70px 5% 90px;
+  padding: 50px 5% 90px;
   background: var(--color-bg);
+}
+
+
+/* =========================================
+   PAGE BANNER (background image behind the title)
+   ========================================= */
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+
+  padding: 90px 5% 80px;
+
+  background: #0b1a26;
+}
+
+.page-hero-img {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.page-hero-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    180deg,
+    rgba(5, 15, 25, 0.72),
+    rgba(5, 15, 25, 0.55) 60%,
+    rgba(5, 15, 25, 0.78)
+  );
 }
 
 
@@ -14,14 +51,17 @@
    ========================================= */
 
 .heading {
+  position: relative;
+  z-index: 1;
+
   max-width: 800px;
-  margin: 0 auto 48px;
+  margin: 0 auto;
   text-align: center;
 }
 
 .eyebrow {
   margin: 0 0 12px;
-  color: var(--color-accent);
+  color: rgba(255, 255, 255, 0.78);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 3px;
@@ -30,28 +70,28 @@
 
 .heading h1 {
   margin: 0;
-  color: var(--color-text);
+  color: #ffffff;
   font-size: clamp(32px, 4vw, 48px);
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-weight: 300;
+  letter-spacing: 1px;
   line-height: 1.1;
 }
 
 .heading-description {
   margin: 14px 0 0;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 14px;
   line-height: 1.7;
 }
 
 .search-result {
   margin: 14px 0 0;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 14px;
 }
 
 .search-result strong {
-  color: var(--color-text);
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -483,7 +523,11 @@
 @media (max-width: 900px) {
 
   .products-page {
-    padding: 55px 25px 70px;
+    padding: 40px 25px 70px;
+  }
+
+  .page-hero {
+    padding: 70px 25px 60px;
   }
 
   .products-layout {
@@ -519,11 +563,11 @@
 @media (max-width: 600px) {
 
   .products-page {
-    padding: 45px 16px 60px;
+    padding: 35px 16px 60px;
   }
 
-  .heading {
-    margin-bottom: 35px;
+  .page-hero {
+    padding: 55px 16px 45px;
   }
 
   .heading h1 {
@@ -568,6 +612,11 @@
 @media (max-width: 430px) {
 
   .products-page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .page-hero {
     padding-left: 12px;
     padding-right: 12px;
   }

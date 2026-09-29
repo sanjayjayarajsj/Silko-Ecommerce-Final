@@ -53,7 +53,7 @@
 
       @for (item of order.items; track item.product.id) {
         <div class="order-item-row">
-          <img [src]="item.product.image" [alt]="item.product.name">
+          <img [src]="item.product.image" [alt]="item.product.name" loading="lazy">
           <div class="item-info">
             <p class="item-name">{{ item.product.name }}</p>
             <p class="item-meta">{{ item.product.brand }} · Qty: {{ item.quantity }}</p>

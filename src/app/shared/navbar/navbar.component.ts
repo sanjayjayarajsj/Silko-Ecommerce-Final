@@ -77,11 +77,15 @@ search() {
   });
 }
 logout() {
+  const confirmed = window.confirm('Are you sure you want to logout?');
+  if (!confirmed) {
+    return;
+  }
   this.authService.logout();
   this.store.dispatch(clearCart());
   this.store.dispatch(clearWishlist());
   this.store.dispatch(clearAddresses());
   this.showAccount = false;
-  this.router.navigate(['/login']);
+  this.router.navigate(['/home']);
 }
 }
