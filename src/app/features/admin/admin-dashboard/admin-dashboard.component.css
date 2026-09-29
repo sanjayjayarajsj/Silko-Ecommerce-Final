@@ -274,3 +274,82 @@
   height: 28px;
   width: 40%;
 }
+
+
+/* Revenue overview: Daily / Monthly / Yearly */
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.panel-header h2 {
+  margin: 0;
+}
+
+.period-tabs {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+}
+
+.period-tab {
+  padding: 6px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.period-tab.active {
+  background: var(--color-bg);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.revenue-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin-bottom: 20px;
+}
+
+.revenue-summary p {
+  margin: 0;
+}
+
+.summary-label {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.summary-value {
+  margin-top: 2px !important;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.bar-value {
+  height: 12px;
+  color: var(--color-text-muted);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.bar-chart.dense {
+  gap: 4px;
+}
+
+.chart-empty {
+  margin: 12px 0 0;
+  text-align: center;
+}

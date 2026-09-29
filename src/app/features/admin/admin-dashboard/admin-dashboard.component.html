@@ -46,22 +46,68 @@
     <div class="panel-grid">
 
       <div class="panel">
-        <h2>Revenue Overview <span class="panel-subtitle">Last 7 days</span></h2>
 
-        <div class="bar-chart">
-          @for (day of revenueByDay; track day.key) {
+        <div class="panel-header">
+
+          <h2>
+            Revenue Overview
+            <span class="panel-subtitle">{{ periodLabel }}</span>
+          </h2>
+
+          <div class="period-tabs">
+            @for (tab of periodTabs; track tab.value) {
+              <button
+                type="button"
+                class="period-tab"
+                [class.active]="period === tab.value"
+                (click)="setPeriod(tab.value)"
+              >
+                {{ tab.label }}
+              </button>
+            }
+          </div>
+
+        </div>
+
+        <div class="revenue-summary">
+
+          <div>
+            <p class="summary-label">Revenue</p>
+            <p class="summary-value">{{ periodTotal | currency:'INR':'symbol':'1.0-0' }}</p>
+          </div>
+
+          <div>
+            <p class="summary-label">Orders</p>
+            <p class="summary-value">{{ periodOrders }}</p>
+          </div>
+
+          <div>
+            <p class="summary-label">Avg. order</p>
+            <p class="summary-value">{{ periodAverage | currency:'INR':'symbol':'1.0-0' }}</p>
+          </div>
+
+        </div>
+
+        <div class="bar-chart" [class.dense]="period === 'month'">
+          @for (point of revenueData; track point.key) {
             <div class="bar-col">
+              <span class="bar-value">{{ compact(point.amount) }}</span>
               <div class="bar-track">
                 <div
                   class="bar-fill"
-                  [style.height.%]="(day.amount / maxDailyRevenue) * 100"
-                  [title]="'₹' + day.amount"
+                  [style.height.%]="(point.amount / maxRevenue) * 100"
+                  [title]="point.fullLabel + ': ' + (point.amount | currency:'INR':'symbol':'1.0-0') + ' from ' + point.orders + ' order(s)'"
                 ></div>
               </div>
-              <span class="bar-label">{{ day.label }}</span>
+              <span class="bar-label">{{ point.label }}</span>
             </div>
           }
         </div>
+
+        @if (periodOrders === 0) {
+          <p class="empty-note chart-empty">No revenue in this period.</p>
+        }
+
       </div>
 
       <div class="panel">
@@ -104,7 +150,7 @@
         <div class="stock-alert-list">
           @for (product of lowStockProducts; track product.id) {
             <a class="stock-alert-row" [routerLink]="['/admin/products/edit', product.id]">
-              <img [src]="product.image" [alt]="product.name" loading="lazy">
+              <img [src]="product.image" [alt]="product.name">
               <div class="stock-alert-info">
                 <p class="stock-alert-name">{{ product.name }}</p>
                 <p class="stock-alert-brand">{{ product.brand }}</p>
