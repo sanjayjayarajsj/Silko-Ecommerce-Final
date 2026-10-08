@@ -6,4 +6,5 @@ export interface Address {
   address: string;
   city: string;
   pincode: string;
+    phone?: string;
 }

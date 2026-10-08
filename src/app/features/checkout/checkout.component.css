@@ -899,3 +899,88 @@
   }
 
 }
+/* =========================================
+   PHONE HINT, SAVE-ADDRESS OPTION, PAYMENT NOTE
+   ========================================= */
+
+.field-hint {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.save-address-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  margin-top: 4px;
+  padding: 16px 18px;
+
+  border: 1px dashed var(--color-border);
+  border-radius: 12px;
+
+  background: var(--color-bg);
+}
+
+.save-address-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.save-address-check input {
+  width: 18px;
+  height: 18px;
+
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.type-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.type-chips button {
+  padding: 8px 18px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.type-chips button.active {
+  border-color: var(--color-primary);
+
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.payment-note {
+  margin: 14px 0 0;
+  padding: 14px 16px;
+
+  border-radius: 10px;
+
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.payment-note strong {
+  color: var(--color-text);
+}

@@ -13,10 +13,11 @@ import { BuyNowService } from '../../features/checkout/buy-now.service';
 import { handleImageError } from '../image-fallback';
 import { ToastService } from '../../core/services/toast.service';
 import { take } from 'rxjs';
+import { CurrencyPipe } from '@angular/common';
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,CurrencyPipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css'
 })
@@ -28,15 +29,14 @@ export class ProductCardComponent {
   private toast=inject(ToastService)
 product=input.required<Product>();
 handleImageError=handleImageError;
-
-// Dummy rating derived from the product id, so it stays consistent
-// across reloads without needing real review data.
+// Real rating, kept up to date by the server from customer reviews.
+// Real rating, kept up to date by the server from customer reviews.
 get rating(): number {
-  return 3.5 + (this.product().id % 4) * 0.5;
+  return this.product().ratingAverage ?? 0;
 }
 
 get reviewCount(): number {
-  return 20 + ((this.product().id * 7) % 180);
+  return this.product().ratingCount ?? 0;
 }
 
 get ratingStars(): number[] {

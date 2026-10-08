@@ -44,3 +44,13 @@ export function sanitizePincodeInput(value: string): string {
 export function isValidPincode(value: string): boolean {
   return /^\d{6}$/.test(value);
 }
+
+// ---- Mobile number (India) --------------------------------------------
+// 10 digits, starting with 6, 7, 8 or 9.
+export function sanitizePhoneInput(value: string): string {
+  return value.replace(/[^0-9]/g, '').slice(0, 10);
+}
+
+export function isValidPhone(value: string): boolean {
+  return /^[6-9]\d{9}$/.test(value);
+}

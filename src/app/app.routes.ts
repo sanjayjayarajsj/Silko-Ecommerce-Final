@@ -13,10 +13,6 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        // Kept eager - this (or /products) is what almost every visitor
-        // lands on first, so there's nothing to gain by lazy-loading it.
-        // noAdminGuard keeps a logged-in admin off it - they get sent
-        // back to /admin instead of browsing as a customer.
         path: 'home',
         component: HomeComponent,
         canActivate: [noAdminGuard]
@@ -138,7 +134,18 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/admin/admin-user-details/admin-user-details.component')
                         .then(m => m.AdminUserDetailsComponent)
-            }
+            },
+            {
+                path: 'reviews',
+                loadComponent: () =>
+                    import('./features/admin/admin-reviews/admin-reviews.component')
+                        .then(m => m.AdminReviewsComponent)
+            },
         ]
+    },
+        {
+        path: '**',
+        loadComponent: () =>
+            import('./shared/not-found/not-found.component').then(m => m.NotFoundComponent)
     }
 ];

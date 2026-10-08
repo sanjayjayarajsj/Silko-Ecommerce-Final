@@ -51,27 +51,36 @@
       {{ product().brand }}
     </p>
 
-    <h3>
-      {{ product().name }}
+        <h3>
+      <a
+        [routerLink]="['/products', product().id]"
+        class="product-link"
+      >{{ product().name }}</a>
     </h3>
 
 
     <!-- Rating -->
-    <div class="rating">
+     @if (reviewCount > 0) {
+      <div class="rating" [attr.aria-label]="rating + ' out of 5 stars, ' + reviewCount + ' reviews'">
 
-      @for (star of ratingStars; track star) {
+        @for (star of ratingStars; track star) {
 
-        <span [class.filled]="star <= rating">
-          ★
+          <span [class.filled]="star <= rating + 0.25" aria-hidden="true">
+            ★
+          </span>
+
+        }
+
+        <span class="review-count">
+          ({{ reviewCount }})
         </span>
 
-      }
-
-      <span class="review-count">
-        ({{ reviewCount }})
-      </span>
-
-    </div>
+      </div>
+    } @else {
+      <div class="rating no-reviews">
+        No reviews yet
+      </div>
+    }
 
 
     <!-- Stock warning -->
@@ -99,7 +108,7 @@
       <div class="price-wrapper">
 
         <span class="price">
-          ₹{{ product().price }}
+          {{ product().price | currency:'INR':'symbol':'1.0-0' }}
         </span>
 
       </div>

@@ -18,13 +18,26 @@
 
           <article class="wishlist-card">
 
-            <div class="wishlist-image">
+                      <div class="wishlist-image">
 
-              <img
-                [src]="item.product.image"
-                [alt]="item.product.name"
-                loading="lazy"
+              <a
+                [routerLink]="['/products', item.product.id]"
+                class="product-image-link"
+                [attr.aria-label]="'View ' + item.product.name"
               >
+
+                <img
+                  [src]="item.product.image"
+                  [alt]="item.product.name"
+                  loading="lazy"
+                >
+
+                <div class="image-overlay">
+                  <span>VIEW WATCH</span>
+                  <span>→</span>
+                </div>
+
+              </a>
 
               <button
                 type="button"
@@ -43,11 +56,6 @@
                 </svg>
               </button>
 
-              <div class="image-overlay">
-                <span>VIEW WATCH</span>
-                <span>→</span>
-              </div>
-
             </div>
 
             <div class="wishlist-info">
@@ -55,9 +63,11 @@
               <p class="brand">
                 {{ item.product.brand }}
               </p>
-
               <h2>
-                {{ item.product.name }}
+                <a
+                  [routerLink]="['/products', item.product.id]"
+                  class="product-link"
+                >{{ item.product.name }}</a>
               </h2>
 
               <div class="price-row">

@@ -7,10 +7,11 @@ import { MAX_QUANTITY_PER_PRODUCT } from '../../store/cart/cart.state';
 import { RouterLink } from '@angular/router';
 import { take } from 'rxjs';
 import { ToastService } from '../../core/services/toast.service';
+import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [AsyncPipe,RouterLink],
+  imports: [AsyncPipe,RouterLink,ConfirmationDialogComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -20,6 +21,8 @@ export class CartComponent {
   readonly maxQuantityPerProduct = MAX_QUANTITY_PER_PRODUCT;
   cartItems = this.store.select(selectCartItems);
   cartTotal = this.store.select(selectCartTotal);
+  showRemoveDialog = false;
+selectedProductId: number | null = null;
 increase(productId: number) {
   this.cartItems.pipe(take(1)).subscribe(items => {
     const item = items.find(
@@ -90,12 +93,29 @@ decrease(productId: number) {
 
   });
 }
-remove(productId:number){
-  const confirmed = window.confirm('Are you sure you want to remove this item from your cart?');
-  if (!confirmed) {
+openRemoveDialog(productId: number): void {
+  this.selectedProductId = productId;
+  this.showRemoveDialog = true;
+}
+
+closeRemoveDialog(): void {
+  this.showRemoveDialog = false;
+  this.selectedProductId = null;
+}
+
+remove(): void {
+  if (this.selectedProductId === null) {
     return;
   }
-  this.store.dispatch(removeFromCart({productId}));
-  this.toast.show("Removed from cart")
+
+  this.store.dispatch(
+    removeFromCart({
+      productId: this.selectedProductId
+    })
+  );
+
+  this.toast.show('Removed from cart');
+
+  this.closeRemoveDialog();
 }
 }

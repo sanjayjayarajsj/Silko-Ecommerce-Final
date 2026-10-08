@@ -41,24 +41,28 @@
               <!-- Product -->
               <div class="product-info">
 
-                <div class="product-image">
-
-                  <img
-                    [src]="item.product.image"
-                    [alt]="item.product.name"
-                    loading="lazy"
+                                 <a
+                    [routerLink]="['/products', item.product.id]"
+                    class="product-image-link"
+                    [attr.aria-label]="'View ' + item.product.name"
                   >
-
-                </div>
-
+                    <img
+                      [src]="item.product.image"
+                      [alt]="item.product.name"
+                      loading="lazy"
+                    >
+                  </a>
                 <div class="product-details">
 
                   <p class="brand">
                     {{ item.product.brand }}
                   </p>
 
-                  <h3>
-                    {{ item.product.name }}
+                                   <h3>
+                    <a
+                      [routerLink]="['/products', item.product.id]"
+                      class="product-link"
+                    >{{ item.product.name }}</a>
                   </h3>
 
                   <p class="price">
@@ -107,7 +111,7 @@
               <button
                 type="button"
                 class="remove-btn"
-                (click)="remove(item.product.id)"
+               (click)="openRemoveDialog(item.product.id)"
               >
                 <span>×</span>
                 Remove
@@ -272,5 +276,15 @@
     }
 
   }
+  @if (showRemoveDialog) {
+
+  <app-confirmation-dialog
+    title="Remove Item?"
+    message="Are you sure you want to remove this item from your cart?"
+    (confirmed)="remove()"
+    (cancelled)="closeRemoveDialog()"
+  />
+
+}
 
 </section>

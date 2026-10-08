@@ -1,72 +1,66 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../features/auth/user.model';
-import { Observable, map, BehaviorSubject, of } from 'rxjs';
+import { Observable, map, BehaviorSubject, of, catchError, throwError } from 'rxjs';
+import { API_URL } from '../config/api.config';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-
   private http = inject(HttpClient);
+  private readonly url = `${API_URL}/users`;
 
-  private loggedIn$ = new BehaviorSubject<boolean>(this.hasStoredSession());
+  private loggedIn$ = new BehaviorSubject<boolean>(this.hasSession());
   readonly isLoggedIn$: Observable<boolean> = this.loggedIn$.asObservable();
 
-  private hasStoredSession(): boolean {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-    return localStorage.getItem('isLoggedIn') === 'true';
+  // A session needs both the flag and the token the server gave us.
+  // (Sessions from before tokens existed have no token, so they count as logged out.)
+  private hasSession(): boolean {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('isLoggedIn') === 'true' && !!localStorage.getItem('token');
   }
 
-  // Used by the register form to check if an account with this email
-  // already exists, before creating a new one.
   checkEmailExists(email: string): Observable<boolean> {
-    return this.http.get<User[]>(
-      `http://localhost:3000/users?email=${email}`
-    ).pipe(
-      map(users => users.length > 0)
-    );
+    return this.http
+      .get<{ exists: boolean }>(`${API_URL}/email-exists`, { params: { email } })
+      .pipe(map(res => res.exists));
   }
 
+  // True if this email belongs to an admin account.
+  // Used by the login page to hide the "Create an account" link.
+  isAdminEmail(email: string): Observable<boolean> {
+    if (!email) {
+      return of(false);
+    }
+
+    return this.http
+      .get<{ exists: boolean; isAdmin: boolean }>(`${API_URL}/email-exists`, { params: { email } })
+      .pipe(map(res => res.isAdmin));
+  }
+
+  // Goes through the server's /register so it can hash the password
+  // and decide the role itself.
   register(name: string, email: string, password: string): Observable<User> {
-    const user: User = {
-      name: name,
-      email: email,
-      password: password
-    };
-
-    return this.http.post<User>(
-      'http://localhost:3000/users',
-      user
-    );
+    return this.http.post<User>(`${API_URL}/register`, { name, email, password });
   }
 
+  // The password travels in the request body (not the URL) and the server
+  // checks it. It answers with the user plus a signed token.
+  // A 401 means wrong email/password or a deactivated account.
   login(email: string, password: string): Observable<User | null> {
-    return this.http.get<User[]>(
-      `http://localhost:3000/users?email=${email}&password=${password}`
-    ).pipe(
-      map(users => {
-        // A deactivated account (active === false) should not be able to
-        // log in at all - treated the same as a wrong email/password.
-        if (users.length > 0 && users[0].active !== false) {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem(
-            'userId',
-            users[0].id!.toString()
-          );
-          localStorage.setItem(
-            'role',
-            users[0].role ?? 'user'
-          );
-          this.loggedIn$.next(true);
-
-          return users[0];
-        }
-
-        return null;
-      })
+    return this.http.post<User>(`${API_URL}/login`, { email, password }).pipe(
+      map(user => {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userId', user.id!.toString());
+        localStorage.setItem('role', user.role ?? 'user');
+        localStorage.setItem('token', user.token ?? '');
+        this.loggedIn$.next(true);
+        return user;
+      }),
+      catchError((err: HttpErrorResponse) =>
+        err.status === 401 || err.status === 400 || err.status === 429
+          ? of(null)
+          : throwError(() => err)
+      )
     );
   }
 
@@ -74,46 +68,27 @@ export class AuthService {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userId');
     localStorage.removeItem('role');
+    localStorage.removeItem('token');
     this.loggedIn$.next(false);
   }
 
   isLoggedIn(): boolean {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-
-    return localStorage.getItem('isLoggedIn') === 'true';
+    return this.hasSession();
   }
 
-getUserId(): number | null {
-  if (typeof window === 'undefined') {
-    return null;
+  getUserId(): number | null {
+    if (typeof window === 'undefined') return null;
+    const id = localStorage.getItem('userId');
+    return id ? Number(id) : null;
   }
 
-  const id = localStorage.getItem('userId');
-
-  return id ? Number(id) : null;
-  }
-
-  // Fetches the full profile (name/email) of the currently logged-in user.
-  // Used by the profile page - getUserId() only gives the id.
   getCurrentUser(): Observable<User | null> {
     const userId = this.getUserId();
-
-    if (!userId) {
-      return of(null);
-    }
-
-    return this.http.get<User>(
-      `http://localhost:3000/users/${userId}`
-    );
+    return userId ? this.http.get<User>(`${this.url}/${userId}`) : of(null);
   }
 
   getRole(): 'user' | 'admin' | null {
-    if (typeof window === 'undefined') {
-      return null;
-    }
-
+    if (typeof window === 'undefined') return null;
     const role = localStorage.getItem('role');
     return role === 'admin' ? 'admin' : role === 'user' ? 'user' : null;
   }
@@ -122,36 +97,23 @@ getUserId(): number | null {
     return this.getRole() === 'admin';
   }
 
-  // Used by the admin panel's Users section.
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>('http://localhost:3000/users');
+    return this.http.get<User[]>(this.url);
   }
 
   getUser(id: number): Observable<User> {
-    return this.http.get<User>(`http://localhost:3000/users/${id}`);
+    return this.http.get<User>(`${this.url}/${id}`);
   }
 
-    // Used by the profile page. Only the name is sent, so email/password/role
-  // are never touched by this call.
   updateName(id: number, name: string): Observable<User> {
-    return this.http.patch<User>(
-      `http://localhost:3000/users/${id}`,
-      { name }
-    );
-  }
-  setUserActive(id: number, active: boolean): Observable<User> {
-    return this.http.patch<User>(
-      `http://localhost:3000/users/${id}`,
-      { active }
-    );
+    return this.http.patch<User>(`${this.url}/${id}`, { name });
   }
 
-  // Saves the (already resized/compressed) base64 image string as the
-  // user's profile picture.
+  setUserActive(id: number, active: boolean): Observable<User> {
+    return this.http.patch<User>(`${this.url}/${id}`, { active });
+  }
+
   updateProfilePicture(id: number, profilePicture: string): Observable<User> {
-    return this.http.patch<User>(
-      `http://localhost:3000/users/${id}`,
-      { profilePicture }
-    );
+    return this.http.patch<User>(`${this.url}/${id}`, { profilePicture });
   }
 }

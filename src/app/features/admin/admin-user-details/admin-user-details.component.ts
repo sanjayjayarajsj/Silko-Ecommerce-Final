@@ -6,11 +6,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Order } from '../../checkout/order.model';
 import { OrderService } from '../../checkout/order.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { ConfirmationDialogComponent } from '../../../shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-admin-user-details',
   standalone: true,
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, ConfirmationDialogComponent],
   templateUrl: './admin-user-details.component.html',
   styleUrl: './admin-user-details.component.css'
 })
@@ -24,7 +25,7 @@ export class AdminUserDetailsComponent {
   loading = true;
   user: User | null = null;
   orders: Order[] = [];
-
+showStatusDialog = false;
   currentUserId = this.authService.getUserId();
 
   constructor() {
@@ -50,29 +51,41 @@ export class AdminUserDetailsComponent {
     return this.orders.reduce((sum, order) => sum + order.total, 0);
   }
 
-  toggleActive() {
-    if (!this.user) {
-      return;
-    }
-
-    const nextActive = !this.isActive();
-    const action = nextActive ? 'activate' : 'deactivate';
-
-    const confirmed = window.confirm(`Are you sure you want to ${action} ${this.user.name}'s account?`);
-    if (!confirmed) {
-      return;
-    }
-
-    this.authService.setUserActive(this.user.id!, nextActive).subscribe({
-      next: () => {
-        this.user!.active = nextActive;
-        this.toast.show(`Account is now ${nextActive ? 'active' : 'deactivated'}`);
-      },
-      error: () => {
-        this.toast.show('Could not update this account. Please try again.');
-      }
-    });
+openStatusDialog(): void {
+  if (!this.user) {
+    return;
   }
+
+  this.showStatusDialog = true;
+}
+
+closeStatusDialog(): void {
+  this.showStatusDialog = false;
+}
+
+toggleActive(): void {
+  if (!this.user) {
+    return;
+  }
+
+  const nextActive = !this.isActive();
+
+  this.authService.setUserActive(this.user.id!, nextActive).subscribe({
+    next: () => {
+      this.user!.active = nextActive;
+
+      this.toast.show(
+        `Account is now ${nextActive ? 'active' : 'deactivated'}`
+      );
+
+      this.closeStatusDialog();
+    },
+    error: () => {
+      this.toast.show('Could not update this account. Please try again.');
+      this.closeStatusDialog();
+    }
+  });
+}
 
   back() {
     this.router.navigate(['/admin/users']);

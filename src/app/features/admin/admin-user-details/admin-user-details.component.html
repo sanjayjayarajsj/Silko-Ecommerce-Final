@@ -26,7 +26,7 @@
           <button
             [class.deactivate]="isActive()"
             [class.activate]="!isActive()"
-            (click)="toggleActive()"
+            (click)="openStatusDialog()"
           >
             {{ isActive() ? 'Deactivate Account' : 'Activate Account' }}
           </button>
@@ -71,5 +71,16 @@
     </div>
 
   }
+@if (showStatusDialog && user) {
 
+  <app-confirmation-dialog
+    [title]="isActive() ? 'Deactivate Account?' : 'Activate Account?'"
+    [message]="isActive()
+      ? 'Are you sure you want to deactivate ' + user.name + '\'s account?'
+      : 'Are you sure you want to activate ' + user.name + '\'s account?'"
+    (confirmed)="toggleActive()"
+    (cancelled)="closeStatusDialog()"
+  />
+
+}
 </div>

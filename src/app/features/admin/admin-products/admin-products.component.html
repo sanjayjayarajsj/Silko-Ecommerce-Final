@@ -39,7 +39,7 @@
   } @else {
 
     <div class="table-wrap">
-      <table class="products-table">
+    <table class="products-table admin-table">
         <thead>
           <tr>
             <th></th>
@@ -55,14 +55,14 @@
 
           @for (product of pagedProducts; track product.id) {
             <tr>
-              <td>
+              <td class="image-cell">
                 <img [src]="product.image" [alt]="product.name" class="row-image" loading="lazy">
               </td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.brand }}</td>
-              <td>{{ product.category }}</td>
-              <td>₹{{ product.price }}</td>
-              <td>
+              <td data-label="Name">{{ product.name }}</td>
+              <td data-label="Brand">{{ product.brand }}</td>
+              <td data-label="Category">{{ product.category }}</td>
+              <td data-label="Price">₹{{ product.price }}</td>
+              <td data-label="Stock">
                 <div class="stock-cell">
                   <input
                     type="number"
@@ -80,7 +80,7 @@
               </td>
               <td class="actions-cell">
                 <a [routerLink]="['/admin/products/edit', product.id]">Edit</a>
-                <button (click)="deleteProduct(product)">Delete</button>
+                <button (click)="openDeleteDialog(product)">Delete</button>
               </td>
             </tr>
           } @empty {
@@ -102,5 +102,14 @@
     }
 
   }
+@if (showDeleteDialog && productToDelete) {
 
+  <app-confirmation-dialog
+    title="Delete Product?"
+    [message]="'Delete &quot;' + productToDelete.name + '&quot;? This cannot be undone.'"
+    (confirmed)="deleteProduct()"
+    (cancelled)="closeDeleteDialog()"
+  />
+
+}
 </div>

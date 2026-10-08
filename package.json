@@ -2,6 +2,7 @@
   "name": "seiko",
   "version": "0.0.0",
   "scripts": {
+    "api": "node server/server.cjs",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -28,6 +29,7 @@
     "@ngrx/store": "^18.1.1",
     "express": "^4.18.2",
     "json-server": "^0.17.4",
+    "ngx-image-cropper": "^8.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

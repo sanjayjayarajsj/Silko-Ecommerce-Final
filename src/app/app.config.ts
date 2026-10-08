@@ -4,7 +4,9 @@ import { provideStore } from '@ngrx/store';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { productsReducer } from './store/products/products.reducer';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideEffects } from '@ngrx/effects';
 import { ProductsEffects } from './store/products/products.effects';
 import { cartReducer } from './store/cart/cart.reducer';
@@ -14,6 +16,8 @@ import { CartEffects } from './store/cart/cart.effects';
 import { WishlistEffects } from './store/wishlist/wishlist.effects';
 import { AddressEffects } from './store/address/address.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
@@ -21,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
       withRouterConfig({ paramsInheritanceStrategy: 'always' })
     ),
-    provideHttpClient(), provideClientHydration(),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor,errorInterceptor])), provideClientHydration(),
     provideStore({products:productsReducer,cart:cartReducer,wishlist:wishlistReducer,address:addressReducer}),
     provideEffects(ProductsEffects,CartEffects,WishlistEffects,AddressEffects), provideAnimationsAsync()
   ]};

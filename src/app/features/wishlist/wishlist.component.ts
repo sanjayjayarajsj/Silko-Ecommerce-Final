@@ -10,10 +10,11 @@ import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
 import { Product } from '../products/product.model';
 import { take } from 'rxjs';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [AsyncPipe,RouterLink],
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.css'
 })

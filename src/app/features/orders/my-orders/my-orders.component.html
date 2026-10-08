@@ -55,7 +55,52 @@
               <p class="customer-address">
                 {{ order.address }}, {{ order.city }}
               </p>
+              
+                @if (order.phone) {
+                  <p class="customer-address">
+                    +91 {{ order.phone }}
+                  </p>
+                }
             </div>
+                      <!-- Progress bar / cancellation note -->
+          @if (order.status === 'Cancelled') {
+
+            <div class="cancel-note">
+              <p class="cancel-note-title">
+                @if (order.cancelledBy === 'user') {
+                  You cancelled this order
+                } @else {
+                  This order was cancelled by the store
+                }
+                @if (order.cancelledAt) {
+                  <span class="cancel-note-date">· {{ order.cancelledAt | date:'d MMM y' }}</span>
+                }
+              </p>
+
+              @if (order.cancelledBy !== 'user') {
+                <p class="cancel-note-text">
+                  <strong>Reason:</strong>
+                  {{ order.cancelNote || 'No reason was provided.' }}
+                </p>
+              }
+            </div>
+
+          } @else {
+
+            <div class="tracker">
+              @for (step of flow; track step; let i = $index) {
+                <div
+                  class="tracker-step"
+                  [class.done]="i <= stepIndex(order)"
+                  [class.current]="i === stepIndex(order)"
+                >
+                  <span class="tracker-dot"></span>
+                  <span class="tracker-label">{{ step }}</span>
+                </div>
+              }
+            </div>
+
+          }
 
             <div class="payment-info">
               <span class="info-label">PAYMENT</span>
@@ -114,7 +159,36 @@
             }
 
           </div>
+          <!-- Return status -->
+          @if (order.returnRequest; as rr) {
+            <div class="return-box">
+              <p class="return-title">
+                RETURN REQUEST
+                <span class="return-date">· {{ rr.requestedAt | date:'d MMM y' }}</span>
+              </p>
+              <p class="return-reason">{{ rr.reason }}</p>
 
+              @if (rr.status === 'Rejected') {
+                <div class="return-rejected">
+                  <strong>Return rejected.</strong>
+                  {{ rr.adminNote || 'No reason was provided.' }}
+                </div>
+              } @else {
+                <div class="tracker return-tracker">
+                  @for (step of returnFlow; track step; let i = $index) {
+                    <div
+                      class="tracker-step"
+                      [class.done]="i <= returnStepIndex(order)"
+                      [class.current]="i === returnStepIndex(order)"
+                    >
+                      <span class="tracker-dot"></span>
+                      <span class="tracker-label">{{ step }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
           <!-- Order Footer -->
           <div class="order-footer">
 
@@ -127,12 +201,25 @@
               <button
                 type="button"
                 class="cancel-order-btn"
-                (click)="cancelOrder(order)"
+               (click)="openCancelDialog(order)"
               >
                 Cancel Order
               </button>
             }
-
+            @if (canRequestReturn(order)) {
+              <div class="return-action">
+                <span class="return-hint">Return until {{ returnDeadline(order) | date:'d MMM' }}</span>
+                <button
+                  type="button"
+                  class="return-btn"
+                  (click)="openReturn(order)"
+                >
+                  Return Item
+                </button>
+              </div>
+            } @else if (order.status === 'Delivered' && !order.returnRequest) {
+              <span class="return-hint">Return window closed</span>
+            }
           </div>
 
         </article>
@@ -170,5 +257,21 @@
     </div>
 
   }
+  @if (returnOrder) {
+    <app-return-request-dialog
+      [orderId]="returnOrder.id!"
+      (requested)="submitReturn($event)"
+      (closed)="returnOrder = null"
+    />
+  }
+  @if (showCancelDialog && orderToCancel) {
 
+  <app-confirmation-dialog
+    title="Cancel Order?"
+    [message]="'Cancel order #' + orderToCancel.id + '? This cannot be undone.'"
+    (confirmed)="cancelOrder()"
+    (cancelled)="closeCancelDialog()"
+  />
+
+}
 </section>

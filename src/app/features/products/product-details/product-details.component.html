@@ -1,6 +1,17 @@
-<section class="product-details">
+@if (product(); as p) {
 
-  @if (product) {
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/home">Home</a>
+    <span aria-hidden="true">›</span>
+    <a routerLink="/products">All Watches</a>
+    <span aria-hidden="true">›</span>
+    <a routerLink="/products" [queryParams]="{ brand: p.brand }">{{ p.brand }}</a>
+    <span aria-hidden="true">›</span>
+    <span class="breadcrumb-current" aria-current="page">{{ p.name }}</span>
+  </nav>
+
+  <section class="product-details">
 
     <!-- Product Image Section -->
     <div class="product-image">
@@ -16,10 +27,10 @@
         </span>
 
         <img
-          [src]="selectedImage"
-          [alt]="product.name"
-          [style.transform-origin]="zoomOrigin"
-          [class.zoomed]="isZooming"
+          [src]="mainImage()"
+          [alt]="p.name"
+          [style.transform-origin]="zoomOrigin()"
+          [class.zoomed]="isZooming()"
           fetchpriority="high"
           (error)="handleImageError($event)"
         >
@@ -28,22 +39,23 @@
 
 
       <!-- Thumbnails -->
-      @if (product.images && product.images.length > 1) {
+      @if (gallery().length > 0) {
 
         <div class="thumbnail-row">
 
-          @for (img of product.images; track img) {
+          @for (img of gallery(); track img) {
 
             <button
               type="button"
               class="thumbnail"
-              [class.active]="img === selectedImage"
+              [class.active]="img === mainImage()"
               (click)="selectImage(img)"
+              [attr.aria-label]="'Show photo of ' + p.name"
             >
 
               <img
                 [src]="img"
-                [alt]="product.name"
+                [alt]="p.name"
                 loading="lazy"
                 (error)="handleImageError($event)"
               >
@@ -67,39 +79,67 @@
     <div class="product-info">
 
       <p class="brand">
-        {{ product.brand }}
+        {{ p.brand }}
       </p>
 
       <h1>
-        {{ product.name }}
+        {{ p.name }}
       </h1>
 
 
       <!-- Rating -->
-      <div class="rating">
+      @if (reviewCount() > 0) {
 
-        <div class="stars">
+        <div class="rating">
 
-          @for (star of ratingStars; track star) {
+          <div
+            class="stars"
+            role="img"
+            [attr.aria-label]="rating() + ' out of 5 stars'"
+          >
 
-            <span [class.filled]="star <= rating">
-              ★
-            </span>
+            @for (filled of starsOf(rating()); track $index) {
 
-          }
+              <span [class.filled]="filled" aria-hidden="true">
+                ★
+              </span>
+
+            }
+
+          </div>
+
+          <span class="rating-number">{{ rating() }}</span>
+
+          <button
+            type="button"
+            class="review-count review-link"
+            (click)="scrollToReviews()"
+          >
+            {{ reviewCount() }} {{ reviewCount() === 1 ? 'review' : 'reviews' }}
+          </button>
 
         </div>
 
-        <span class="review-count">
-          {{ reviewCount }} reviews
-        </span>
+      } @else {
 
-      </div>
+        <div class="rating">
+
+          <button
+            type="button"
+            class="review-count review-link"
+            (click)="scrollToReviews()"
+          >
+            No reviews yet. Be the first to review
+          </button>
+
+        </div>
+
+      }
 
 
       <!-- Category -->
       <p class="category">
-        {{ product.category }}
+        {{ p.category }}
       </p>
 
 
@@ -111,7 +151,7 @@
         </span>
 
         <h2>
-          ₹{{ product.price }}
+          {{ p.price | currency:'INR':'symbol':'1.0-0' }}
         </h2>
 
       </div>
@@ -119,23 +159,23 @@
 
       <!-- Description -->
       <p class="description">
-        {{ product.description }}
+        {{ p.description }}
       </p>
 
 
       <!-- Stock -->
-      @if (product.stock === 0) {
+      @if (p.stock === 0) {
 
         <div class="stock-status out-of-stock">
           <span class="stock-dot"></span>
           Out of Stock
         </div>
 
-      } @else if (product.stock <= 5) {
+      } @else if (p.stock <= 5) {
 
         <div class="stock-status low-stock">
           <span class="stock-dot"></span>
-          Only {{ product.stock }} left in stock — order soon
+          Only {{ p.stock }} left in stock — order soon
         </div>
 
       } @else {
@@ -155,7 +195,7 @@
           type="button"
           (click)="buyNow()"
           class="btn-buy-now"
-          [disabled]="product.stock === 0"
+          [disabled]="p.stock === 0"
         >
           BUY NOW
           <span>→</span>
@@ -166,7 +206,7 @@
           type="button"
           (click)="addToCart()"
           class="btn-cart"
-          [disabled]="product.stock === 0"
+          [disabled]="p.stock === 0"
         >
 
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -203,22 +243,24 @@
 
           </svg>
 
-          Add to Cart
+          {{ inCart() ? 'Go to Cart' : 'Add to Cart' }}
 
         </button>
 
 
         <button
           type="button"
-          (click)="addToWishlist()"
+          (click)="toggleWishlist()"
           class="btn-wishlist"
+          [class.saved]="inWishlist()"
+          [attr.aria-pressed]="inWishlist()"
         >
 
           <span class="heart">
-            ♡
+            {{ inWishlist() ? '♥' : '♡' }}
           </span>
 
-          Add to Wishlist
+          {{ inWishlist() ? 'Saved to Wishlist' : 'Add to Wishlist' }}
 
         </button>
 
@@ -267,13 +309,262 @@
 
     </div>
 
-  }
+  </section>
 
-</section>
+
+  <!-- Specifications -->
+  <section class="product-specs" aria-labelledby="specs-title">
+
+    <h2 id="specs-title">Specifications</h2>
+
+    <dl class="specs-grid">
+      @for (row of specRows(); track row.label) {
+        <div class="spec-row">
+          <dt>{{ row.label }}</dt>
+          <dd>{{ row.value }}</dd>
+        </div>
+      }
+    </dl>
+
+  </section>
+
+
+  <!-- Customer reviews -->
+  <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+
+    <h2 id="reviews-title">Customer Reviews</h2>
+
+    @if (!reviewsLoaded()) {
+
+      <p class="reviews-note">Loading reviews…</p>
+
+    } @else if (reviewsFailed()) {
+
+      <p class="reviews-note">Reviews could not be loaded right now.</p>
+
+    } @else {
+
+      <div class="reviews-layout">
+
+        <!-- Summary -->
+        <div class="reviews-summary">
+
+          @if (reviews().length > 0) {
+
+            <div class="summary-score">
+
+              <span class="summary-number">{{ summaryAverage().toFixed(1) }}</span>
+
+              <div>
+                <div class="stars" role="img" [attr.aria-label]="summaryAverage().toFixed(1) + ' out of 5 stars'">
+                  @for (filled of starsOf(summaryAverage()); track $index) {
+                    <span [class.filled]="filled" aria-hidden="true">★</span>
+                  }
+                </div>
+                <span class="summary-count">
+                  Based on {{ reviews().length }} {{ reviews().length === 1 ? 'review' : 'reviews' }}
+                </span>
+              </div>
+
+            </div>
+
+            <ul class="distribution">
+              @for (row of distribution(); track row.stars) {
+                <li>
+                  <span class="dist-label">{{ row.stars }} ★</span>
+                  <span class="dist-bar"><span [style.width.%]="row.percent"></span></span>
+                  <span class="dist-count">{{ row.count }}</span>
+                </li>
+              }
+            </ul>
+
+          } @else {
+
+            <p class="summary-empty">
+              No reviews yet. Share what you think about this watch.
+            </p>
+
+          }
+
+        </div>
+
+
+        <div class="reviews-main">
+
+          <!-- Write / edit form -->
+          @if (showForm()) {
+
+            <form
+              class="review-form"
+              (submit)="$event.preventDefault(); submitReview()"
+            >
+
+              <h3>{{ editing() ? 'Edit your review' : 'Write a review' }}</h3>
+
+              <div class="star-picker" role="radiogroup" aria-label="Your rating">
+                @for (star of ratingStars; track star) {
+                  <button
+                    type="button"
+                    role="radio"
+                    [class.on]="star <= draftRating()"
+                    [attr.aria-checked]="draftRating() === star"
+                    [attr.aria-label]="star + (star === 1 ? ' star' : ' stars')"
+                    (click)="setDraftRating(star)"
+                  >★</button>
+                }
+              </div>
+
+              <input
+                type="text"
+                maxlength="80"
+                placeholder="Headline (optional)"
+                aria-label="Review headline"
+                [value]="draftTitle()"
+                (input)="draftTitle.set($any($event.target).value)"
+              >
+
+              <textarea
+                rows="4"
+                maxlength="1000"
+                placeholder="What did you like or dislike about this watch?"
+                aria-label="Your review"
+                [value]="draftComment()"
+                (input)="draftComment.set($any($event.target).value)"
+              ></textarea>
+
+              @if (formError()) {
+                <p class="form-error" role="alert">{{ formError() }}</p>
+              }
+
+              <div class="form-actions">
+                <span class="char-count">{{ draftComment().length }}/1000</span>
+
+                @if (editing()) {
+                  <button type="button" class="btn-plain" (click)="cancelEdit()">Cancel</button>
+                }
+
+                <button type="submit" class="btn-review" [disabled]="submitting()">
+                  {{ submitting() ? 'Saving…' : (editing() ? 'Save changes' : 'Submit review') }}
+                </button>
+              </div>
+
+            </form>
+
+          } @else if (!loggedIn) {
+
+            <p class="review-login">
+              <a routerLink="/login">Log in</a> to write a review.
+            </p>
+
+          }
+
+
+          <!-- The reviews -->
+          @if (reviews().length > 0) {
+
+            <div class="review-list">
+
+              @for (review of shownReviews(); track review.id) {
+
+                <article class="review">
+
+                  <div class="review-head">
+                    <div class="stars" role="img" [attr.aria-label]="review.rating + ' out of 5 stars'">
+                      @for (filled of starsOf(review.rating); track $index) {
+                        <span [class.filled]="filled" aria-hidden="true">★</span>
+                      }
+                    </div>
+                    @if (review.title) {
+                      <strong class="review-title">{{ review.title }}</strong>
+                    }
+                  </div>
+
+                  <p class="review-meta">
+                    {{ review.userName }}
+                    @if (review.userId === currentUserId) {
+                      <span class="you-tag">You</span>
+                    }
+                    · {{ review.createdAt | date:'d MMM y' }}
+                    @if (review.updatedAt) {
+                      <span>(edited)</span>
+                    }
+                    @if (review.verifiedPurchase) {
+                      <span class="verified">✓ Verified purchase</span>
+                    }
+                  </p>
+
+                  <p class="review-text">{{ review.comment }}</p>
+
+                  @if (review.userId === currentUserId) {
+                    <div class="review-actions">
+                      <button type="button" (click)="startEdit()">Edit</button>
+                      <button type="button" class="danger" (click)="askDelete(review)">Delete</button>
+                    </div>
+                  }
+
+                </article>
+
+              }
+
+              @if (reviews().length > shownReviews().length) {
+                <button type="button" class="btn-more-reviews" (click)="showMoreReviews()">
+                  Show more reviews
+                </button>
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    }
+
+  </section>
+
+} @else if (showError()) {
+
+  <!-- The product list could not be loaded -->
+  <section class="details-state" role="alert">
+    <h1>We couldn't load this watch</h1>
+    <p>Check your connection and try again.</p>
+    <button type="button" class="details-state-btn" (click)="retry()">
+      Try again
+    </button>
+  </section>
+
+} @else if (notFound()) {
+
+  <!-- Wrong or removed product -->
+  <section class="details-state">
+    <h1>Watch not found</h1>
+    <p>This watch may have been removed, or the link is incorrect.</p>
+    <a routerLink="/products" class="details-state-btn">
+      Browse all watches
+    </a>
+  </section>
+
+} @else {
+
+  <!-- Loading -->
+  <section class="details-skeleton" aria-busy="true" aria-label="Loading watch">
+    <div class="skeleton-block skeleton-photo"></div>
+    <div class="skeleton-text">
+      <div class="skeleton-block skeleton-line" style="width: 30%"></div>
+      <div class="skeleton-block skeleton-line big" style="width: 75%"></div>
+      <div class="skeleton-block skeleton-line" style="width: 40%"></div>
+      <div class="skeleton-block skeleton-line" style="width: 90%"></div>
+      <div class="skeleton-block skeleton-line" style="width: 85%"></div>
+    </div>
+  </section>
+
+}
 
 
 <!-- Similar Products -->
-@if (similarProducts.length > 0) {
+@if (similarProducts().length > 0) {
 
   <section class="similar-products">
 
@@ -284,7 +575,7 @@
 
     <div class="similar-grid">
 
-      @for (item of similarProducts; track item.id) {
+      @for (item of similarProducts(); track item.id) {
 
         <app-product-card [product]="item"></app-product-card>
 
@@ -294,4 +585,15 @@
 
   </section>
 
+}
+
+
+<!-- Delete review confirmation -->
+@if (pendingDelete()) {
+  <app-confirmation-dialog
+    title="Delete this review?"
+    message="This cannot be undone."
+    (confirmed)="confirmDelete()"
+    (cancelled)="pendingDelete.set(null)"
+  ></app-confirmation-dialog>
 }

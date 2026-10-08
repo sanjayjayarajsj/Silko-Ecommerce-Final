@@ -80,12 +80,12 @@
           <label for="email">
             Email Address
           </label>
-
           <input
             id="email"
             type="email"
             name="email"
             [(ngModel)]="email"
+            (ngModelChange)="onEmailChange($event)"
             #emailField="ngModel"
             placeholder="Enter your email"
             required
@@ -181,20 +181,20 @@
 
       </form>
 
-
       <!-- Register -->
 
-      <div class="auth-footer">
+      @if (!isAdminEmail) {
+        <div class="auth-footer">
 
-        <p>
-          Don't have an account?
-          <a routerLink="/register">
-            Create an account
-          </a>
-        </p>
+          <p>
+            Don't have an account?
+            <a routerLink="/register">
+              Create an account
+            </a>
+          </p>
 
-      </div>
-
+        </div>
+      }
     } @else if (step === 'form') {
 
       <div class="auth-header">

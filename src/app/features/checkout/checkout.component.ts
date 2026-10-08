@@ -2,7 +2,7 @@ import { Component,inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { selectCartItems,selectCartTotal } from '../../store/cart/cart.selectors';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { clearCart } from '../../store/cart/cart.actions';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from './order.service';
@@ -11,22 +11,24 @@ import { BuyNowService } from './buy-now.service';
 import { take, of } from 'rxjs';
 import { ToastService } from '../../core/services/toast.service';
 import { selectAddresses } from '../../store/address/address.selectors';
-import { loadAddresses } from '../../store/address/address.actions';
+import { loadAddresses, addAddress } from '../../store/address/address.actions';
 import { Address } from '../address/address.model';
 import { ProductService } from '../products/product.service';
 import {
   sanitizeNameInput,
   sanitizeAddressInput,
   sanitizePincodeInput,
+  sanitizePhoneInput,
   isValidName,
   isValidCity,
   isValidAddress,
-  isValidPincode
+  isValidPincode,
+  isValidPhone
 } from '../../shared/form-validators';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [AsyncPipe,FormsModule],
+  imports: [AsyncPipe,FormsModule,RouterLink],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
@@ -51,6 +53,7 @@ cartTotal = this.buyNowItem
   ? of(this.buyNowItem.product.price * this.buyNowItem.quantity)
   : this.store.select(selectCartTotal);
 fullName='';
+phone='';
 address='';
 city='';
 pincode='';
@@ -59,14 +62,16 @@ isPlacingOrder=false;
 
 // Saved addresses, so the user can pick one instead of retyping it.
 savedAddresses$ = this.store.select(selectAddresses);
+private savedAddressList = this.store.selectSignal(selectAddresses);
 selectedAddressId: string | number | null = null;
 
-// Payment method - this is a UI-only mock, no real payment gateway.
+// "Save this address for next time" (offered for a new address only)
+saveThisAddress = false;
+saveAddressType: 'Home' | 'Work' = 'Home';
+
+// Payment method. This is a demo store: no real payment is taken, so no
+// card or UPI details are asked for.
 paymentMethod: 'Card' | 'UPI' | 'COD' | '' = '';
-cardNumber = '';
-cardExpiry = '';
-cardCvv = '';
-upiId = '';
 
 constructor() {
   this.store.dispatch(loadAddresses());
@@ -75,34 +80,56 @@ constructor() {
 selectAddress(addr: Address) {
   this.selectedAddressId = addr.id ?? null;
   this.fullName = addr.fullName;
+  this.phone = addr.phone ?? '';
   this.address = addr.address;
   this.city = addr.city;
   this.pincode = addr.pincode;
+  this.saveThisAddress = false;
+}
+
+// Once the person edits a field, the form no longer matches the saved
+// address they picked, so un-highlight it.
+private clearSelection() {
+  this.selectedAddressId = null;
 }
 
 // Called from (input) on the Full Name field - strips anything that
 // isn't a letter/space as the user types.
 onFullNameInput(): void {
   this.fullName = sanitizeNameInput(this.fullName);
+  this.clearSelection();
+}
+
+// Mobile number: digits only, capped at 10 while typing.
+onPhoneInput(): void {
+  this.phone = sanitizePhoneInput(this.phone);
+  this.clearSelection();
 }
 
 // City follows the same letters-only rule as the name field.
 onCityInput(): void {
   this.city = sanitizeNameInput(this.city);
+  this.clearSelection();
 }
 
 // Address allows letters, numbers and normal address punctuation.
 onAddressInput(): void {
   this.address = sanitizeAddressInput(this.address);
+  this.clearSelection();
 }
 
 // PIN code: digits only, capped at 6 while typing.
 onPincodeInput(): void {
   this.pincode = sanitizePincodeInput(this.pincode);
+  this.clearSelection();
 }
 
 isValidFullName(): boolean {
   return isValidName(this.fullName);
+}
+
+isValidPhoneNumber(): boolean {
+  return isValidPhone(this.phone);
 }
 
 isValidCityName(): boolean {
@@ -117,26 +144,32 @@ isValidPin(): boolean {
   return isValidPincode(this.pincode);
 }
 
-isValidCard(): boolean {
-  return (
-    /^\d{16}$/.test(this.cardNumber.replace(/\s/g, '')) &&
-    /^(0[1-9]|1[0-2])\/\d{2}$/.test(this.cardExpiry) &&
-    /^\d{3}$/.test(this.cardCvv)
-  );
-}
-
-isValidUpi(): boolean {
-  return /^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(this.upiId);
-}
-
 isPaymentValid(): boolean {
-  if (this.paymentMethod === 'Card') {
-    return this.isValidCard();
+  return this.paymentMethod !== '';
+}
+
+// True when the form is completely filled in and is NOT one of the
+// addresses the person already saved - that is when we offer to save it.
+isNewAddress(): boolean {
+  if (
+    !this.isValidFullName() ||
+    !this.isValidPhoneNumber() ||
+    !this.isValidAddressLine() ||
+    !this.isValidCityName() ||
+    !this.isValidPin()
+  ) {
+    return false;
   }
-  if (this.paymentMethod === 'UPI') {
-    return this.isValidUpi();
-  }
-  return this.paymentMethod === 'COD';
+
+  const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
+
+  return !this.savedAddressList().some(saved =>
+    same(saved.fullName, this.fullName) &&
+    same(saved.address, this.address) &&
+    same(saved.city, this.city) &&
+    saved.pincode === this.pincode &&
+    (saved.phone ?? '') === this.phone
+  );
 }
 
 placeOrder() {
@@ -144,6 +177,7 @@ placeOrder() {
 
   if (
     !this.isValidFullName() ||
+    !this.isValidPhoneNumber() ||
     !this.isValidAddressLine() ||
     !this.isValidCityName() ||
     !this.isValidPin() ||
@@ -186,6 +220,7 @@ placeOrder() {
       const order = {
         userId: userId,
         fullName: this.fullName,
+        phone: this.phone,
         address: this.address,
         city: this.city,
         pincode: this.pincode,
@@ -196,6 +231,20 @@ placeOrder() {
         total: total
       };
 
+      // Decided now, before anything is cleared
+      const addressToSave: Address | null =
+        this.saveThisAddress && this.isNewAddress()
+          ? {
+              userId: userId,
+              type: this.saveAddressType,
+              fullName: this.fullName,
+              phone: this.phone,
+              address: this.address,
+              city: this.city,
+              pincode: this.pincode
+            }
+          : null;
+
           this.orderService.placeOrder(order).subscribe({
             next: placedOrder => {
 
@@ -204,6 +253,10 @@ placeOrder() {
           const remaining = Math.max(0, item.product.stock - item.quantity);
           this.productService.updateProduct(item.product.id, { stock: remaining }).subscribe();
         });
+
+        if (addressToSave) {
+          this.store.dispatch(addAddress({ address: addressToSave }));
+        }
 
         if (!this.isBuyNow) {
           this.store.dispatch(clearCart());

@@ -251,11 +251,11 @@
           </a>
 
           <button
-            type="button"
-            (click)="logout()"
-          >
-            Logout
-          </button>
+  type="button"
+  (click)="openLogoutDialog()"
+>
+  Logout
+</button>
 
         } @else {
 
@@ -282,3 +282,13 @@
   </div>
 
 </nav>
+@if (showLogoutDialog) {
+
+  <app-confirmation-dialog
+    title="Logout?"
+    message="Are you sure you want to logout?"
+    (confirmed)="logout()"
+    (cancelled)="closeLogoutDialog()"
+  />
+
+}

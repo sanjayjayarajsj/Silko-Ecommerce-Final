@@ -11,12 +11,14 @@ import { selectAddresses } from '../../store/address/address.selectors';
 import { loadAddresses, addAddress, removeAddress, clearAddresses } from '../../store/address/address.actions';
 import { clearCart } from '../../store/cart/cart.actions';
 import { clearWishlist } from '../../store/wishlist/wishlist.actions';
-import { sanitizeNameInput,sanitizeAddressInput,sanitizePincodeInput,isValidName,isValidCity,isValidAddress,isValidPincode } from '../../shared/form-validators';
+import { sanitizeNameInput,sanitizeAddressInput,sanitizePincodeInput,isValidName,isValidCity,isValidAddress,isValidPincode,isValidPhone, sanitizePhoneInput } from '../../shared/form-validators';
 import { validateImageFile, fileToResizedDataUrl } from '../../shared/image-file';
+import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [AsyncPipe, RouterLink, FormsModule],
+  imports: [AsyncPipe, RouterLink, FormsModule,ConfirmationDialogComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -33,10 +35,14 @@ export class ProfileComponent {
   addressSubmitted = false;
   addressType: 'Home' | 'Work' = 'Home';
   fullName = '';
+  phone = '';
   address = '';
   city = '';
   pincode = '';
   uploadingPicture = false;
+  showLogoutDialog = false;
+showDeleteAddressDialog = false;
+selectedAddressId: string | number | undefined;
 
   // ---------- Edit profile (name only, email cannot be changed) ----------
   editing = false;
@@ -104,19 +110,25 @@ export class ProfileComponent {
     });
   }
 
-  logout(): void {
-    const confirmed = window.confirm('Are you sure you want to logout?');
-    if (!confirmed) {
-      return;
-    }
+openLogoutDialog(): void {
+  this.showLogoutDialog = true;
+}
 
-    this.authService.logout();
-    this.store.dispatch(clearCart());
-    this.store.dispatch(clearWishlist());
-    this.store.dispatch(clearAddresses());
-    this.toast.show('Logged out successfully');
-    this.router.navigate(['/home']);
-  }
+closeLogoutDialog(): void {
+  this.showLogoutDialog = false;
+}
+
+logout(): void {
+  this.authService.logout();
+  this.store.dispatch(clearCart());
+  this.store.dispatch(clearWishlist());
+  this.store.dispatch(clearAddresses());
+
+  this.showLogoutDialog = false;
+
+  this.toast.show('Logged out successfully');
+  this.router.navigate(['/home']);
+}
 
   onProfilePictureSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -161,6 +173,12 @@ export class ProfileComponent {
   }
   onFullNameInput(): void {
     this.fullName = sanitizeNameInput(this.fullName);
+  }
+  onPhoneInput(): void {
+    this.phone = sanitizePhoneInput(this.phone);
+  }
+  isValidPhoneNumber(): boolean {
+    return isValidPhone(this.phone);
   }
   onCityInput(): void {
     this.city = sanitizeNameInput(this.city);
@@ -222,15 +240,31 @@ export class ProfileComponent {
     this.showAddForm = !this.showAddForm;
     this.addressSubmitted = false;
   }
-  deleteAddress(id: string | number | undefined) {
-    if (id === undefined) {
-      return;
-    }
-    const confirmed = window.confirm('Remove this address?');
-    if (!confirmed) {
-      return;
-    }
-    this.store.dispatch(removeAddress({ id }));
-    this.toast.show('Address removed');
+ openDeleteAddressDialog(id: string | number | undefined): void {
+  if (id === undefined) {
+    return;
   }
+
+  this.selectedAddressId = id;
+  this.showDeleteAddressDialog = true;
+}
+
+closeDeleteAddressDialog(): void {
+  this.showDeleteAddressDialog = false;
+  this.selectedAddressId = undefined;
+}
+
+deleteAddress(): void {
+  if (this.selectedAddressId === undefined) {
+    return;
+  }
+
+  this.store.dispatch(
+    removeAddress({ id: this.selectedAddressId })
+  );
+
+  this.toast.show('Address removed');
+
+  this.closeDeleteAddressDialog();
+}
 }

@@ -11,10 +11,11 @@ import { AuthService } from '../../core/services/auth.service';
 import { clearWishlist } from '../../store/wishlist/wishlist.actions';
 import { clearCart } from '../../store/cart/cart.actions';
 import { clearAddresses } from '../../store/address/address.actions';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink,RouterLinkActive,AsyncPipe,FormsModule],
+  imports: [RouterLink,RouterLinkActive,AsyncPipe,FormsModule,ConfirmationDialogComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -75,17 +76,25 @@ search() {
       search: this.searchText
     }
   });
+}showLogoutDialog = false;
+
+openLogoutDialog() {
+  this.showLogoutDialog = true;
 }
+
+closeLogoutDialog() {
+  this.showLogoutDialog = false;
+}
+
 logout() {
-  const confirmed = window.confirm('Are you sure you want to logout?');
-  if (!confirmed) {
-    return;
-  }
   this.authService.logout();
   this.store.dispatch(clearCart());
   this.store.dispatch(clearWishlist());
   this.store.dispatch(clearAddresses());
+
   this.showAccount = false;
+  this.showLogoutDialog = false;
+
   this.router.navigate(['/home']);
 }
 }

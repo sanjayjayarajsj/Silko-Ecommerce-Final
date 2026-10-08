@@ -1,0 +1,184 @@
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filters input,
+.filters select {
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  background: var(--color-bg);
+}
+
+.loading {
+  color: var(--color-text-muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.reviews-table th {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.reviews-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Do not put display:flex on the <td> itself - it stops being a table cell
+   and the Actions column drifts out of line with its row. */
+.actions-cell a,
+.actions-cell button,
+.actions-cell .actions-cell button {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.empty-row {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 30px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination button:not(:disabled):hover {
+  background: var(--color-surface);
+}
+
+.actions-cell button.delete {
+  background: #fde2e1;
+  color: var(--color-danger);
+}
+
+.verified {
+  margin-left: 6px;
+
+  color: #1e7d3a;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.rating-stars {
+  color: #cbd2d8;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.rating-stars .on {
+  color: var(--color-accent);
+}
+
+/* the review text may be long: let it wrap instead of stretching the table */
+.reviews-table td.review-cell {
+  min-width: 260px;
+  max-width: 440px;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.review-cell strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.review-text {
+  color: var(--color-text-muted);
+}
+
+.retry {
+  margin-left: 8px;
+  padding: 6px 12px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+
+  background: var(--color-bg);
+
+  cursor: pointer;
+}
+
+/* Phone cards come from the shared admin-table styles (src/styles.css),
+   which read each cell's data-label. Only the review text is special:
+   it reads better left-aligned and stacked. */
+@media (max-width: 860px) {
+  .reviews-table td.review-cell {
+    min-width: 0;
+    max-width: none;
+
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+    text-align: left;
+  }
+}

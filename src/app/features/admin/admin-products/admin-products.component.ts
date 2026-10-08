@@ -4,11 +4,11 @@ import { RouterLink } from '@angular/router';
 import { Product } from '../../products/product.model';
 import { ProductService } from '../../products/product.service';
 import { ToastService } from '../../../core/services/toast.service';
-
+import { ConfirmationDialogComponent } from '../../../shared/confirmation-dialog/confirmation-dialog.component';
 @Component({
   selector: 'app-admin-products',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink,ConfirmationDialogComponent],
   templateUrl: './admin-products.component.html',
   styleUrl: './admin-products.component.css'
 })
@@ -30,7 +30,8 @@ export class AdminProductsComponent {
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
-
+showDeleteDialog = false;
+productToDelete: Product | null = null;
   constructor() {
     this.loadProducts();
   }
@@ -122,16 +123,32 @@ export class AdminProductsComponent {
     });
   }
 
-  deleteProduct(product: Product) {
-    const confirmed = window.confirm(`Delete "${product.name}"? This cannot be undone.`);
-    if (!confirmed) {
-      return;
-    }
+openDeleteDialog(product: Product): void {
+  this.productToDelete = product;
+  this.showDeleteDialog = true;
+}
 
-    this.productService.deleteProduct(product.id).subscribe(() => {
-      this.allProducts = this.allProducts.filter(p => p.id !== product.id);
-      this.applyFilters();
-      this.toast.show('Product deleted');
-    });
+closeDeleteDialog(): void {
+  this.showDeleteDialog = false;
+  this.productToDelete = null;
+}
+
+deleteProduct(): void {
+  const product = this.productToDelete;
+
+  if (!product) {
+    return;
   }
+
+  this.productService.deleteProduct(product.id).subscribe(() => {
+    this.allProducts = this.allProducts.filter(
+      p => p.id !== product.id
+    );
+
+    this.applyFilters();
+    this.toast.show('Product deleted');
+
+    this.closeDeleteDialog();
+  });
+}
 }

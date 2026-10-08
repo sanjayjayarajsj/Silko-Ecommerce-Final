@@ -70,6 +70,12 @@
                     {{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}
                   </span>
 
+                  @if (addr.phone) {
+                    <span class="saved-address-text">
+                      +91 {{ addr.phone }}
+                    </span>
+                  }
+
                 </button>
 
               }
@@ -100,6 +106,7 @@
             [(ngModel)]="fullName"
             (input)="onFullNameInput()"
             placeholder="Enter your full name"
+            autocomplete="name"
           >
 
           @if (submitted && !fullName) {
@@ -109,6 +116,41 @@
           } @else if (submitted && !isValidFullName()) {
             <small class="error">
               Enter a valid name (letters only, at least 3 characters)
+            </small>
+          }
+
+        </div>
+
+
+        <div class="form-field">
+
+          <label for="phone">
+            Mobile Number
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            name="phone"
+            [(ngModel)]="phone"
+            (input)="onPhoneInput()"
+            placeholder="10-digit mobile number"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel-national"
+          >
+
+          @if (submitted && !phone) {
+            <small class="error">
+              Mobile number is required
+            </small>
+          } @else if (submitted && !isValidPhoneNumber()) {
+            <small class="error">
+              Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9
+            </small>
+          } @else {
+            <small class="field-hint">
+              Used only to contact you about your delivery.
             </small>
           }
 
@@ -128,6 +170,7 @@
             [(ngModel)]="address"
             (input)="onAddressInput()"
             placeholder="Enter your address"
+            autocomplete="street-address"
           >
 
           @if (submitted && !address) {
@@ -158,6 +201,7 @@
               [(ngModel)]="city"
               (input)="onCityInput()"
               placeholder="Enter your city"
+              autocomplete="address-level2"
             >
 
             @if (submitted && !city) {
@@ -188,6 +232,7 @@
               placeholder="6-digit PIN code"
               maxlength="6"
               inputmode="numeric"
+              autocomplete="postal-code"
             >
 
             @if (submitted && !isValidPin()) {
@@ -199,6 +244,53 @@
           </div>
 
         </div>
+
+
+        <!-- Offered only for a complete address that is not saved yet -->
+        @if (isNewAddress()) {
+
+          <div class="save-address-box">
+
+            <label class="save-address-check">
+              <input
+                type="checkbox"
+                name="saveThisAddress"
+                [(ngModel)]="saveThisAddress"
+              >
+              <span>Save this address for next time</span>
+            </label>
+
+            @if (saveThisAddress) {
+
+              <div class="type-chips" role="radiogroup" aria-label="Address type">
+
+                <button
+                  type="button"
+                  role="radio"
+                  [class.active]="saveAddressType === 'Home'"
+                  [attr.aria-checked]="saveAddressType === 'Home'"
+                  (click)="saveAddressType = 'Home'"
+                >
+                  Home
+                </button>
+
+                <button
+                  type="button"
+                  role="radio"
+                  [class.active]="saveAddressType === 'Work'"
+                  [attr.aria-checked]="saveAddressType === 'Work'"
+                  (click)="saveAddressType = 'Work'"
+                >
+                  Work
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
 
       </form>
 
@@ -295,113 +387,21 @@
         }
 
 
-        <!-- Card Details -->
+        <!-- This is a demo store: nothing is charged and no card or UPI
+             details are collected -->
 
-        @if (paymentMethod === 'Card') {
+        @if (paymentMethod === 'Card' || paymentMethod === 'UPI') {
 
-          <div class="payment-details">
+          <p class="payment-note">
+            <strong>Demo store:</strong> no real payment is taken, and no card or
+            UPI details are needed. Your order is simply placed.
+          </p>
 
-            <div class="form-field">
+        } @else if (paymentMethod === 'COD') {
 
-              <label for="cardNumber">
-                Card Number
-              </label>
-
-              <input
-                id="cardNumber"
-                type="text"
-                [(ngModel)]="cardNumber"
-                name="cardNumber"
-                placeholder="16-digit card number"
-                maxlength="19"
-                inputmode="numeric"
-              >
-
-            </div>
-
-
-            <div class="payment-details-row">
-
-              <div class="form-field">
-
-                <label for="cardExpiry">
-                  Expiry
-                </label>
-
-                <input
-                  id="cardExpiry"
-                  type="text"
-                  [(ngModel)]="cardExpiry"
-                  name="cardExpiry"
-                  placeholder="MM/YY"
-                  maxlength="5"
-                >
-
-              </div>
-
-
-              <div class="form-field">
-
-                <label for="cardCvv">
-                  CVV
-                </label>
-
-                <input
-                  id="cardCvv"
-                  type="text"
-                  [(ngModel)]="cardCvv"
-                  name="cardCvv"
-                  placeholder="CVV"
-                  maxlength="3"
-                  inputmode="numeric"
-                >
-
-              </div>
-
-            </div>
-
-
-            @if (submitted && !isValidCard()) {
-              <small class="error">
-                Enter a valid 16-digit card number, MM/YY expiry and 3-digit CVV
-              </small>
-            }
-
-          </div>
-
-        }
-
-
-        <!-- UPI Details -->
-
-        @if (paymentMethod === 'UPI') {
-
-          <div class="payment-details">
-
-            <div class="form-field">
-
-              <label for="upiId">
-                UPI ID
-              </label>
-
-              <input
-                id="upiId"
-                type="text"
-                [(ngModel)]="upiId"
-                name="upiId"
-                placeholder="yourname@bank"
-              >
-
-            </div>
-
-
-            @if (submitted && !isValidUpi()) {
-              <small class="error">
-                Enter a valid UPI ID, e.g. yourname&#64;bank
-              </small>
-            }
-
-          </div>
+          <p class="payment-note">
+            Pay in cash when your order arrives.
+          </p>
 
         }
 
@@ -437,11 +437,19 @@
 
                 <div class="order-product-image">
 
-                  <img
-                    [src]="item.product.image"
-                    [alt]="item.product.name"
-                    loading="lazy"
+                  <a
+                    [routerLink]="['/products', item.product.id]"
+                    target="_blank"
+                    rel="noopener"
+                    class="product-image-link"
+                    [attr.aria-label]="'View ' + item.product.name + ' (opens in a new tab)'"
                   >
+                    <img
+                      [src]="item.product.image"
+                      [alt]="item.product.name"
+                      loading="lazy"
+                    >
+                  </a>
 
                 </div>
 
@@ -452,7 +460,12 @@
                   </p>
 
                   <h3>
-                    {{ item.product.name }}
+                    <a
+                      [routerLink]="['/products', item.product.id]"
+                      target="_blank"
+                      rel="noopener"
+                      class="product-link"
+                    >{{ item.product.name }}</a>
                   </h3>
 
                   <p class="order-quantity">

@@ -445,7 +445,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: var(--color-secondary);
+  /* background: var(--color-secondary); */
 
   transform: translateY(-1px);
 }

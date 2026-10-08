@@ -12,32 +12,102 @@
         <p class="subtitle">Placed on {{ order.createdAt | date:'d MMM y, h:mm a' }}</p>
       </div>
 
-      <div class="status-control">
+          <div class="status-control">
         <label>Status</label>
         <select
+          #statusSelect
           [class]="'status-select status-' + order.status.toLowerCase()"
-          [(ngModel)]="order.status"
-          (ngModelChange)="changeStatus($event)"
-          [disabled]="order.status === 'Cancelled'"
+          (change)="changeStatus(statusSelect.value, statusSelect)"
+          [disabled]="isStatusLocked(order.status)"
         >
           @for (status of statuses; track status) {
-            <option [value]="status">{{ status }}</option>
+            <option
+              [value]="status"
+              [selected]="status === order.status"
+              [disabled]="isOptionDisabled(order.status, status)"
+            >{{ status }}</option>
           }
         </select>
 
-        @if (order.status !== 'Cancelled' && order.status !== 'Delivered') {
-          <button class="cancel-btn" (click)="cancelOrder()">Cancel Order</button>
+        @if (canCancelOrder(order.status)) {
+          <button class="cancel-btn" (click)="openCancel()">Cancel Order</button>
         }
       </div>
     </div>
 
     <div class="details-grid">
+    @if (order.status === 'Cancelled' && order.cancelNote) {
+      <div class="card">
+        <h2>Cancellation note</h2>
+        <p>{{ order.cancelNote }}</p>
+        @if (order.cancelledAt) {
+          <p class="subtitle">Cancelled on {{ order.cancelledAt | date:'d MMM y, h:mm a' }}</p>
+        }
+      </div>
+    }
+        @if (order.returnRequest; as rr) {
+      <div class="card">
+        <h2>Return request</h2>
+        <p>Requested on {{ rr.requestedAt | date:'d MMM y, h:mm a' }}</p>
+        <p><strong>Reason:</strong> {{ rr.reason }}</p>
+        @if (rr.comment) {
+          <p><strong>Customer comment:</strong> {{ rr.comment }}</p>
+        }
 
+        <div class="return-control">
+          <label>Return status</label>
+          <select
+            #returnSelect
+            [class]="'status-select ' + returnStatusClass(rr.status)"
+            (change)="changeReturnStatus(returnSelect.value, returnSelect)"
+            [disabled]="isReturnLocked(rr.status)"
+          >
+            @for (s of returnOptions(rr.status); track s) {
+              <option
+                [value]="s"
+                [selected]="s === rr.status"
+                [disabled]="isReturnOptionDisabled(rr.status, s)"
+              >{{ s }}</option>
+            }
+          </select>
+
+          @if (canRejectReturn(rr.status) && !showRejectBox) {
+            <button class="cancel-btn" (click)="openReject()">Reject Return</button>
+          }
+        </div>
+
+        @if (rr.status === 'Rejected' && rr.adminNote) {
+          <p><strong>Rejection note:</strong> {{ rr.adminNote }}</p>
+        }
+
+        @if (showRejectBox) {
+          <div class="reject-box">
+            <textarea
+              rows="3"
+              maxlength="200"
+              [(ngModel)]="rejectNote"
+              name="rejectNote"
+              placeholder="Tell the customer why the return is rejected"
+            ></textarea>
+            @if (rejectSubmitted && rejectNote.trim().length < 5) {
+              <small class="reject-error">Please write at least 5 characters</small>
+            }
+            <div class="reject-actions">
+              <button class="cancel-btn" (click)="showRejectBox = false">Close</button>
+              <button class="cancel-btn confirm" (click)="confirmReject()">Reject Return</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
       <div class="card">
         <h2>Customer &amp; Shipping</h2>
         <p><strong>{{ order.fullName }}</strong></p>
         <p>{{ order.address }}</p>
         <p>{{ order.city }} - {{ order.pincode }}</p>
+                  @if (order.phone) {
+            <p>Phone: <strong>+91 {{ order.phone }}</strong></p>
+          }
       </div>
 
       <div class="card">
@@ -66,5 +136,11 @@
   } @else {
     <p class="loading">Order not found.</p>
   }
-
+  @if (showCancelDialog && order) {
+    <app-cancel-order-dialog
+      [orderId]="order.id!"
+      (confirmed)="confirmCancel($event)"
+      (closed)="showCancelDialog = false"
+    />
+  }
 </div>

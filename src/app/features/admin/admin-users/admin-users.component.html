@@ -30,7 +30,7 @@
   } @else {
 
     <div class="table-wrap">
-      <table class="users-table">
+     <table class="users-table admin-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -44,10 +44,10 @@
 
           @for (user of pagedUsers; track user.id) {
             <tr>
-              <td>{{ user.name }}</td>
-              <td>{{ user.email }}</td>
-              <td class="role-cell">{{ user.role ?? 'user' }}</td>
-              <td>
+             <td data-label="Name">{{ user.name }}</td>
+              <td data-label="Email">{{ user.email }}</td>
+             <td class="role-cell" data-label="Role">{{ user.role ?? 'user' }}</td>
+              <td data-label="Status">
                 <span class="badge" [class.active]="isActive(user)" [class.inactive]="!isActive(user)">
                   {{ isActive(user) ? 'Active' : 'Inactive' }}
                 </span>
@@ -61,7 +61,7 @@
                   <button
                     [class.deactivate]="isActive(user)"
                     [class.activate]="!isActive(user)"
-                    (click)="toggleActive(user)"
+                    (click)="openStatusDialog(user)"
                   >
                     {{ isActive(user) ? 'Deactivate' : 'Activate' }}
                   </button>
@@ -87,5 +87,17 @@
     }
 
   }
+  @if (showStatusDialog && userToToggle) {
+
+  <app-confirmation-dialog
+    [title]="isActive(userToToggle) ? 'Deactivate Account?' : 'Activate Account?'"
+    [message]="isActive(userToToggle)
+      ? 'Are you sure you want to deactivate ' + userToToggle.name + '\'s account?'
+      : 'Are you sure you want to activate ' + userToToggle.name + '\'s account?'"
+    (confirmed)="toggleActive()"
+    (cancelled)="closeStatusDialog()"
+  />
+
+}
 
 </div>

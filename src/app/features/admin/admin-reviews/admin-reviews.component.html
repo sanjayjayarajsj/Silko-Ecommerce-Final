@@ -1,0 +1,115 @@
+<div class="admin-reviews">
+
+  <div class="page-header">
+    <div>
+      <h1>Reviews</h1>
+      <p class="subtitle">{{ filteredReviews.length }} of {{ allReviews.length }} reviews</p>
+    </div>
+  </div>
+
+  <div class="filters">
+
+    <input
+      type="text"
+      placeholder="Search by customer, watch or review text"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onFilterChange()"
+      class="search-input"
+    >
+
+    <select [(ngModel)]="ratingFilter" (ngModelChange)="onFilterChange()">
+      <option value="All">All Ratings</option>
+      @for (star of stars; track star) {
+        <option [value]="star">{{ star }} {{ star === 1 ? 'star' : 'stars' }}</option>
+      }
+    </select>
+
+  </div>
+
+  @if (loading) {
+    <p class="loading">Loading...</p>
+  } @else if (failed) {
+    <p class="loading">
+      Could not load the reviews.
+      <button type="button" class="retry" (click)="load()">Try again</button>
+    </p>
+  } @else {
+
+    <div class="table-wrap">
+      <table class="reviews-table admin-table">
+        <thead>
+          <tr>
+            <th>Watch</th>
+            <th>Customer</th>
+            <th>Rating</th>
+            <th>Review</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          @for (review of pagedReviews; track review.id) {
+            <tr>
+              <td data-label="Watch">{{ productName(review) }}</td>
+              <td data-label="Customer">
+                {{ review.userName }}
+                @if (review.verifiedPurchase) {
+                  <span class="verified" title="Bought this watch">✓ Verified</span>
+                }
+              </td>
+              <td data-label="Rating">
+                <span class="rating-stars" [attr.aria-label]="review.rating + ' out of 5'">
+                  @for (star of stars; track star) {
+                    <span [class.on]="star <= review.rating">★</span>
+                  }
+                </span>
+              </td>
+              <td class="review-cell" data-label="Review">
+                @if (review.title) {
+                  <strong>{{ review.title }}</strong>
+                }
+                <span class="review-text">{{ review.comment }}</span>
+              </td>
+              <td data-label="Date">{{ review.createdAt | date:'d MMM y' }}</td>
+              <td class="actions-cell">
+                <button type="button" class="delete" (click)="askDelete(review)">Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="empty-row">
+                @if (allReviews.length === 0) {
+                  No customer reviews yet.
+                } @else {
+                  No reviews match your filters.
+                }
+              </td>
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages > 1) {
+      <div class="pagination">
+        <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Prev</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+      </div>
+    }
+
+  }
+
+</div>
+
+
+@if (pendingDelete) {
+  <app-confirmation-dialog
+    title="Delete this review?"
+    [message]="'Delete the review by ' + pendingDelete.userName + '? This cannot be undone.'"
+    (confirmed)="confirmDelete()"
+    (cancelled)="pendingDelete = null"
+  ></app-confirmation-dialog>
+}

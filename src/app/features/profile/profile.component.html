@@ -9,7 +9,7 @@
     <button
       type="button"
       class="logout-btn"
-      (click)="logout()"
+      (click)="openLogoutDialog()"
     >
       Logout
     </button>
@@ -306,7 +306,33 @@
 
 
         <!-- Address -->
+        <!-- Mobile Number -->
 
+        <div class="form-field">
+
+          <label for="phone">
+            Mobile Number
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            placeholder="10-digit mobile number"
+            [(ngModel)]="phone"
+            (input)="onPhoneInput()"
+            name="phone"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel-national"
+          >
+
+          @if (addressSubmitted && !phone) {
+            <small class="error">Mobile number is required</small>
+          } @else if (addressSubmitted && !isValidPhoneNumber()) {
+            <small class="error">Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9</small>
+          }
+
+        </div>
         <div class="form-field">
 
           <label for="address">
@@ -419,7 +445,7 @@
                 <button
                   type="button"
                   class="remove-address-btn"
-                  (click)="deleteAddress(addr.id)"
+                 (click)="openDeleteAddressDialog(addr.id)"
                 >
                   Remove
                 </button>
@@ -437,6 +463,11 @@
                   {{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}
                 </p>
 
+                @if (addr.phone) {
+                  <p class="address-text">
+                    +91 {{ addr.phone }}
+                  </p>
+                }
               </div>
 
             </div>
@@ -477,5 +508,26 @@
     }
 
   </div>
+  @if (showLogoutDialog) {
+
+  <app-confirmation-dialog
+    title="Logout?"
+    message="Are you sure you want to logout?"
+    (confirmed)="logout()"
+    (cancelled)="closeLogoutDialog()"
+  />
+
+}
+
+@if (showDeleteAddressDialog) {
+
+  <app-confirmation-dialog
+    title="Remove Address?"
+    message="Are you sure you want to remove this address?"
+    (confirmed)="deleteAddress()"
+    (cancelled)="closeDeleteAddressDialog()"
+  />
+
+}
 
 </section>

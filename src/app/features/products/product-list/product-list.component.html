@@ -15,12 +15,12 @@
 
     <p class="eyebrow">SILKO COLLECTION</p>
 
-    @if (searchText) {
+    @if (search()) {
       <h1>Search Results</h1>
 
       <p class="search-result">
         Showing results for
-        <strong>"{{ searchText }}"</strong>
+        <strong>"{{ search() }}"</strong>
       </p>
 
       <button
@@ -48,7 +48,6 @@
 
 <section class="products-page">
 
-
   <!-- Search Bar -->
   <div class="search-wrapper">
 
@@ -62,12 +61,67 @@
       </span>
 
       <input
-        type="text"
-        placeholder="Search watches..."
-        [(ngModel)]="searchText"
-        (ngModelChange)="resetPage()"
+        type="search"
+        placeholder="Search by name, brand or style..."
+        aria-label="Search watches"
+        [value]="searchBox()"
+        (input)="onSearchInput($any($event.target).value)"
       >
 
+    </div>
+
+  </div>
+
+
+  <!-- Result count, sorting and (on phones) the filter button -->
+  <div class="list-toolbar">
+
+    <button
+      type="button"
+      class="filter-toggle"
+      aria-controls="product-filters"
+      [attr.aria-expanded]="filtersOpen()"
+      (click)="toggleFilters()"
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          d="M4 6h16M7 12h10M10 18h4"
+        />
+      </svg>
+      Filters
+      @if (chips().length) {
+        <span class="filter-count">{{ chips().length }}</span>
+      }
+    </button>
+
+    <p class="result-count" aria-live="polite">
+      @if (!showSkeleton() && !showError()) {
+        @if (filtered().length === 0) {
+          No watches found
+        } @else {
+          Showing <strong>{{ rangeStart() }}–{{ rangeEnd() }}</strong>
+          of <strong>{{ filtered().length }}</strong>
+          {{ filtered().length === 1 ? 'watch' : 'watches' }}
+        }
+      }
+    </p>
+
+    <div class="filter-field sort-field">
+      <select
+        aria-label="Sort watches"
+        (change)="setSort($any($event.target).value)"
+      >
+        @for (option of sortOptions; track option.value) {
+          <option
+            [value]="option.value"
+            [selected]="option.value === sort()"
+          >{{ option.label }}</option>
+        }
+      </select>
     </div>
 
   </div>
@@ -77,12 +131,16 @@
   <div class="products-layout">
 
     <!-- Sidebar Filters -->
-    <aside class="filter-sidebar">
+    <aside
+      id="product-filters"
+      class="filter-sidebar"
+      [class.open]="filtersOpen()"
+    >
 
       <div class="filter-header">
-        <span class="filter-label">FILTER & SORT</span>
+        <span class="filter-label">FILTERS</span>
 
-        @if (hasActiveFilters) {
+        @if (chips().length) {
           <button
             type="button"
             class="filter-active"
@@ -97,20 +155,43 @@
       <!-- Brand -->
       <div class="sidebar-group">
 
-        <label class="sidebar-group-label">Brand</label>
+        <label class="sidebar-group-label" for="filter-brand">Brand</label>
 
         <div class="filter-field">
           <select
-            [(ngModel)]="selectedCategory"
-            (ngModelChange)="resetPage()"
+            id="filter-brand"
+            (change)="setBrand($any($event.target).value)"
           >
             <option value="">All Brands</option>
-            <option value="Titan">Titan</option>
-            <option value="Casio">Casio</option>
-            <option value="Fastrack">Fastrack</option>
-            <option value="Fossil">Fossil</option>
-            <option value="Police">Police</option>
-            <option value="G-Shock">G-Shock</option>
+            @for (item of brands(); track item.name) {
+              <option
+                [value]="item.name"
+                [selected]="item.name.toLowerCase() === brand().toLowerCase()"
+              >{{ item.name }} ({{ item.count }})</option>
+            }
+          </select>
+        </div>
+
+      </div>
+
+
+      <!-- Style (the "category" of each watch) -->
+      <div class="sidebar-group">
+
+        <label class="sidebar-group-label" for="filter-category">Style</label>
+
+        <div class="filter-field">
+          <select
+            id="filter-category"
+            (change)="setCategory($any($event.target).value)"
+          >
+            <option value="">All Styles</option>
+            @for (item of categories(); track item.name) {
+              <option
+                [value]="item.name"
+                [selected]="item.name.toLowerCase() === category().toLowerCase()"
+              >{{ item.name }} ({{ item.count }})</option>
+            }
           </select>
         </div>
 
@@ -120,17 +201,21 @@
       <!-- Price -->
       <div class="sidebar-group">
 
-        <label class="sidebar-group-label">Price Range</label>
+        <label class="sidebar-group-label" for="filter-min">Price Range (₹)</label>
 
         <div class="price-range-fields">
 
           <div class="filter-field price-field">
             <input
+              #minInput
+              id="filter-min"
               type="number"
               min="0"
+              inputmode="numeric"
               placeholder="Min"
-              [(ngModel)]="minPrice"
-              (ngModelChange)="resetPage()"
+              aria-label="Minimum price"
+              [value]="minPrice() ?? ''"
+              (change)="applyPrice(minInput.value, maxInput.value)"
             >
           </div>
 
@@ -138,11 +223,14 @@
 
           <div class="filter-field price-field">
             <input
+              #maxInput
               type="number"
               min="0"
+              inputmode="numeric"
               placeholder="Max"
-              [(ngModel)]="maxPrice"
-              (ngModelChange)="resetPage()"
+              aria-label="Maximum price"
+              [value]="maxPrice() ?? ''"
+              (change)="applyPrice(minInput.value, maxInput.value)"
             >
           </div>
 
@@ -151,21 +239,17 @@
       </div>
 
 
-      <!-- Sort -->
+      <!-- Availability -->
       <div class="sidebar-group">
 
-        <label class="sidebar-group-label">Sort By</label>
-
-        <div class="filter-field">
-          <select
-            [(ngModel)]="sortOption"
-            (ngModelChange)="resetPage()"
+        <label class="check-row">
+          <input
+            type="checkbox"
+            [checked]="inStockOnly()"
+            (change)="setInStock($any($event.target).checked)"
           >
-            <option value="">Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-          </select>
-        </div>
+          <span>In stock only</span>
+        </label>
 
       </div>
 
@@ -173,27 +257,42 @@
 
 
     <!-- Products -->
-    <div class="products-main">
+    <div class="products-main" id="products-top">
 
-      <!-- Product Grid -->
-      <div class="product-grid">
-
-        @if (products | async; as productList) {
-
-          @for (
-            product of pagedProducts(productList);
-            track product.id
-          ) {
-
-            <app-product-card
-              [product]="product"
-            ></app-product-card>
-
+      <!-- Active filters, each can be removed with its ×  -->
+      @if (chips().length) {
+        <div class="chips" aria-label="Active filters">
+          @for (chip of chips(); track chip.label) {
+            <button
+              type="button"
+              class="chip"
+              (click)="removeChip(chip)"
+              [attr.aria-label]="'Remove filter ' + chip.label"
+            >
+              {{ chip.label }}
+              <span aria-hidden="true">×</span>
+            </button>
           }
+        </div>
+      }
 
-        } @else {
 
-          @for (i of skeletonCards; track i) {
+      @if (showError()) {
+
+        <!-- The list could not be loaded -->
+        <div class="state-box" role="alert">
+          <h2>We couldn't load the watches</h2>
+          <p>Check your connection and try again.</p>
+          <button type="button" class="state-btn" (click)="retry()">
+            Try again
+          </button>
+        </div>
+
+      } @else if (showSkeleton()) {
+
+        <!-- First load -->
+        <div class="product-grid">
+          @for (i of skeletonCards; track $index) {
 
             <div class="product-skeleton">
 
@@ -217,23 +316,45 @@
             </div>
 
           }
+        </div>
 
-        }
+      } @else if (filtered().length === 0) {
 
-      </div>
+        <!-- Nothing matches -->
+        <div class="state-box">
+          <h2>No watches found</h2>
+          <p>
+            @if (chips().length) {
+              Nothing matches these filters. Try removing one, or start again.
+            } @else {
+              There are no watches to show right now.
+            }
+          </p>
+          @if (chips().length) {
+            <button type="button" class="state-btn" (click)="clearFilters()">
+              Clear all filters
+            </button>
+          }
+        </div>
+
+      } @else {
+
+        <div class="product-grid">
+          @for (product of pagedProducts(); track product.id) {
+            <app-product-card [product]="product"></app-product-card>
+          }
+        </div>
 
 
-      <!-- Pagination -->
-      @if (products | async; as productList) {
+        <!-- Pagination -->
+        @if (totalPages() > 1) {
 
-        @if (totalPages(productList) > 1) {
-
-          <div class="pagination">
+          <nav class="pagination" aria-label="Pages">
 
             <button
               type="button"
-              [disabled]="currentPage === 1"
-              (click)="goToPage(currentPage - 1, productList)"
+              [disabled]="currentPage() === 1"
+              (click)="goToPage(currentPage() - 1)"
             >
               <span>←</span>
               Previous
@@ -244,25 +365,25 @@
               <span class="page-label">PAGE</span>
 
               <strong>
-                {{ currentPage }}
+                {{ currentPage() }}
               </strong>
 
               <span>
-                of {{ totalPages(productList) }}
+                of {{ totalPages() }}
               </span>
 
             </div>
 
             <button
               type="button"
-              [disabled]="currentPage === totalPages(productList)"
-              (click)="goToPage(currentPage + 1, productList)"
+              [disabled]="currentPage() === totalPages()"
+              (click)="goToPage(currentPage() + 1)"
             >
               Next
               <span>→</span>
             </button>
 
-          </div>
+          </nav>
 
         }
 

@@ -9,7 +9,6 @@ import { OrderService } from '../../checkout/order.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 type RevenuePeriod = 'day' | 'month' | 'year';
-
 interface RevenuePoint {
   key: string;        // used to match orders to this bar
   label: string;      // shown under the bar
@@ -53,15 +52,13 @@ export class AdminDashboardComponent {
   totalRevenue = 0;
   totalUsers = 0;
 
-  // Revenue overview (Daily / Monthly / Yearly)
+ 
   period: RevenuePeriod = 'day';
   readonly periodTabs: { value: RevenuePeriod; label: string }[] = [
     { value: 'day', label: 'Daily' },
     { value: 'month', label: 'Monthly' },
     { value: 'year', label: 'Yearly' }
   ];
-
-  // How much history each view shows - change these numbers if you want more/less
   private readonly dayCount = 7;
   private readonly monthCount = 12;
   private readonly yearCount = 5;
@@ -91,7 +88,6 @@ export class AdminDashboardComponent {
 
       this.totalProducts = products.length;
       this.lowStockCount = products.filter(p => p.stock <= 5).length;
-
       this.totalOrders = orders.length;
       // Cancelled orders are not counted as revenue
       this.totalRevenue = orders

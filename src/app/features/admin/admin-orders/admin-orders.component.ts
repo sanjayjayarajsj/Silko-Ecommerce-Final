@@ -2,23 +2,31 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { Order, OrderStatus } from '../../checkout/order.model';
+import {
+  Order,
+  OrderStatus,
+  ORDER_FLOW,
+  isStatusOptionDisabled,
+  isStatusLocked,
+  canCancelOrder
+} from '../../checkout/order.model';
+import { CancelOrderDialogComponent } from '../cancel-order-dialog/cancel-order-dialog.component';
 import { OrderService } from '../../checkout/order.service';
-import { ProductService } from '../../products/product.service';
+// import { ProductService } from '../../products/product.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { ConfirmationDialogComponent } from '../../../shared/confirmation-dialog/confirmation-dialog.component';
 
 const STATUSES: OrderStatus[] = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
 
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
-  imports: [FormsModule, RouterLink, DatePipe],
+  imports: [FormsModule, RouterLink, DatePipe,CancelOrderDialogComponent,ConfirmationDialogComponent],
   templateUrl: './admin-orders.component.html',
   styleUrl: './admin-orders.component.css'
 })
 export class AdminOrdersComponent {
   private orderService = inject(OrderService);
-  private productService = inject(ProductService);
   private toast = inject(ToastService);
 
   loading = true;
@@ -28,6 +36,22 @@ export class AdminOrdersComponent {
   pagedOrders: Order[] = [];
 
   statuses = STATUSES;
+
+  // row dropdown shows the flow + Cancelled (Cancelled is never selectable)
+  rowStatuses: OrderStatus[] = [...ORDER_FLOW, 'Cancelled'];
+
+  // used by the template
+  isOptionDisabled = isStatusOptionDisabled;
+  isStatusLocked = isStatusLocked;
+  canCancelOrder = canCancelOrder;
+
+  // order currently shown in the cancel popup
+  cancelTarget: Order | null = null;
+  showStatusDialog = false;
+statusOrder: Order | null = null;
+statusToChange: OrderStatus | null = null;
+previousStatus: OrderStatus | null = null;
+statusSelect: HTMLSelectElement | null = null;
 
   searchTerm = '';
   statusFilter: OrderStatus | 'All' = 'All';
@@ -97,34 +121,94 @@ export class AdminOrdersComponent {
     this.updatePagedOrders();
   }
 
-  changeStatus(order: Order, status: OrderStatus) {
-    const previousStatus = order.status;
-    order.status = status;
+ changeStatus(order: Order, value: string, select: HTMLSelectElement) {
+  const status = value as OrderStatus;
+  const previousStatus = order.status;
 
-    this.orderService.updateOrderStatus(order.id!, status).subscribe({
+  if (status === previousStatus) {
+    return;
+  }
+
+  if (isStatusOptionDisabled(previousStatus, status)) {
+    select.value = previousStatus;
+    return;
+  }
+
+  this.statusOrder = order;
+  this.statusToChange = status;
+  this.previousStatus = previousStatus;
+  this.statusSelect = select;
+  this.showStatusDialog = true;
+}
+closeStatusDialog(): void {
+  if (this.previousStatus && this.statusSelect) {
+    this.statusSelect.value = this.previousStatus;
+  }
+
+  this.showStatusDialog = false;
+  this.statusOrder = null;
+  this.statusToChange = null;
+  this.previousStatus = null;
+  this.statusSelect = null;
+}
+
+confirmStatusChange(): void {
+  const order = this.statusOrder;
+  const status = this.statusToChange;
+  const previousStatus = this.previousStatus;
+  const select = this.statusSelect;
+
+  if (!order || !status || !previousStatus || !select) {
+    return;
+  }
+
+  order.status = status;
+  this.showStatusDialog = false;
+
+  this.orderService.updateOrderStatus(order.id!, status).subscribe({
+    next: () => {
+      this.toast.show(`Order #${order.id} marked as ${status}`);
+
+      this.statusOrder = null;
+      this.statusToChange = null;
+      this.previousStatus = null;
+      this.statusSelect = null;
+    },
+    error: () => {
+      order.status = previousStatus;
+      select.value = previousStatus;
+
+      this.toast.show('Could not update order status');
+
+      this.statusOrder = null;
+      this.statusToChange = null;
+      this.previousStatus = null;
+      this.statusSelect = null;
+    }
+  });
+}
+
+  openCancel(order: Order) {
+    this.cancelTarget = order;
+  }
+
+  confirmCancel(note: string) {
+    const order = this.cancelTarget;
+    if (!order) {
+      return;
+    }
+
+    this.orderService.cancelOrder(order, note).subscribe({
       next: () => {
-        this.toast.show(`Order #${order.id} marked as ${status}`);
-
-        // Give the stock back, since this order is no longer being fulfilled.
-        if (status === 'Cancelled' && previousStatus !== 'Cancelled') {
-          order.items.forEach(item => {
-            const restored = item.product.stock + item.quantity;
-            this.productService.updateProduct(item.product.id, { stock: restored }).subscribe();
-          });
-        }
+        order.status = 'Cancelled';
+        order.cancelNote = note;
+        this.cancelTarget = null;
+        this.toast.show(`Order #${order.id} cancelled`);
       },
       error: () => {
-        order.status = previousStatus;
-        this.toast.show('Could not update order status');
+        this.toast.show('Could not cancel the order. Please try again.');
       }
     });
   }
 
-  cancelOrder(order: Order) {
-    const confirmed = window.confirm(`Cancel order #${order.id}? This cannot be undone.`);
-    if (!confirmed) {
-      return;
-    }
-    this.changeStatus(order, 'Cancelled');
-  }
 }

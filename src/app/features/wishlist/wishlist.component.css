@@ -306,7 +306,7 @@
 }
 
 .cart-btn:hover {
-  background: var(--color-secondary);
+  /* background: var(--color-secondary); */
   border-color: var(--color-secondary);
 
   transform: translateY(-1px);

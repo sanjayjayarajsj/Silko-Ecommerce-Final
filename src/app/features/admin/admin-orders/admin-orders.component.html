@@ -38,7 +38,7 @@
   } @else {
 
     <div class="table-wrap">
-      <table class="orders-table">
+     <table class="orders-table admin-table">
         <thead>
           <tr>
             <th>Order</th>
@@ -54,28 +54,36 @@
 
           @for (order of pagedOrders; track order.id) {
             <tr>
-              <td>#{{ order.id }}</td>
-              <td>{{ order.fullName }}</td>
-              <td>{{ order.createdAt | date:'d MMM y, h:mm a' }}</td>
-              <td>{{ order.paymentMethod }}</td>
-              <td>₹{{ order.total }}</td>
-              <td>
+             <td data-label="Order">#{{ order.id }}</td>
+             <td data-label="Customer">{{ order.fullName }}</td>
+             <td data-label="Date">{{ order.createdAt | date:'d MMM y, h:mm a' }}</td>
+             <td data-label="Payment">{{ order.paymentMethod }}</td>
+              <td data-label="Total">₹{{ order.total }}</td>
+                            <td data-label="Status">
                 <select
+                  #statusSelect
                   class="status-select"
                   [class]="'status-' + order.status.toLowerCase()"
-                  [(ngModel)]="order.status"
-                  (ngModelChange)="changeStatus(order, $event)"
-                  [disabled]="order.status === 'Cancelled'"
+                  (change)="changeStatus(order, statusSelect.value, statusSelect)"
+                  [disabled]="isStatusLocked(order.status)"
                 >
-                  @for (status of statuses; track status) {
-                    <option [value]="status">{{ status }}</option>
+                  @for (status of rowStatuses; track status) {
+                    <option
+                      [value]="status"
+                      [selected]="status === order.status"
+                      [disabled]="isOptionDisabled(order.status, status)"
+                    >{{ status }}</option>
                   }
                 </select>
+                              
+                @if (order.returnRequest) {
+                  <span class="return-badge">Return: {{ order.returnRequest.status }}</span>
+                }
               </td>
               <td class="actions-cell">
                 <a [routerLink]="['/admin/orders', order.id]">View</a>
-                @if (order.status !== 'Cancelled' && order.status !== 'Delivered') {
-                  <button (click)="cancelOrder(order)">Cancel</button>
+                @if (canCancelOrder(order.status)) {
+                  <button (click)="openCancel(order)">Cancel</button>
                 }
               </td>
             </tr>
@@ -98,5 +106,21 @@
     }
 
   }
+    @if (cancelTarget) {
+    <app-cancel-order-dialog
+      [orderId]="cancelTarget.id!"
+      (confirmed)="confirmCancel($event)"
+      (closed)="cancelTarget = null"
+    />
+  }
+@if (showStatusDialog && statusOrder && statusToChange) {
 
+  <app-confirmation-dialog
+    title="Change Order Status?"
+    [message]="'Mark order #' + statusOrder.id + ' as ' + statusToChange + '? You cannot go back to an earlier status.'"
+    (confirmed)="confirmStatusChange()"
+    (cancelled)="closeStatusDialog()"
+  />
+
+} 
 </div>

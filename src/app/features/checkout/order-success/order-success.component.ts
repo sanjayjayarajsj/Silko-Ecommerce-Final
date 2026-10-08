@@ -1,10 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, PLATFORM_ID, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
-import { Product } from '../../products/product.model';
+import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
+
+interface OrderSuccessProduct {
+  id: number;
+  name: string;
+  brand: string;
+  price: number;
+  image: string;
+}
 
 interface OrderSuccessItem {
-  product: Product;
+  product: OrderSuccessProduct;
   quantity: number;
 }
 
@@ -23,9 +30,16 @@ interface OrderSuccessState {
   styleUrl: './order-success.component.css'
 })
 export class OrderSuccessComponent {
+
   private router = inject(Router);
 
-  private state = history.state as OrderSuccessState;
+  // History state only exists in the browser.
+  // The server has no navigation history state.
+  private state = (
+    isPlatformBrowser(inject(PLATFORM_ID))
+      ? history.state
+      : null
+  ) as OrderSuccessState | null;
 
   orderId = this.state?.orderId;
   total = this.state?.total;
@@ -36,3 +50,4 @@ export class OrderSuccessComponent {
     this.router.navigate(['/home']);
   }
 }
+

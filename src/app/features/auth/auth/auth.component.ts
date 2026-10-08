@@ -1,4 +1,6 @@
 import { Component, OnDestroy, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -35,6 +37,33 @@ export class AuthComponent implements OnDestroy {
   showPassword = false;
   showConfirmPassword = false;
   errorMessage = ''; // login error
+    // true when the typed email belongs to an admin -> register link is hidden
+  isAdminEmail = false;
+  private emailCheck$ = new Subject<string>();
+
+  constructor() {
+    this.emailCheck$
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap(email =>
+          this.authService.isAdminEmail(email).pipe(catchError(() => of(false)))
+        ),
+        takeUntilDestroyed()
+      )
+      .subscribe(isAdmin => (this.isAdminEmail = isAdmin));
+  }
+
+  // Called on every keystroke in the login email box
+  onEmailChange(value: string): void {
+    const email = (value || '').trim();
+
+    if (!email.includes('@')) {
+      this.isAdminEmail = false;
+    }
+
+    this.emailCheck$.next(email.includes('@') ? email : '');
+  }
 
   // ---------- OTP (dummy) ----------
   // 'form' = registration form, 'otp' = OTP verification screen.
@@ -81,6 +110,7 @@ export class AuthComponent implements OnDestroy {
       if (user) {
         this.errorMessage = '';
         this.toast.show('Login Successful');
+        
 
         if (user.role === 'admin') {
           this.router.navigate(['/admin'], { replaceUrl: true });
