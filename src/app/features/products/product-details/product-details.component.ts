@@ -49,6 +49,8 @@ export class ProductDetailsComponent {
   // ---------- which product? (read from the URL, so clicking a similar
   // watch just changes :id and everything below updates) ----------
   private params = toSignal(this.route.paramMap, { initialValue: this.route.snapshot.paramMap });
+  private fragment = toSignal(this.route.fragment, { initialValue: this.route.snapshot.fragment });
+  private scrolledToReviews = false;
   private productId = computed(() => {
     const id = Number(this.params().get('id'));
     return Number.isInteger(id) && id > 0 ? id : null;
@@ -184,7 +186,14 @@ export class ProductDetailsComponent {
         if (id !== null) this.loadReviews(id);
       });
     });
-
+      // A link like /products/5#reviews: the reviews are drawn a moment after the page
+      // opens, so scroll to them once they exist (the router can't do it by itself).
+      effect(() => {
+        if (this.fragment() === 'reviews' && this.product() && !this.scrolledToReviews) {
+          this.scrolledToReviews = true;
+          setTimeout(() => this.scroller.scrollToAnchor('reviews'), 60);
+        }
+      });
     // Each product gets its own browser-tab title and search-engine description.
     effect(() => {
       const current = this.product();

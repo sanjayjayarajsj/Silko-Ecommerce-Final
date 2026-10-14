@@ -76,8 +76,8 @@
                   }
                 </select>
                               
-                @if (order.returnRequest) {
-                  <span class="return-badge">Return: {{ order.returnRequest.status }}</span>
+           @if (returnSummary(order); as summary) {
+    <span class="return-badge">{{ summary }}</span>
                 }
               </td>
               <td class="actions-cell">

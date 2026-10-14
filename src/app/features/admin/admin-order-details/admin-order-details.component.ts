@@ -14,7 +14,10 @@ import {
   isReturnOptionDisabled,
   isReturnLocked,
   canRejectReturn,
-  returnStatusClass
+  returnStatusClass,
+  OrderItem,
+  itemState,
+  orderNetTotal
 } from '../../checkout/order.model';
 import { OrderService } from '../../checkout/order.service';
 import { ToastService } from '../../../core/services/toast.service';
@@ -48,6 +51,10 @@ export class AdminOrderDetailsComponent {
   canRejectReturn = canRejectReturn;
   returnStatusClass = returnStatusClass;
 
+  // per-item
+  itemState = itemState;
+  orderNetTotal = orderNetTotal;
+
   showRejectBox = false;
   rejectNote = '';
   rejectSubmitted = false;
@@ -55,6 +62,12 @@ export class AdminOrderDetailsComponent {
   order: Order | null = null;
   loading = true;
   showCancelDialog = false;
+
+  // cancelling / rejecting ONE item
+  cancelItemTarget: OrderItem | null = null;
+  rejectItemId: number | null = null;
+  itemRejectNote = '';
+  itemRejectSubmitted = false;
 
   constructor() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -98,7 +111,8 @@ export class AdminOrderDetailsComponent {
     order.status = status;
 
     this.orderService.updateOrderStatus(order.id!, status).subscribe({
-      next: () => {
+      next: updated => {
+        order.deliveredAt = updated.deliveredAt;
         this.toast.show(`Order marked as ${status}`);
       },
       error: () => {
@@ -121,10 +135,8 @@ export class AdminOrderDetailsComponent {
     const order = this.order;
 
     this.orderService.cancelOrder(order, note).subscribe({
-      next: () => {
-        order.status = 'Cancelled';
-        order.cancelNote = note;
-        this.statuses = [...ORDER_FLOW, 'Cancelled'];
+      next: updated => {
+        this.applyServerOrder(updated);
         this.showCancelDialog = false;
         this.toast.show(`Order #${order.id} cancelled`);
       },
@@ -132,6 +144,46 @@ export class AdminOrderDetailsComponent {
         this.toast.show('Could not cancel the order. Please try again.');
       }
     });
+  }
+
+  // ---------- cancel ONE item ----------
+
+  canCancelItem(item: OrderItem): boolean {
+    return !!this.order && canCancelOrder(this.order.status) && !item.cancelled;
+  }
+
+  openCancelItem(item: OrderItem) {
+    this.cancelItemTarget = item;
+  }
+
+  confirmCancelItem(note: string) {
+    const order = this.order;
+    const item = this.cancelItemTarget;
+    if (!order || !item) {
+      return;
+    }
+
+    this.orderService.cancelItem(order, item.product.id, note).subscribe({
+      next: updated => {
+        this.applyServerOrder(updated);
+        this.cancelItemTarget = null;
+        this.toast.show(`${item.product.name} cancelled`);
+      },
+      error: () => {
+        this.toast.show('Could not cancel this item. Please try again.');
+      }
+    });
+  }
+
+  // Take over what the server saved (items, refund, status ...)
+  private applyServerOrder(updated: Order) {
+    if (!this.order) {
+      return;
+    }
+    Object.assign(this.order, updated);
+    if (updated.status === 'Cancelled') {
+      this.statuses = [...ORDER_FLOW, 'Cancelled'];
+    }
   }
 
   // ---------- returns ----------
@@ -203,6 +255,77 @@ export class AdminOrderDetailsComponent {
       next: updated => {
         order.returnRequest = updated.returnRequest;
         this.showRejectBox = false;
+        this.toast.show('Return rejected');
+      },
+      error: () => {
+        this.toast.show('Could not reject the return. Please try again.');
+      }
+    });
+  }
+
+  // ---------- return of ONE item ----------
+
+  changeItemReturnStatus(item: OrderItem, value: string, select: HTMLSelectElement) {
+    const order = this.order;
+    const request = item.returnRequest;
+    if (!order || !request) {
+      return;
+    }
+
+    const status = value as ReturnStatus;
+    const previousStatus = request.status;
+
+    if (status === previousStatus) {
+      return;
+    }
+
+    if (isReturnOptionDisabled(previousStatus, status)) {
+      select.value = previousStatus;
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Move the return of ${item.product.name} to "${status}"? You cannot go back to an earlier step.`
+    );
+    if (!confirmed) {
+      select.value = previousStatus;
+      return;
+    }
+
+    this.orderService.updateItemReturn(order, item.product.id, { status }).subscribe({
+      next: updated => {
+        this.applyServerOrder(updated);
+        this.toast.show(`Return marked as ${status}`);
+      },
+      error: () => {
+        select.value = previousStatus;
+        this.toast.show('Could not update the return');
+      }
+    });
+  }
+
+  openItemReject(item: OrderItem) {
+    this.rejectItemId = item.product.id;
+    this.itemRejectNote = '';
+    this.itemRejectSubmitted = false;
+  }
+
+  confirmItemReject(item: OrderItem) {
+    const order = this.order;
+    if (!order) {
+      return;
+    }
+
+    this.itemRejectSubmitted = true;
+    const note = this.itemRejectNote.trim();
+    if (note.length < 5) {
+      return;
+    }
+
+    this.orderService.updateItemReturn(order, item.product.id, { status: 'Rejected', adminNote: note }).subscribe({
+      next: updated => {
+        this.applyServerOrder(updated);
+        this.rejectItemId = null;
         this.toast.show('Return rejected');
       },
       error: () => {

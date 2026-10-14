@@ -1,11 +1,12 @@
 import { Component,inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { selectCartItems,selectCartTotal } from '../../store/cart/cart.selectors';
 import { Router, RouterLink } from '@angular/router';
-import { clearCart } from '../../store/cart/cart.actions';
+import { loadCart } from '../../store/cart/cart.actions';
 import { FormsModule } from '@angular/forms';
-import { OrderService } from './order.service';
+import { OrderService, PlaceOrderRequest } from './order.service';
 import { AuthService } from '../../core/services/auth.service';
 import { BuyNowService } from './buy-now.service';
 import { take, of } from 'rxjs';
@@ -13,7 +14,8 @@ import { ToastService } from '../../core/services/toast.service';
 import { selectAddresses } from '../../store/address/address.selectors';
 import { loadAddresses, addAddress } from '../../store/address/address.actions';
 import { Address } from '../address/address.model';
-import { ProductService } from '../products/product.service';
+import { Product } from '../products/product.model';
+import { loadProducts } from '../../store/products/products.actions';
 import {
   sanitizeNameInput,
   sanitizeAddressInput,
@@ -38,7 +40,6 @@ private router=inject(Router)
 private orderService=inject(OrderService);
 private authService=inject(AuthService);
 private buyNowService=inject(BuyNowService);
-private productService=inject(ProductService);
 private toast=inject(ToastService)
 
 // A "buy now" purchase is a single item bought directly, bypassing the cart.
@@ -202,81 +203,112 @@ placeOrder() {
   }
 
   this.cartItems.pipe(take(1)).subscribe(items => {
+  this.cartTotal.pipe(take(1)).subscribe(total => {
 
-    // Don't let someone order more than what's actually left in stock.
-    const outOfStockItem = items.find(item => item.quantity > item.product.stock);
-    if (outOfStockItem) {
-      this.isPlacingOrder = false;
-      this.toast.show(
-        outOfStockItem.product.stock === 0
-          ? `${outOfStockItem.product.name} is now out of stock.`
-          : `Only ${outOfStockItem.product.stock} left of ${outOfStockItem.product.name}.`
-      );
-      return;
-    }
+    // Only WHICH watches, HOW MANY and WHERE. The server decides prices,
+    // checks stock, takes it off, and works out the real total.
+    const request: PlaceOrderRequest = {
+      items: items.map(item => ({ productId: item.product.id, quantity: item.quantity })),
+      source: this.isBuyNow ? 'buy-now' : 'cart',
+      expectedTotal: total,
+      fullName: this.fullName,
+      phone: this.phone,
+      address: this.address,
+      city: this.city,
+      pincode: this.pincode,
+      paymentMethod: this.paymentMethod as 'Card' | 'UPI' | 'COD'
+    };
 
-    this.cartTotal.pipe(take(1)).subscribe(total => {
+    // Decided now, before anything is cleared
+    const addressToSave: Address | null =
+      this.saveThisAddress && this.isNewAddress()
+        ? {
+            userId: userId,
+            type: this.saveAddressType,
+            fullName: this.fullName,
+            phone: this.phone,
+            address: this.address,
+            city: this.city,
+            pincode: this.pincode
+          }
+        : null;
 
-      const order = {
-        userId: userId,
-        fullName: this.fullName,
-        phone: this.phone,
-        address: this.address,
-        city: this.city,
-        pincode: this.pincode,
-        paymentMethod: this.paymentMethod as 'Card' | 'UPI' | 'COD',
-        status: 'Pending' as const,
-        createdAt: new Date().toISOString(),
-        items: items,
-        total: total
-      };
-
-      // Decided now, before anything is cleared
-      const addressToSave: Address | null =
-        this.saveThisAddress && this.isNewAddress()
-          ? {
-              userId: userId,
-              type: this.saveAddressType,
-              fullName: this.fullName,
-              phone: this.phone,
-              address: this.address,
-              city: this.city,
-              pincode: this.pincode
-            }
-          : null;
-
-          this.orderService.placeOrder(order).subscribe({
-            next: placedOrder => {
-
-        // Reduce stock for each purchased item, now that the order is confirmed.
-        items.forEach(item => {
-          const remaining = Math.max(0, item.product.stock - item.quantity);
-          this.productService.updateProduct(item.product.id, { stock: remaining }).subscribe();
-        });
+    this.orderService.placeOrder(request).subscribe({
+      next: placedOrder => {
 
         if (addressToSave) {
           this.store.dispatch(addAddress({ address: addressToSave }));
         }
 
+        // The server already emptied the cart lines; reload so the page agrees.
         if (!this.isBuyNow) {
-          this.store.dispatch(clearCart());
+          this.store.dispatch(loadCart());
         }
 
+        // Show what the SERVER recorded (real prices and total)
         this.router.navigate(['/order-success'], {
           state: {
             orderId: placedOrder.id,
-            total: total,
-            items: items,
-            paymentMethod: this.paymentMethod
+            total: placedOrder.total,
+            items: placedOrder.items,
+            paymentMethod: placedOrder.paymentMethod
           }
         });
-            },
-            error: () => {
-              this.isPlacingOrder = false;
-              this.toast.show('Something went wrong placing your order. Please try again.');
-            }
-          });
-});
-});
-};
-};
+      },
+      error: (error: HttpErrorResponse) => this.onOrderError(error)
+    });
+  });
+  });
+}
+
+// Out of stock, price changed, or a mistake in the details: say so clearly
+// and show the person the up-to-date numbers.
+private onOrderError(error: HttpErrorResponse) {
+  this.isPlacingOrder = false;
+
+  if (error.status === 401) {
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  const message: string | undefined = error.error?.message;
+  const code: string | undefined = error.error?.code;
+  const products: Product[] = error.error?.products ?? [];
+
+  if (error.status === 409 && (code === 'OUT_OF_STOCK' || code === 'PRICE_CHANGED' || code === 'PRODUCT_GONE')) {
+    this.toast.show(message ?? 'Some items changed. Please review your order.');
+    this.store.dispatch(loadProducts());
+
+    if (this.isBuyNow) {
+      this.refreshBuyNowItem(products);
+    } else {
+      this.store.dispatch(loadCart()); // the server sends today's prices and stock
+    }
+    return;
+  }
+
+  if (error.status === 400 && message) {
+    this.toast.show(message);
+    return;
+  }
+
+  this.toast.show('Something went wrong placing your order. Please try again.');
+}
+
+// "Buy now" keeps its item inside this page, so update it with today's data.
+private refreshBuyNowItem(products: Product[]) {
+  if (!this.buyNowItem) {
+    return;
+  }
+
+  const fresh = products.find(product => product.id === this.buyNowItem!.product.id);
+  if (!fresh) {
+    return;
+  }
+
+  const quantity = this.buyNowItem.quantity;
+  this.buyNowItem = { product: fresh, quantity };
+  this.cartItems = of([{ product: fresh, quantity }]);
+  this.cartTotal = of(fresh.price * quantity);
+}
+}

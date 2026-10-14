@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Product } from '../../products/product.model';
 import { ProductService } from '../../products/product.service';
-import { Order, OrderStatus } from '../../checkout/order.model';
+import { Order, OrderStatus, orderNetTotal } from '../../checkout/order.model';
 import { OrderService } from '../../checkout/order.service';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -92,7 +92,7 @@ export class AdminDashboardComponent {
       // Cancelled orders are not counted as revenue
       this.totalRevenue = orders
         .filter(order => order.status !== 'Cancelled')
-        .reduce((sum, order) => sum + order.total, 0);
+        .reduce((sum, order) => sum + orderNetTotal(order), 0);
 
       this.totalUsers = users.length;
 
@@ -128,7 +128,7 @@ export class AdminDashboardComponent {
 
       const point = lookup.get(this.keyOf(new Date(order.createdAt), this.period));
       if (point) {
-        point.amount += order.total;
+        point.amount += orderNetTotal(order);
         point.orders++;
       }
     }

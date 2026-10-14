@@ -11,7 +11,9 @@ import { FormsModule } from '@angular/forms';
     <div class="backdrop">
       <div class="dialog">
 
-        <h2>Cancel order #{{ orderId }}</h2>
+                  <h2>
+            @if (productName) { Cancel {{ productName }} } @else { Cancel order #{{ orderId }} }
+          </h2>
         <p class="sub">
           The customer will see this note on their orders page. This cannot be undone.
         </p>
@@ -40,8 +42,8 @@ import { FormsModule } from '@angular/forms';
         </div>
 
         <div class="actions">
-          <button type="button" class="btn-secondary" (click)="closed.emit()">Keep Order</button>
-          <button type="button" class="btn-danger" (click)="confirm()">Cancel Order</button>
+          <button type="button" class="btn-secondary" (click)="closed.emit()">Keep it</button>
+            <button type="button" class="btn-danger" (click)="confirm()">{{ productName ? 'Cancel item' : 'Cancel Order' }}</button>
         </div>
 
       </div>
@@ -106,6 +108,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class CancelOrderDialogComponent {
   @Input({ required: true }) orderId!: number;
+      // When set, only this one watch of the order is being cancelled
+    @Input() productName = '';
   @Output() confirmed = new EventEmitter<string>();
   @Output() closed = new EventEmitter<void>();
 

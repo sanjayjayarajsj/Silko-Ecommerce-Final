@@ -15,8 +15,8 @@ export interface ReturnFormData {
     <div class="backdrop">
       <div class="dialog">
 
-        <h2>Return order #{{ orderId }}</h2>
-        <p class="sub">Tell us why you want to return this order.</p>
+                <h2>Return {{ productName || ('order #' + orderId) }}</h2>
+          <p class="sub">Tell us why you want to return this item.</p>
 
         <label>Reason</label>
         <select [(ngModel)]="reason" name="reason">
@@ -113,7 +113,9 @@ export interface ReturnFormData {
   `]
 })
 export class ReturnRequestDialogComponent {
-  @Input({ required: true }) orderId!: number;
+    @Input() orderId: number | null = null;
+    // When set, the popup is about this one watch
+    @Input() productName = '';
   @Output() requested = new EventEmitter<ReturnFormData>();
   @Output() closed = new EventEmitter<void>();
 

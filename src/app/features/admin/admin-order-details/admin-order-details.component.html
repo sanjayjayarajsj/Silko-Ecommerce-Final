@@ -105,15 +105,19 @@
         <p><strong>{{ order.fullName }}</strong></p>
         <p>{{ order.address }}</p>
         <p>{{ order.city }} - {{ order.pincode }}</p>
-                  @if (order.phone) {
-            <p>Phone: <strong>+91 {{ order.phone }}</strong></p>
-          }
+        @if (order.phone) {
+          <p>Phone: <strong>+91 {{ order.phone }}</strong></p>
+        }
       </div>
 
       <div class="card">
         <h2>Payment</h2>
         <p>Method: <strong>{{ order.paymentMethod }}</strong></p>
-        <p>Total Paid: <strong>₹{{ order.total }}</strong></p>
+        <p>Order total: <strong>₹{{ order.total }}</strong></p>
+        @if (order.refundedTotal) {
+          <p>Refunded / cancelled: <strong class="refund-text">− ₹{{ order.refundedTotal }}</strong></p>
+          <p>Net amount: <strong>₹{{ orderNetTotal(order) }}</strong></p>
+        }
       </div>
 
     </div>
@@ -122,13 +126,86 @@
       <h2>Items ({{ order.items.length }})</h2>
 
       @for (item of order.items; track item.product.id) {
-        <div class="order-item-row">
-          <img [src]="item.product.image" [alt]="item.product.name" loading="lazy">
-          <div class="item-info">
-            <p class="item-name">{{ item.product.name }}</p>
-            <p class="item-meta">{{ item.product.brand }} · Qty: {{ item.quantity }}</p>
+        <div class="order-item-block" [class.item-cancelled]="item.cancelled">
+
+          <div class="order-item-row">
+            <img [src]="item.product.image" [alt]="item.product.name" loading="lazy">
+            <div class="item-info">
+              <p class="item-name">{{ item.product.name }}</p>
+              <p class="item-meta">{{ item.product.brand }} · Qty: {{ item.quantity }}</p>
+              <span class="item-chip" [class]="itemState(order, item).cssClass">{{ itemState(order, item).label }}</span>
+              @if (item.cancelled) {
+                <p class="item-meta">
+                  Cancelled by {{ item.cancelled.by === 'admin' ? 'the store' : 'the customer' }}
+                  · {{ item.cancelled.at | date:'d MMM y, h:mm a' }}
+                  @if (order.status !== 'Cancelled') { <br>Reason: {{ item.cancelled.note }} }
+                </p>
+              }
+            </div>
+            <div class="item-side">
+              <p class="item-price">₹{{ item.product.price * item.quantity }}</p>
+              @if (canCancelItem(item)) {
+                <button class="cancel-btn" (click)="openCancelItem(item)">Cancel item</button>
+              }
+            </div>
           </div>
-          <p class="item-price">₹{{ item.product.price * item.quantity }}</p>
+
+          <!-- this item's return -->
+          @if (item.returnRequest; as rr) {
+            <div class="item-return">
+              <p><strong>Return requested</strong> on {{ rr.requestedAt | date:'d MMM y, h:mm a' }}</p>
+              <p><strong>Reason:</strong> {{ rr.reason }}</p>
+              @if (rr.comment) {
+                <p><strong>Customer comment:</strong> {{ rr.comment }}</p>
+              }
+
+              <div class="return-control">
+                <label>Return status</label>
+                <select
+                  #itemReturnSelect
+                  [class]="'status-select ' + returnStatusClass(rr.status)"
+                  (change)="changeItemReturnStatus(item, itemReturnSelect.value, itemReturnSelect)"
+                  [disabled]="isReturnLocked(rr.status)"
+                >
+                  @for (s of returnOptions(rr.status); track s) {
+                    <option
+                      [value]="s"
+                      [selected]="s === rr.status"
+                      [disabled]="isReturnOptionDisabled(rr.status, s)"
+                    >{{ s }}</option>
+                  }
+                </select>
+
+                @if (canRejectReturn(rr.status) && rejectItemId !== item.product.id) {
+                  <button class="cancel-btn" (click)="openItemReject(item)">Reject Return</button>
+                }
+              </div>
+
+              @if (rr.status === 'Rejected' && rr.adminNote) {
+                <p><strong>Rejection note:</strong> {{ rr.adminNote }}</p>
+              }
+
+              @if (rejectItemId === item.product.id) {
+                <div class="reject-box">
+                  <textarea
+                    rows="3"
+                    maxlength="200"
+                    [(ngModel)]="itemRejectNote"
+                    name="itemRejectNote"
+                    placeholder="Tell the customer why the return is rejected"
+                  ></textarea>
+                  @if (itemRejectSubmitted && itemRejectNote.trim().length < 5) {
+                    <small class="reject-error">Please write at least 5 characters</small>
+                  }
+                  <div class="reject-actions">
+                    <button class="cancel-btn" (click)="rejectItemId = null">Close</button>
+                    <button class="cancel-btn confirm" (click)="confirmItemReject(item)">Reject Return</button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
         </div>
       }
     </div>
@@ -136,6 +213,15 @@
   } @else {
     <p class="loading">Order not found.</p>
   }
+  @if (cancelItemTarget && order) {
+    <app-cancel-order-dialog
+      [orderId]="order.id!"
+      [productName]="cancelItemTarget.product.name"
+      (confirmed)="confirmCancelItem($event)"
+      (closed)="cancelItemTarget = null"
+    />
+  }
+
   @if (showCancelDialog && order) {
     <app-cancel-order-dialog
       [orderId]="order.id!"

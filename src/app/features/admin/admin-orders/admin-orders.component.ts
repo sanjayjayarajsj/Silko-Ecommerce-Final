@@ -8,7 +8,8 @@ import {
   ORDER_FLOW,
   isStatusOptionDisabled,
   isStatusLocked,
-  canCancelOrder
+  canCancelOrder,
+  orderReturnSummary
 } from '../../checkout/order.model';
 import { CancelOrderDialogComponent } from '../cancel-order-dialog/cancel-order-dialog.component';
 import { OrderService } from '../../checkout/order.service';
@@ -60,8 +61,9 @@ statusSelect: HTMLSelectElement | null = null;
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
-
+  returnSummary = orderReturnSummary;
   constructor() {
+    
     this.loadOrders();
   }
 

@@ -1,234 +1,79 @@
 <section class="orders-page">
 
-  <div class="orders-header">
-    <p class="eyebrow">YOUR PURCHASES</p>
-    <h1>My Orders</h1>
-    <span class="header-line"></span>
-    <p class="orders-description">
-      View your recent purchases and track your order details.
-    </p>
-  </div>
+  <!-- Title + search -->
+  <header class="orders-top">
 
-  @if (loading) {
+    <div>
+      <p class="eyebrow">YOUR PURCHASES</p>
+      <h1>My Orders</h1>
 
-    <div class="loading-state">
-      <div class="loading-spinner"></div>
-      <p>Loading your orders...</p>
-    </div>
-
-  } @else if (orders.length > 0) {
-
-    <div class="orders-list">
-
-      @for (order of orders; track order.id) {
-
-        <article class="order-card">
-
-          <!-- Order Header -->
-          <div class="order-card-header">
-
-            <div class="order-heading">
-              <p class="order-label">ORDER</p>
-              <h2>#{{ order.id }}</h2>
-            </div>
-
-            <span
-              class="status-badge"
-              [class]="'status-' + order.status.toLowerCase()"
-            >
-              <span class="status-dot"></span>
-              {{ order.status }}
-            </span>
-
-          </div>
-
-          <!-- Delivery Information -->
-          <div class="order-info">
-
-            <div class="info-block">
-              <span class="info-label">DELIVERY TO</span>
-
-              <p class="customer-name">
-                {{ order.fullName }}
-              </p>
-
-              <p class="customer-address">
-                {{ order.address }}, {{ order.city }}
-              </p>
-              
-                @if (order.phone) {
-                  <p class="customer-address">
-                    +91 {{ order.phone }}
-                  </p>
-                }
-            </div>
-                      <!-- Progress bar / cancellation note -->
-          @if (order.status === 'Cancelled') {
-
-            <div class="cancel-note">
-              <p class="cancel-note-title">
-                @if (order.cancelledBy === 'user') {
-                  You cancelled this order
-                } @else {
-                  This order was cancelled by the store
-                }
-                @if (order.cancelledAt) {
-                  <span class="cancel-note-date">· {{ order.cancelledAt | date:'d MMM y' }}</span>
-                }
-              </p>
-
-              @if (order.cancelledBy !== 'user') {
-                <p class="cancel-note-text">
-                  <strong>Reason:</strong>
-                  {{ order.cancelNote || 'No reason was provided.' }}
-                </p>
-              }
-            </div>
-
-          } @else {
-
-            <div class="tracker">
-              @for (step of flow; track step; let i = $index) {
-                <div
-                  class="tracker-step"
-                  [class.done]="i <= stepIndex(order)"
-                  [class.current]="i === stepIndex(order)"
-                >
-                  <span class="tracker-dot"></span>
-                  <span class="tracker-label">{{ step }}</span>
-                </div>
-              }
-            </div>
-
-          }
-
-            <div class="payment-info">
-              <span class="info-label">PAYMENT</span>
-
-              <span class="payment-badge">
-                {{ order.paymentMethod }}
-              </span>
-            </div>
-
-          </div>
-
-          <!-- Products -->
-          <div class="order-items">
-
-            <div class="items-header">
-              <span>ITEM</span>
-              <span>QTY</span>
-              <span>PRICE</span>
-            </div>
-
-            @for (item of order.items; track item.product.id) {
-
-              <div class="order-item">
-
-                <div class="product-info">
-
-                  <div class="product-image-wrapper">
-                    <img
-                      [src]="item.product.image"
-                      [alt]="item.product.name"
-                      class="order-item-image"
-                      loading="lazy"
-                    >
-                  </div>
-
-                  <div class="product-details">
-                    <strong>{{ item.product.name }}</strong>
-
-                    @if (item.product.brand) {
-                      <span>{{ item.product.brand }}</span>
-                    }
-                  </div>
-
-                </div>
-
-                <span class="item-quantity">
-                  × {{ item.quantity }}
-                </span>
-
-                <span class="item-price">
-                  ₹{{ item.product.price * item.quantity }}
-                </span>
-
-              </div>
-
-            }
-
-          </div>
-          <!-- Return status -->
-          @if (order.returnRequest; as rr) {
-            <div class="return-box">
-              <p class="return-title">
-                RETURN REQUEST
-                <span class="return-date">· {{ rr.requestedAt | date:'d MMM y' }}</span>
-              </p>
-              <p class="return-reason">{{ rr.reason }}</p>
-
-              @if (rr.status === 'Rejected') {
-                <div class="return-rejected">
-                  <strong>Return rejected.</strong>
-                  {{ rr.adminNote || 'No reason was provided.' }}
-                </div>
-              } @else {
-                <div class="tracker return-tracker">
-                  @for (step of returnFlow; track step; let i = $index) {
-                    <div
-                      class="tracker-step"
-                      [class.done]="i <= returnStepIndex(order)"
-                      [class.current]="i === returnStepIndex(order)"
-                    >
-                      <span class="tracker-dot"></span>
-                      <span class="tracker-label">{{ step }}</span>
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-          }
-          <!-- Order Footer -->
-          <div class="order-footer">
-
-            <div class="total-section">
-              <span>Total Amount</span>
-              <h3>₹{{ order.total }}</h3>
-            </div>
-
-            @if (canCancel(order)) {
-              <button
-                type="button"
-                class="cancel-order-btn"
-               (click)="openCancelDialog(order)"
-              >
-                Cancel Order
-              </button>
-            }
-            @if (canRequestReturn(order)) {
-              <div class="return-action">
-                <span class="return-hint">Return until {{ returnDeadline(order) | date:'d MMM' }}</span>
-                <button
-                  type="button"
-                  class="return-btn"
-                  (click)="openReturn(order)"
-                >
-                  Return Item
-                </button>
-              </div>
-            } @else if (order.status === 'Delivered' && !order.returnRequest) {
-              <span class="return-hint">Return window closed</span>
-            }
-          </div>
-
-        </article>
-
+      @if (!loading() && orders().length > 0) {
+        <p class="orders-count">
+          {{ orders().length }} {{ orders().length === 1 ? 'order' : 'orders' }}
+        </p>
       }
-
     </div>
 
-  } @else {
+    @if (orders().length > 0) {
+      <div class="orders-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="M16 16L21 21"></path>
+        </svg>
+        <input
+          type="search"
+          placeholder="Search by watch name or order number"
+          aria-label="Search your orders"
+          [value]="search()"
+          (input)="onSearch($any($event.target).value)"
+        >
+      </div>
+    }
+
+  </header>
+
+
+  <!-- Filter tabs -->
+  @if (orders().length > 0) {
+    <div class="tabs" role="tablist" aria-label="Filter orders">
+      @for (entry of tabs(); track entry.key) {
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          [class.active]="tab() === entry.key"
+          [attr.aria-selected]="tab() === entry.key"
+          (click)="setTab(entry.key)"
+        >
+          {{ entry.label }}
+          <span class="tab-count">{{ entry.count }}</span>
+        </button>
+      }
+    </div>
+  }
+
+
+  @if (loading()) {
+
+    <div class="order-list" aria-busy="true" aria-label="Loading your orders">
+      @for (n of [1, 2]; track n) {
+        <div class="order-card skeleton-card">
+          <div class="sk sk-bar"></div>
+          <div class="sk sk-line" style="width: 40%"></div>
+          <div class="sk sk-row"></div>
+        </div>
+      }
+    </div>
+
+  } @else if (failed()) {
+
+    <div class="state-box" role="alert">
+      <h2>We couldn't load your orders</h2>
+      <p>Check your connection and try again.</p>
+      <button type="button" class="primary-btn" (click)="loadOrders()">Try again</button>
+    </div>
+
+  } @else if (orders().length === 0) {
 
     <div class="empty-orders">
 
@@ -246,32 +91,363 @@
       <h2>No orders yet</h2>
 
       <p>
-        Your completed orders will appear here.
+        Your orders will appear here, so you can track, cancel or return them.
       </p>
 
-      <a routerLink="/products" class="shop-btn">
+      <a routerLink="/products" class="primary-btn">
         Start Shopping
         <span>→</span>
       </a>
 
     </div>
 
+  } @else if (filtered().length === 0) {
+
+    <div class="state-box">
+      <h2>No orders found</h2>
+      <p>Nothing matches your search or filter.</p>
+      <button type="button" class="primary-btn" (click)="clearFilters()">Show all orders</button>
+    </div>
+
+  } @else {
+
+    <div class="order-list">
+
+      @for (order of visible(); track order.id) {
+
+        <article class="order-card" [attr.aria-label]="'Order ' + order.id">
+
+          <!-- Placed / total / ship to / order number -->
+          <header class="order-meta">
+
+            <div class="meta-item">
+              <span class="meta-label">ORDER PLACED</span>
+              <span class="meta-value">{{ order.createdAt | date:'d MMM y' }}</span>
+            </div>
+
+            <div class="meta-item">
+              <span class="meta-label">TOTAL</span>
+              <span class="meta-value">{{ order.total | currency:'INR':'symbol':'1.0-0' }}</span>
+            </div>
+
+            <div class="meta-item meta-ship">
+              <span class="meta-label">SHIP TO</span>
+              <span class="meta-value">{{ order.fullName }}</span>
+            </div>
+
+            <div class="meta-item meta-order">
+              <span class="meta-label">ORDER #</span>
+              <span class="meta-value">{{ order.id }}</span>
+            </div>
+
+          </header>
+
+
+          <!-- Where is it? -->
+          <div class="order-status">
+
+            <div>
+              @switch (order.status) {
+                @case ('Pending') { <h2 class="status-headline">Order placed</h2><p class="status-sub">We'll confirm it shortly.</p> }
+                @case ('Processing') { <h2 class="status-headline">Being prepared</h2><p class="status-sub">Your watch is being packed.</p> }
+                @case ('Shipped') { <h2 class="status-headline">On its way</h2><p class="status-sub">Your order has been shipped.</p> }
+                @case ('Delivered') {
+                  <h2 class="status-headline">
+                    Delivered@if (order.deliveredAt) { on {{ order.deliveredAt | date:'d MMM' }} }
+                  </h2>
+                  @if (returnDeadline(order); as deadline) {
+                    <p class="status-sub">Returns accepted until {{ deadline | date:'d MMM' }}.</p>
+                  }
+                }
+                @case ('Cancelled') { <h2 class="status-headline">Cancelled</h2> }
+              }
+            </div>
+
+            <span class="chip" [class]="'status-' + order.status.toLowerCase()">
+              <span class="chip-dot"></span>
+              {{ order.status }}
+            </span>
+
+          </div>
+
+
+          @if (order.status === 'Cancelled') {
+
+            <div class="note note-cancel">
+              <strong>
+                @if (order.cancelledBy === 'user') {
+                  You cancelled this order
+                } @else {
+                  This order was cancelled by the store
+                }
+                @if (order.cancelledAt) {
+                  <span class="note-date">· {{ order.cancelledAt | date:'d MMM y' }}</span>
+                }
+              </strong>
+              @if (order.cancelNote && order.cancelNote !== 'Cancelled by you') {
+                <p>Reason: {{ order.cancelNote }}</p>
+              }
+            </div>
+
+          } @else {
+
+            <div class="tracker" role="list" aria-label="Order progress">
+              @for (step of flow; track step; let i = $index) {
+                <div
+                  class="tracker-step"
+                  role="listitem"
+                  [class.done]="i <= stepIndex(order)"
+                  [class.current]="i === stepIndex(order)"
+                >
+                  <span class="tracker-dot"></span>
+                  <span class="tracker-label">{{ step }}</span>
+                </div>
+              }
+            </div>
+
+          }
+
+
+          <!-- Return asked for the WHOLE order (orders made before per-item returns) -->
+          @if (order.returnRequest; as rr) {
+            <div class="note note-return">
+              <strong>Return requested for this order <span class="note-date">· {{ rr.requestedAt | date:'d MMM y' }}</span></strong>
+              <p>{{ rr.reason }}</p>
+              <span class="chip" [class]="returnStatusClass(rr.status)">{{ rr.status }}</span>
+              @if (rr.status === 'Rejected') {
+                <p class="rejected">{{ rr.adminNote || 'No reason was provided.' }}</p>
+              }
+            </div>
+          }
+
+
+          <!-- The watches -->
+          <ul class="lines">
+
+            @for (item of order.items; track item.product.id) {
+
+              <li class="line" [class.line-cancelled]="item.cancelled">
+
+                <a
+                  class="line-image"
+                  [routerLink]="['/products', item.product.id]"
+                  [attr.aria-label]="'View ' + item.product.name"
+                >
+                  <img [src]="item.product.image" [alt]="item.product.name" loading="lazy">
+                </a>
+
+                <div class="line-info">
+
+                  <a class="line-name" [routerLink]="['/products', item.product.id]">
+                    {{ item.product.name }}
+                  </a>
+
+                  @if (item.product.brand) {
+                    <span class="line-brand">{{ item.product.brand }}</span>
+                  }
+
+                  <span class="line-price">
+                    {{ item.quantity }} × {{ item.product.price | currency:'INR':'symbol':'1.0-0' }}
+                    <strong>= {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}</strong>
+                  </span>
+
+                  <span class="chip chip-small" [class]="itemState(order, item).cssClass">
+                    {{ itemState(order, item).label }}
+                  </span>
+
+                  <!-- one item cancelled out of a bigger order -->
+                  @if (item.cancelled && order.status !== 'Cancelled') {
+                    <p class="line-note">
+                      Cancelled by {{ item.cancelled.by === 'user' ? 'you' : 'the store' }}
+                      · {{ item.cancelled.at | date:'d MMM' }}
+                      @if (item.cancelled.note && item.cancelled.note !== 'Cancelled by you') {
+                        <br>Reason: {{ item.cancelled.note }}
+                      }
+                    </p>
+                  }
+
+                  <!-- this item's return -->
+                  @if (item.returnRequest; as rr) {
+
+                    <div class="line-return">
+
+                      <p class="line-note">
+                        Return requested · {{ rr.requestedAt | date:'d MMM' }}<br>
+                        Reason: {{ rr.reason }}
+                      </p>
+
+                      @if (rr.status === 'Rejected') {
+                        <p class="rejected">
+                          <strong>Return rejected.</strong> {{ rr.adminNote || 'No reason was provided.' }}
+                        </p>
+                      } @else {
+                        <div class="tracker tracker-small" role="list" aria-label="Return progress">
+                          @for (step of returnFlow; track step; let i = $index) {
+                            <div
+                              class="tracker-step"
+                              role="listitem"
+                              [class.done]="i <= returnStepIndex(rr.status)"
+                              [class.current]="i === returnStepIndex(rr.status)"
+                            >
+                              <span class="tracker-dot"></span>
+                              <span class="tracker-label">{{ step }}</span>
+                            </div>
+                          }
+                        </div>
+                      }
+
+                    </div>
+
+                  }
+
+                </div>
+
+                <!-- What can be done with this one watch -->
+                <div class="line-actions">
+
+                  @if (canCancelItem(order, item)) {
+                    <button type="button" class="btn-outline btn-danger-outline" (click)="askCancel(order, item)">
+                      {{ cancelLabel(order) }}
+                    </button>
+                  }
+
+                  @if (canReturnItem(order, item)) {
+                    <button type="button" class="btn-outline" (click)="askReturn(order, item)">
+                      Return item
+                    </button>
+                  }
+
+                  @if (order.status === 'Delivered' && !item.cancelled) {
+                    <a
+                      class="btn-outline"
+                      [routerLink]="['/products', item.product.id]"
+                      fragment="reviews"
+                    >
+                      Write a review
+                    </a>
+                  }
+
+                  @if (order.status === 'Delivered' || order.status === 'Cancelled' || item.cancelled) {
+                    <a class="btn-outline" [routerLink]="['/products', item.product.id]">
+                      Buy it again
+                    </a>
+                  }
+
+                </div>
+
+              </li>
+
+            }
+
+          </ul>
+
+
+          <!-- Details + whole-order action -->
+          <footer class="order-foot">
+
+            <button
+              type="button"
+              class="link-btn"
+              [attr.aria-expanded]="isExpanded(order)"
+              (click)="toggleDetails(order)"
+            >
+              {{ isExpanded(order) ? 'Hide order details' : 'Order details' }}
+              <span aria-hidden="true">{{ isExpanded(order) ? '▴' : '▾' }}</span>
+            </button>
+
+            @if (canCancelAll(order)) {
+              <button type="button" class="btn-outline btn-danger-outline" (click)="askCancel(order, null)">
+                Cancel entire order
+              </button>
+            }
+
+          </footer>
+
+
+          @if (isExpanded(order)) {
+
+            <div class="details">
+
+              <div class="details-block">
+                <span class="meta-label">DELIVERY ADDRESS</span>
+                <p><strong>{{ order.fullName }}</strong></p>
+                <p>{{ order.address }}</p>
+                <p>{{ order.city }} - {{ order.pincode }}</p>
+                @if (order.phone) {
+                  <p>+91 {{ order.phone }}</p>
+                }
+              </div>
+
+              <div class="details-block">
+                <span class="meta-label">PAYMENT</span>
+                <p><strong>{{ order.paymentMethod === 'COD' ? 'Cash on Delivery' : order.paymentMethod }}</strong></p>
+                <p class="muted">
+                  @if (order.paymentMethod === 'COD') {
+                    You only pay for the items you keep.
+                  } @else {
+                    Refunds go back to your original payment method.
+                  }
+                </p>
+              </div>
+
+              <div class="details-block">
+                <span class="meta-label">ORDER SUMMARY</span>
+
+                <p class="sum-row">
+                  <span>Order total</span>
+                  <span>{{ order.total | currency:'INR':'symbol':'1.0-0' }}</span>
+                </p>
+
+                @if (hasRefund(order)) {
+                  <p class="sum-row refund">
+                    <span>Cancelled / refunded</span>
+                    <span>− {{ order.refundedTotal! | currency:'INR':'symbol':'1.0-0' }}</span>
+                  </p>
+                  <p class="sum-row sum-net">
+                    <span>Net amount</span>
+                    <span>{{ orderNetTotal(order) | currency:'INR':'symbol':'1.0-0' }}</span>
+                  </p>
+                }
+              </div>
+
+            </div>
+
+          }
+
+        </article>
+
+      }
+
+      @if (filtered().length > visible().length) {
+        <button type="button" class="more-btn" (click)="showMore()">
+          Show more orders ({{ filtered().length - visible().length }} left)
+        </button>
+      }
+
+    </div>
+
   }
-  @if (returnOrder) {
-    <app-return-request-dialog
-      [orderId]="returnOrder.id!"
-      (requested)="submitReturn($event)"
-      (closed)="returnOrder = null"
+
+
+  <!-- Popups -->
+  @if (cancelTarget(); as target) {
+    <app-cancel-item-dialog
+      [heading]="target.item ? 'Cancel ' + target.item.product.name + '?' : 'Cancel order #' + target.order.id + '?'"
+      [sub]="target.item ? 'Only this watch is cancelled. The rest of the order stays as it is. This cannot be undone.' : 'Every item still in this order will be cancelled. This cannot be undone.'"
+      [confirmLabel]="target.item ? cancelLabel(target.order) : 'Cancel entire order'"
+      [busy]="busy()"
+      (confirmed)="confirmCancel($event)"
+      (closed)="cancelTarget.set(null)"
     />
   }
-  @if (showCancelDialog && orderToCancel) {
 
-  <app-confirmation-dialog
-    title="Cancel Order?"
-    [message]="'Cancel order #' + orderToCancel.id + '? This cannot be undone.'"
-    (confirmed)="cancelOrder()"
-    (cancelled)="closeCancelDialog()"
-  />
+  @if (returnTarget(); as target) {
+    <app-return-request-dialog
+      [orderId]="target.order.id!"
+      [productName]="target.item.product.name"
+      (requested)="submitReturn($event)"
+      (closed)="returnTarget.set(null)"
+    />
+  }
 
-}
 </section>

@@ -8,7 +8,7 @@
       "image": "images/titan/t 1.png",
       "category": "Analog",
       "description": "A stylish men's analog watch with a clean and elegant design.",
-      "stock": 5,
+      "stock": 999,
       "images": [
         "images/titan/t 1.png",
         "images/titan/t 1 2.png"
@@ -82,7 +82,19 @@
       "images": [
         "images/titan/t 6.png",
         "images/titan/t 6 2.png"
-      ]
+      ],
+      "ratingAverage": 5,
+      "ratingCount": 1,
+      "specs": {
+        "movement": "Automatic",
+        "caseSize": "42 MM",
+        "caseMaterial": "Stainless steel",
+        "strapMaterial": "Leather",
+        "dialColor": "Black",
+        "glass": "Sapphire",
+        "waterResistance": "50M",
+        "warranty": "2 Years"
+      }
     },
     {
       "id": 7,
@@ -562,6 +574,37 @@
       },
       "quantity": 1,
       "id": 5
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 6,
+        "name": "Titan Karishma Black duo",
+        "brand": "Titan",
+        "price": 4495,
+        "image": "images/titan/t 6.png",
+        "category": "Analog",
+        "description": "A classic black analog watch suitable for everyday men's wear.",
+        "stock": 1,
+        "images": [
+          "images/titan/t 6.png",
+          "images/titan/t 6 2.png"
+        ],
+        "ratingAverage": 5,
+        "ratingCount": 1,
+        "specs": {
+          "movement": "Automatic",
+          "caseSize": "42 MM",
+          "caseMaterial": "Stainless steel",
+          "strapMaterial": "Leather",
+          "dialColor": "Black",
+          "glass": "Sapphire",
+          "waterResistance": "50M",
+          "warranty": "2 Years"
+        }
+      },
+      "quantity": 1,
+      "id": 6
     }
   ],
   "wishlist": [
@@ -586,24 +629,6 @@
     {
       "userId": 3,
       "product": {
-        "id": 6,
-        "name": "Titan Karishma Black",
-        "brand": "Titan",
-        "price": 4495,
-        "image": "images/titan/t 6.png",
-        "category": "Analog",
-        "description": "A classic black analog watch suitable for everyday men's wear.",
-        "stock": 5,
-        "images": [
-          "images/titan/t 6.png",
-          "images/titan/t 6 2.png"
-        ]
-      },
-      "id": 4
-    },
-    {
-      "userId": 3,
-      "product": {
         "id": 3,
         "name": "Titan Chronograph",
         "brand": "Titan",
@@ -618,6 +643,72 @@
         ]
       },
       "id": 5
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 5,
+        "name": "Titan Maritime Blue",
+        "brand": "Titan",
+        "price": 5995,
+        "image": "images/titan/t 5.png",
+        "category": "Sports",
+        "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
+        "stock": 7,
+        "images": [
+          "images/titan/t 5.png",
+          "images/titan/t 5 2.png"
+        ]
+      },
+      "id": 6
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 4,
+        "name": "Titan Automatic Silver",
+        "brand": "Titan",
+        "price": 12995,
+        "image": "images/titan/t 4.png",
+        "category": "Automatic",
+        "description": "A premium automatic men's watch with a classic silver finish.",
+        "stock": 8,
+        "images": [
+          "images/titan/t 4.png",
+          "images/titan/t 4 2.png"
+        ]
+      },
+      "id": 7
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 6,
+        "name": "Titan Karishma Black duo",
+        "brand": "Titan",
+        "price": 4495,
+        "image": "images/titan/t 6.png",
+        "category": "Analog",
+        "description": "A classic black analog watch suitable for everyday men's wear.",
+        "stock": 1,
+        "images": [
+          "images/titan/t 6.png",
+          "images/titan/t 6 2.png"
+        ],
+        "ratingAverage": 5,
+        "ratingCount": 1,
+        "specs": {
+          "movement": "Automatic",
+          "caseSize": "42 MM",
+          "caseMaterial": "Stainless steel",
+          "strapMaterial": "Leather",
+          "dialColor": "Black",
+          "glass": "Sapphire",
+          "waterResistance": "50M",
+          "warranty": "2 Years"
+        }
+      },
+      "id": 8
     }
   ],
   "users": [
@@ -1143,6 +1234,19 @@
       "city": "mahe",
       "pincode": "570765",
       "id": 2
+    }
+  ],
+  "reviews": [
+    {
+      "productId": 6,
+      "userId": 3,
+      "userName": "fathima",
+      "rating": 5,
+      "title": "Looks good and comfort",
+      "comment": "I like the product",
+      "createdAt": "2026-10-10T09:55:48.903Z",
+      "verifiedPurchase": true,
+      "id": 1
     }
   ]
 }

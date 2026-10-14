@@ -95,6 +95,6 @@ logout() {
   this.showAccount = false;
   this.showLogoutDialog = false;
 
-  this.router.navigate(['/home']);
+  this.router.navigate(['/login']);
 }
 }
