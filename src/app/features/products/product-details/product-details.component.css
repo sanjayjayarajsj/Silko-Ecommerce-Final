@@ -1,6 +1,4 @@
-/* =========================================
-   PRODUCT DETAILS
-   ========================================= */
+
 
 .product-details {
   min-height: calc(100vh - 80px);
@@ -18,9 +16,6 @@
 }
 
 
-/* =========================================
-   PRODUCT IMAGE
-   ========================================= */
 
 .product-image {
   min-width: 0;
@@ -37,9 +32,6 @@
 }
 
 
-/* =========================================
-   ZOOM FRAME
-   ========================================= */
 
 .zoom-frame {
   position: relative;
@@ -67,7 +59,7 @@
 }
 
 
-/* Small SILKO label */
+
 
 .image-label {
   position: absolute;
@@ -91,7 +83,7 @@
 }
 
 
-/* Product image */
+
 
 .zoom-frame img {
   width: 100%;
@@ -112,9 +104,7 @@
 }
 
 
-/* =========================================
-   THUMBNAILS
-   ========================================= */
+
 
 .thumbnail-row {
   display: flex;
@@ -169,7 +159,7 @@
 }
 
 
-/* Zoom text */
+
 
 .zoom-hint {
   margin: 15px 0 0;
@@ -183,9 +173,7 @@
 }
 
 
-/* =========================================
-   PRODUCT INFORMATION
-   ========================================= */
+
 
 .product-info {
   max-width: 570px;
@@ -194,7 +182,7 @@
 }
 
 
-/* Brand */
+
 
 .brand {
   margin: 0 0 12px;
@@ -210,7 +198,7 @@
 }
 
 
-/* Product name */
+
 
 .product-info h1 {
   margin: 0 0 16px;
@@ -227,9 +215,7 @@
 }
 
 
-/* =========================================
-   RATING
-   ========================================= */
+
 
 .rating {
   display: flex;
@@ -261,9 +247,7 @@
 }
 
 
-/* =========================================
-   CATEGORY
-   ========================================= */
+
 
 .category {
   display: inline-block;
@@ -288,9 +272,7 @@
 }
 
 
-/* =========================================
-   PRICE
-   ========================================= */
+
 
 .price-section {
   padding: 20px 0;
@@ -324,9 +306,7 @@
 }
 
 
-/* =========================================
-   DESCRIPTION
-   ========================================= */
+
 
 .description {
   margin: 0 0 22px;
@@ -339,9 +319,6 @@
 }
 
 
-/* =========================================
-   STOCK
-   ========================================= */
 
 .stock-status {
   display: flex;
@@ -387,9 +364,7 @@
 }
 
 
-/* =========================================
-   ACTIONS
-   ========================================= */
+
 
 .actions {
   display: grid;
@@ -442,7 +417,7 @@
 }
 
 
-/* Buy now */
+
 
 .btn-buy-now {
   grid-column: 1 / -1;
@@ -463,7 +438,7 @@
 }
 
 
-/* Cart */
+
 
 .btn-cart {
   border: 1px solid var(--color-primary);
@@ -483,7 +458,6 @@
 }
 
 
-/* Wishlist */
 
 .btn-wishlist {
   border: 1px solid var(--color-border);
@@ -505,9 +479,7 @@
 }
 
 
-/* =========================================
-   PRODUCT HIGHLIGHTS
-   ========================================= */
+
 
 .product-highlights {
   display: grid;
@@ -573,9 +545,6 @@
 }
 
 
-/* =========================================
-   TABLET
-   ========================================= */
 
 @media (max-width: 1050px) {
 
@@ -599,9 +568,7 @@
 }
 
 
-/* =========================================
-   MOBILE
-   ========================================= */
+
 
 @media (max-width: 750px) {
 
@@ -647,9 +614,6 @@
 }
 
 
-/* =========================================
-   SMALL MOBILE
-   ========================================= */
 
 @media (max-width: 450px) {
 
@@ -684,9 +648,7 @@
 
 }
 
-/* =========================================
-   SIMILAR PRODUCTS
-   ========================================= */
+
 
 .similar-products {
   max-width: 1400px;
@@ -759,9 +721,7 @@
   }
 
 }
-/* =========================================
-   BREADCRUMB
-   ========================================= */
+
 
 .breadcrumb {
   display: flex;
@@ -792,15 +752,12 @@
   font-weight: 500;
 }
 
-/* the breadcrumb already gives the page its top spacing */
 .breadcrumb + .product-details {
   padding-top: 30px;
 }
 
 
-/* =========================================
-   SPECIFICATIONS
-   ========================================= */
+
 
 .product-specs {
   max-width: 1400px;
@@ -869,18 +826,14 @@
 }
 
 
-/* =========================================
-   WISHLIST BUTTON (when the watch is saved)
-   ========================================= */
+
 
 .btn-wishlist.saved .heart {
   color: var(--color-danger);
 }
 
 
-/* =========================================
-   NOT FOUND / ERROR / LOADING
-   ========================================= */
+
 
 .details-state {
   min-height: 55vh;
@@ -988,9 +941,7 @@
     min-height: 280px;
   }
 } 
-/* =========================================
-   CUSTOMER REVIEWS
-   ========================================= */
+
 
 .rating-number {
   font-size: 14px;
@@ -1046,7 +997,7 @@
   align-items: start;
 }
 
-/* ----- summary ----- */
+
 
 .reviews-summary {
   padding: 26px;
@@ -1275,7 +1226,7 @@
   font-weight: 600;
 }
 
-/* ----- the reviews ----- */
+
 
 .review-list {
   display: flex;
@@ -1287,7 +1238,7 @@
 
   border-bottom: 1px solid var(--color-border);
 
-  /* a headline, name or word with no spaces must wrap, never push the page sideways */
+
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -1340,8 +1291,6 @@
 
   font-size: 14px;
   line-height: 1.7;
-
-  /* long words must never push the page sideways */
   overflow-wrap: anywhere;
   white-space: pre-line;
 }
