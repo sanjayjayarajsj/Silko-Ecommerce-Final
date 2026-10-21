@@ -728,4 +728,9 @@ router.render = (req, res) => {
 };
 
 server.use(router);
-server.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
+
+if (require.main === module) {
+  server.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
+}
+
+module.exports = server;

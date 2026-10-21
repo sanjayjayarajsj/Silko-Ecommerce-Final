@@ -461,21 +461,29 @@
 
 .btn-wishlist {
   border: 1px solid var(--color-border);
-
   background: #ffffff;
   color: var(--color-text);
 }
 
 .btn-wishlist:hover {
   border-color: var(--color-primary);
-
   background: var(--color-surface);
 }
 
-.heart {
-  font-size: 19px;
+.btn-wishlist.saved {
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.08);
+  color: #0b1f33;
+}
 
-  line-height: 1;
+.heart-icon {
+  transition: transform 0.25s ease, color 0.25s ease, fill 0.25s ease;
+}
+
+.btn-wishlist.saved .heart-icon {
+  color: #d4af37;
+  fill: #d4af37;
+  transform: scale(1.15);
 }
 
 

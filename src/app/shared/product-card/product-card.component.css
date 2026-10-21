@@ -133,10 +133,24 @@
 
 .wishlist-btn:hover {
   transform: scale(1.08);
-
   background: var(--color-primary);
-
   color: #ffffff;
+}
+
+.wishlist-btn:hover svg {
+  stroke: #ffffff;
+}
+
+.wishlist-btn.active,
+.wishlist-btn[aria-pressed="true"] {
+  background: #ffffff;
+  color: #d4af37;
+}
+
+.wishlist-btn.active svg,
+.wishlist-btn[aria-pressed="true"] svg {
+  fill: #d4af37;
+  stroke: #d4af37;
 }
 
 

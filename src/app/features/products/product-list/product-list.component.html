@@ -76,7 +76,7 @@
   <!-- Result count, sorting and (on phones) the filter button -->
   <div class="list-toolbar">
 
-    <!-- <button
+    <button
       type="button"
       class="filter-toggle"
       aria-controls="product-filters"
@@ -96,7 +96,7 @@
       @if (chips().length) {
         <span class="filter-count">{{ chips().length }}</span>
       }
-    </button> -->
+    </button>
 
     <p class="result-count" aria-live="polite">
       @if (!showSkeleton() && !showError()) {

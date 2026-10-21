@@ -10,27 +10,33 @@ html {
   /* ---------- Colors ---------- */
 
   --color-bg: #ffffff;
-  --color-surface: #f6f8fa;
+  --color-surface: #f8fafc;
+  --color-surface-card: #ffffff;
   --color-surface-dark: #0b1f33;
+  --color-midnight: #071524;
+  --color-black: #05090d;
 
-  --color-text: #0b0d0f;
+  --color-text: #05090d;
   --color-text-light: #ffffff;
-  --color-text-muted: #66717d;
+  --color-text-muted: #5e6d7d;
 
-  --color-border: #e1e6eb;
-  --color-border-dark: #24384a;
+  --color-border: #e2e8f0;
+  --color-border-dark: #1b2f44;
 
-  /* SILKO Brand Colors */
+  /* SILKO Brand Colors (Dark Blue, White, Black) */
   --color-primary: #0b1f33;
-  --color-primary-light: #12395a;
+  --color-primary-dark: #071524;
+  --color-primary-light: #163758;
   --color-primary-accent: #1e5a86;
 
   --color-accent: #0b1f33;
   --color-accent-contrast: #ffffff;
+  --color-gold: #d4af37;
+  --color-gold-hover: #b89328;
 
-  --color-danger: #c0392b;
-  --color-success: #2e7d5b;
-  --color-warning: #b7791f;
+  --color-danger: #d93829;
+  --color-success: #1b7a4f;
+  --color-warning: #c27803;
 
   /* ---------- Typography ---------- */
 
