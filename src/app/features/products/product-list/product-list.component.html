@@ -73,60 +73,6 @@
   </div>
 
 
-  <!-- Result count, sorting and (on phones) the filter button -->
-  <div class="list-toolbar">
-
-    <!-- <button
-      type="button"
-      class="filter-toggle"
-      aria-controls="product-filters"
-      [attr.aria-expanded]="filtersOpen()"
-      (click)="toggleFilters()"
-    >
-      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-        <path
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          d="M4 6h16M7 12h10M10 18h4"
-        />
-      </svg>
-      Filters
-      @if (chips().length) {
-        <span class="filter-count">{{ chips().length }}</span>
-      }
-    </button> -->
-
-    <p class="result-count" aria-live="polite">
-      @if (!showSkeleton() && !showError()) {
-        @if (filtered().length === 0) {
-          No watches found
-        } @else {
-          Showing <strong>{{ rangeStart() }}–{{ rangeEnd() }}</strong>
-          of <strong>{{ filtered().length }}</strong>
-          {{ filtered().length === 1 ? 'watch' : 'watches' }}
-        }
-      }
-    </p>
-
-    <div class="filter-field sort-field">
-      <select
-        aria-label="Sort watches"
-        (change)="setSort($any($event.target).value)"
-      >
-        @for (option of sortOptions; track option.value) {
-          <option
-            [value]="option.value"
-            [selected]="option.value === sort()"
-          >{{ option.label }}</option>
-        }
-      </select>
-    </div>
-
-  </div>
-
-
   <!-- Sidebar + Grid Layout -->
   <div class="products-layout">
 
@@ -155,21 +101,31 @@
       <!-- Brand -->
       <div class="sidebar-group">
 
-        <label class="sidebar-group-label" for="filter-brand">Brand</label>
+        <span class="sidebar-group-label" id="brand-label">Brand</span>
 
-        <div class="filter-field">
-          <select
-            id="filter-brand"
-            (change)="setBrand($any($event.target).value)"
-          >
-            <option value="">All Brands</option>
-            @for (item of brands(); track item.name) {
-              <option
-                [value]="item.name"
-                [selected]="item.name.toLowerCase() === brand().toLowerCase()"
-              >{{ item.name }} ({{ item.count }})</option>
-            }
-          </select>
+        <div class="pill-list" role="group" aria-labelledby="brand-label">
+
+          <button
+            type="button"
+            class="pill"
+            [class.active]="!brand()"
+            [attr.aria-pressed]="!brand()"
+            (click)="setBrand('')"
+          >All</button>
+
+          @for (item of brands(); track item.name) {
+            <button
+              type="button"
+              class="pill"
+              [class.active]="item.name.toLowerCase() === brand().toLowerCase()"
+              [attr.aria-pressed]="item.name.toLowerCase() === brand().toLowerCase()"
+              (click)="setBrand(item.name)"
+            >
+              {{ item.name }}
+              <span class="pill-count">{{ item.count }}</span>
+            </button>
+          }
+
         </div>
 
       </div>
@@ -178,21 +134,31 @@
       <!-- Style (the "category" of each watch) -->
       <div class="sidebar-group">
 
-        <label class="sidebar-group-label" for="filter-category">Style</label>
+        <span class="sidebar-group-label" id="style-label">Style</span>
 
-        <div class="filter-field">
-          <select
-            id="filter-category"
-            (change)="setCategory($any($event.target).value)"
-          >
-            <option value="">All Styles</option>
-            @for (item of categories(); track item.name) {
-              <option
-                [value]="item.name"
-                [selected]="item.name.toLowerCase() === category().toLowerCase()"
-              >{{ item.name }} ({{ item.count }})</option>
-            }
-          </select>
+        <div class="pill-list" role="group" aria-labelledby="style-label">
+
+          <button
+            type="button"
+            class="pill"
+            [class.active]="!category()"
+            [attr.aria-pressed]="!category()"
+            (click)="setCategory('')"
+          >All</button>
+
+          @for (item of categories(); track item.name) {
+            <button
+              type="button"
+              class="pill"
+              [class.active]="item.name.toLowerCase() === category().toLowerCase()"
+              [attr.aria-pressed]="item.name.toLowerCase() === category().toLowerCase()"
+              (click)="setCategory(item.name)"
+            >
+              {{ item.name }}
+              <span class="pill-count">{{ item.count }}</span>
+            </button>
+          }
+
         </div>
 
       </div>
@@ -253,11 +219,70 @@
 
       </div>
 
+      <!-- Phones: closes the filter panel -->
+      <button type="button" class="filter-done" (click)="toggleFilters()">
+        Show {{ filtered().length }} {{ filtered().length === 1 ? 'watch' : 'watches' }}
+      </button>
+
     </aside>
 
 
     <!-- Products -->
     <div class="products-main" id="products-top">
+
+    <!-- Result count, sorting and (on phones) the filter button -->
+    <div class="list-toolbar">
+
+      <button
+        type="button"
+        class="filter-toggle"
+        aria-controls="product-filters"
+        [attr.aria-expanded]="filtersOpen()"
+        (click)="toggleFilters()"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            d="M4 6h16M7 12h10M10 18h4"
+          />
+        </svg>
+        Filters
+        @if (chips().length) {
+          <span class="filter-count">{{ chips().length }}</span>
+        }
+      </button>
+
+      <p class="result-count" aria-live="polite">
+        @if (!showSkeleton() && !showError()) {
+          @if (filtered().length === 0) {
+            No watches found
+          } @else {
+            Showing <strong>{{ rangeStart() }}–{{ rangeEnd() }}</strong>
+            of <strong>{{ filtered().length }}</strong>
+            {{ filtered().length === 1 ? 'watch' : 'watches' }}
+          }
+        }
+      </p>
+
+      <div class="filter-field sort-field">
+        <select
+          aria-label="Sort watches"
+          (change)="setSort($any($event.target).value)"
+        >
+          @for (option of sortOptions; track option.value) {
+            <option
+              [value]="option.value"
+              [selected]="option.value === sort()"
+            >{{ option.label }}</option>
+          }
+        </select>
+      </div>
+
+    </div>
+
 
       <!-- Active filters, each can be removed with its ×  -->
       @if (chips().length) {

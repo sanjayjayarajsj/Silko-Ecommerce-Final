@@ -2,10 +2,9 @@
 <section class="hero">
 
   <div class="hero-bg">
-   <video class="hero-video" autoplay muted loop playsinline>
-  <source src="images/hero-video.mp4.mp4" type="video/mp4">
-</video>
-
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="images/hero-video.mp4.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay"></div>
   </div>
 
@@ -13,7 +12,7 @@
 
     <div class="hero-label">
       <span></span>
-      PREMIUM MEN'S WATCHES
+      PREMIUM HOROLOGY & LUXURY TIMEPIECES
       <span></span>
     </div>
 
@@ -23,24 +22,37 @@
     </h1>
 
     <p class="hero-text">
-      DISCOVER WATCHES CRAFTED FOR STYLE, CONFIDENCE AND
-      EVERY OCCASION.
+      DISCOVER TIMEPIECES CRAFTED FOR UNCOMPROMISING STYLE, CONFIDENCE,
+      AND EVERY DEFINING MOMENT IN LIFE.
     </p>
 
     <div class="hero-actions">
       <a routerLink="/products" class="shop-btn">
-        EXPLORE COLLECTION
-        <span>→</span>
+        EXPLORE THE COLLECTION
+        <span class="btn-arrow">→</span>
       </a>
+      <a href="#categories" class="hero-secondary-btn">
+        BROWSE BY STYLE
+      </a>
+    </div>
+
+    <div class="hero-quick-tags">
+      <span class="quick-label">POPULAR:</span>
+      <a routerLink="/products" [queryParams]="{ category: 'Chronograph' }">Chronograph</a>
+      <span class="dot">•</span>
+      <a routerLink="/products" [queryParams]="{ category: 'Automatic' }">Automatic</a>
+      <span class="dot">•</span>
+      <a routerLink="/products" [queryParams]="{ category: 'Analog' }">Analog</a>
+      <span class="dot">•</span>
+      <a routerLink="/products" [queryParams]="{ category: 'Sports' }">Sports</a>
     </div>
 
   </div>
 
   <div class="hero-bottom">
     <span>SCROLL TO EXPLORE</span>
-
-    <a href="#video-section" class="scroll-cue" aria-label="Scroll down">
-      <svg viewBox="0 0 24 24" width="20" height="20">
+    <a href="#trust-bar" class="scroll-cue" aria-label="Scroll down">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
         <path
           fill="none"
           stroke="currentColor"
@@ -56,10 +68,153 @@
 </section>
 
 
-<!-- ==================== VIDEO ==================== -->
-<section
-  class="video-section reveal-on-scroll"
-  id="video-section">
+<!-- ==================== TRUST & VALUE PERKS ==================== -->
+<section class="trust-bar" id="trust-bar">
+  <div class="trust-container">
+
+    <div class="trust-item">
+      <div class="trust-icon-box">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="trust-text">
+        <h4>100% Certified Authentic</h4>
+        <p>Direct from verified brand manufactures</p>
+      </div>
+    </div>
+
+    <div class="trust-item">
+      <div class="trust-icon-box">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+      </div>
+      <div class="trust-text">
+        <h4>2-Year Global Warranty</h4>
+        <p>Full protection on all movements & calibers</p>
+      </div>
+    </div>
+
+    <div class="trust-item">
+      <div class="trust-icon-box">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="1" y="3" width="15" height="13"/>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 8"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      </div>
+      <div class="trust-text">
+        <h4>Insured Express Delivery</h4>
+        <p>Tamper-proof luxury packaging to your door</p>
+      </div>
+    </div>
+
+    <div class="trust-item">
+      <div class="trust-icon-box">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+      </div>
+      <div class="trust-text">
+        <h4>30-Day Hassle-Free Returns</h4>
+        <p>Complimentary pickups & immediate refunds</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ==================== CURATED STYLES / CATEGORIES ==================== -->
+<section class="categories-section reveal-on-scroll" id="categories">
+
+  <div class="section-heading">
+    <p class="section-label">CURATED EDITIONS</p>
+    <h2>SHOP BY <span>STYLE</span></h2>
+    <div class="heading-line"></div>
+    <p class="section-subtext">Find the exact caliber and silhouette engineered for your personal lifestyle.</p>
+  </div>
+
+  <div class="categories-grid">
+
+    <a routerLink="/products" [queryParams]="{ category: 'Analog' }" class="category-card">
+      <div class="category-image-wrap">
+        <img src="images/titan/t 1.png" alt="Analog Watches" loading="lazy">
+        <div class="category-glow"></div>
+      </div>
+      <div class="category-info">
+        <span class="category-tag">ESSENTIAL</span>
+        <h3>Analog</h3>
+        <p>Timeless dials, minimalist aesthetics & dress sophistication.</p>
+        <span class="category-cta">EXPLORE ANALOG →</span>
+      </div>
+    </a>
+
+    <a routerLink="/products" [queryParams]="{ category: 'Chronograph' }" class="category-card featured-category">
+      <div class="category-badge">MOST POPULAR</div>
+      <div class="category-image-wrap">
+        <img src="images/titan/t 3.png" alt="Chronograph Watches" loading="lazy">
+        <div class="category-glow"></div>
+      </div>
+      <div class="category-info">
+        <span class="category-tag">PRECISION</span>
+        <h3>Chronograph</h3>
+        <p>Multi-subdial stopwatch functionality inspired by motorsport.</p>
+        <span class="category-cta">EXPLORE CHRONOGRAPH →</span>
+      </div>
+    </a>
+
+    <a routerLink="/products" [queryParams]="{ category: 'Automatic' }" class="category-card">
+      <div class="category-image-wrap">
+        <img src="images/titan/t 4.png" alt="Automatic Watches" loading="lazy">
+        <div class="category-glow"></div>
+      </div>
+      <div class="category-info">
+        <span class="category-tag">MECHANICAL</span>
+        <h3>Automatic</h3>
+        <p>Self-winding calibers powered by the kinetic motion of your wrist.</p>
+        <span class="category-cta">EXPLORE AUTOMATIC →</span>
+      </div>
+    </a>
+
+    <a routerLink="/products" [queryParams]="{ category: 'Sports' }" class="category-card">
+      <div class="category-image-wrap">
+        <img src="images/gshock/g 1.png" alt="Sports Watches" loading="lazy">
+        <div class="category-glow"></div>
+      </div>
+      <div class="category-info">
+        <span class="category-tag">TACTICAL</span>
+        <h3>Sports</h3>
+        <p>Rugged shock resistance and water-ready durability.</p>
+        <span class="category-cta">EXPLORE SPORTS →</span>
+      </div>
+    </a>
+
+    <a routerLink="/products" [queryParams]="{ category: 'Digital' }" class="category-card">
+      <div class="category-image-wrap">
+        <img src="images/casio/3 1.png" alt="Digital Watches" loading="lazy">
+        <div class="category-glow"></div>
+      </div>
+      <div class="category-info">
+        <span class="category-tag">MODERN UTILITY</span>
+        <h3>Digital</h3>
+        <p>Iconic retro-digital charm and multi-functional performance.</p>
+        <span class="category-cta">EXPLORE DIGITAL →</span>
+      </div>
+    </a>
+
+  </div>
+
+</section>
+
+
+<!-- ==================== VIDEO SHOWCASE ==================== -->
+<section class="video-section reveal-on-scroll" id="video-section">
 
   <video
     class="video-bg"
@@ -68,11 +223,7 @@
     loop
     playsinline
     [poster]="videoPoster">
-
-    <source
-      [src]="videoSrc"
-      type="video/mp4">
-
+    <source [src]="videoSrc" type="video/mp4">
   </video>
 
   <div class="video-overlay"></div>
@@ -80,10 +231,11 @@
   <div class="video-content">
 
     <div class="section-number">
+      <span>02</span> / HOROLOGY IN MOTION
     </div>
 
     <p class="video-label">
-      IN MOTION
+      UNCOMPROMISED ARTISTRY
     </p>
 
     <h2>
@@ -92,9 +244,35 @@
     </h2>
 
     <p class="video-text">
-      WATCH THE DETAILS THAT MAKE EVERY SILKO TIMEPIECE
-      
+      Watch the intricate craftsmanship, seamless movement, and exacting tolerances
+      that make every SILKO timepiece an enduring masterpiece on your wrist.
     </p>
+
+    <div class="craftsmanship-grid">
+      <div class="craft-pill">
+        <span class="craft-icon">✦</span>
+        <span>Sapphire Crystal Glass</span>
+      </div>
+      <div class="craft-pill">
+        <span class="craft-icon">✦</span>
+        <span>316L Surgical Steel</span>
+      </div>
+      <div class="craft-pill">
+        <span class="craft-icon">✦</span>
+        <span>High-Torque Calibers</span>
+      </div>
+      <div class="craft-pill">
+        <span class="craft-icon">✦</span>
+        <span>Up to 200M Water Resistance</span>
+      </div>
+    </div>
+
+    <div class="video-cta">
+      <a routerLink="/products" class="shop-btn video-btn">
+        SHOP NEW RELEASES
+        <span>→</span>
+      </a>
+    </div>
 
   </div>
 
@@ -102,164 +280,129 @@
 
 
 <!-- ==================== FEATURED PRODUCTS ==================== -->
-<section
-  class="featured-section reveal-on-scroll"
-  id="featured">
+<section class="featured-section reveal-on-scroll" id="featured">
 
   <div class="section-heading">
-
-    <p class="section-label">
-      HANDPICKED FOR YOU
-    </p>
-
-    <h2>
-      FEATURED <span>WATCHES</span>
-    </h2>
-
+    <p class="section-label">HANDPICKED FOR YOU</p>
+    <h2>FEATURED <span>WATCHES</span></h2>
     <div class="heading-line"></div>
-
+    <p class="section-subtext">Signature models commanding presence and revered by enthusiasts worldwide.</p>
   </div>
-
 
   <div class="featured-grid">
 
     @if (featuredProducts | async; as products) {
 
       @for (product of products; track product.id) {
-
-        <app-product-card
-          [product]="product">
-        </app-product-card>
-
+        <app-product-card [product]="product"></app-product-card>
       }
 
     } @else {
 
       @for (i of skeletonCards; track i) {
-
         <div class="product-skeleton">
-
           <div class="skeleton skeleton-image"></div>
-
-          <div
-            class="skeleton skeleton-line"
-            style="width: 70%">
-          </div>
-
-          <div
-            class="skeleton skeleton-line"
-            style="width: 45%">
-          </div>
-
+          <div class="skeleton skeleton-line" style="width: 70%"></div>
+          <div class="skeleton skeleton-line" style="width: 45%"></div>
         </div>
-
       }
 
     }
 
   </div>
 
-
   <div class="section-action">
-
-    <a
-      routerLink="/products"
-      class="outline-btn">
-
+    <a routerLink="/products" class="outline-btn">
       VIEW ALL WATCHES
-
       <span>→</span>
-
     </a>
-
   </div>
 
 </section>
 
 
 <!-- ==================== BRANDS ==================== -->
-<section class="brands-section reveal-on-scroll">
+<section class="brands-section reveal-on-scroll" id="brands">
 
   <div class="section-heading">
-
-    <p class="section-label">
-      DISCOVER YOUR STYLE
-    </p>
-
-    <h2>
-      SHOP BY <span>BRAND</span>
-    </h2>
-
+    <p class="section-label">WORLD-RENOWNED MAISONS</p>
+    <h2>SHOP BY <span>BRAND</span></h2>
     <div class="heading-line"></div>
-
+    <p class="section-subtext">Curated collections from the most celebrated names in international watchmaking.</p>
   </div>
-
 
   <div class="brands">
 
-    <a
-      routerLink="/products"
-      [queryParams]="{ brand: 'Titan' }">
-
-      <span class="brand-number"></span>
-      <strong>TITAN</strong>
+    <a routerLink="/products" [queryParams]="{ brand: 'Titan' }" class="brand-item">
+      <div class="brand-meta">
+        <span class="brand-number">01</span>
+        <strong>TITAN</strong>
+        <span class="brand-sub">Modern Elegance & Edge</span>
+      </div>
+      <div class="brand-preview">
+        <img src="images/titan/t 1.png" alt="Titan Watch" loading="lazy">
+      </div>
       <span class="brand-arrow">→</span>
-
     </a>
 
-
-    <a
-      routerLink="/products"
-      [queryParams]="{ brand: 'Casio' }">
-
-      <span class="brand-number"></span>
-      <strong>CASIO</strong>
+    <a routerLink="/products" [queryParams]="{ brand: 'Casio' }" class="brand-item">
+      <div class="brand-meta">
+        <span class="brand-number">02</span>
+        <strong>CASIO</strong>
+        <span class="brand-sub">Japanese Innovation & Precision</span>
+      </div>
+      <div class="brand-preview">
+        <img src="images/casio/1 2.png" alt="Casio Watch" loading="lazy">
+      </div>
       <span class="brand-arrow">→</span>
-
     </a>
 
-
-    <a
-      routerLink="/products"
-      [queryParams]="{ brand: 'Fastrack' }">
-
-      <span class="brand-number"></span>
-      <strong>FASTRACK</strong>
+    <a routerLink="/products" [queryParams]="{ brand: 'Fastrack' }" class="brand-item">
+      <div class="brand-meta">
+        <span class="brand-number">03</span>
+        <strong>FASTRACK</strong>
+        <span class="brand-sub">Bold, Energetic & Contemporary</span>
+      </div>
+      <div class="brand-preview">
+        <img src="images/fastrack/f 1.png" alt="Fastrack Watch" loading="lazy">
+      </div>
       <span class="brand-arrow">→</span>
-
     </a>
 
-
-    <a
-      routerLink="/products"
-      [queryParams]="{ brand: 'Fossil' }">
-
-      <span class="brand-number"></span>
-      <strong>FOSSIL</strong>
+    <a routerLink="/products" [queryParams]="{ brand: 'Fossil' }" class="brand-item">
+      <div class="brand-meta">
+        <span class="brand-number">04</span>
+        <strong>FOSSIL</strong>
+        <span class="brand-sub">American Vintage & Heritage</span>
+      </div>
+      <div class="brand-preview">
+        <img src="images/fossil/fo 1.png" alt="Fossil Watch" loading="lazy">
+      </div>
       <span class="brand-arrow">→</span>
-
     </a>
 
-
-    <a
-      routerLink="/products"
-      [queryParams]="{ brand: 'Police' }">
-
-      <span class="brand-number"></span>
-      <strong>POLICE</strong>
+    <a routerLink="/products" [queryParams]="{ brand: 'Police' }" class="brand-item">
+      <div class="brand-meta">
+        <span class="brand-number">05</span>
+        <strong>POLICE</strong>
+        <span class="brand-sub">Italian Rebellious Luxury</span>
+      </div>
+      <div class="brand-preview">
+        <img src="images/police/po 1.png" alt="Police Watch" loading="lazy">
+      </div>
       <span class="brand-arrow">→</span>
-
     </a>
 
-
-    <a
-      routerLink="/products"
-      [queryParams]="{ brand: 'G-Shock' }">
-
-      <span class="brand-number"></span>
-      <strong>G-SHOCK</strong>
+    <a routerLink="/products" [queryParams]="{ brand: 'G-Shock' }" class="brand-item">
+      <div class="brand-meta">
+        <span class="brand-number">06</span>
+        <strong>G-SHOCK</strong>
+        <span class="brand-sub">The Ultimate Tough Watch</span>
+      </div>
+      <div class="brand-preview">
+        <img src="images/gshock/g 1.png" alt="G-Shock Watch" loading="lazy">
+      </div>
       <span class="brand-arrow">→</span>
-
     </a>
 
   </div>
@@ -268,15 +411,15 @@
 
 
 <!-- ==================== ABOUT SILKO ==================== -->
-<section
-  class="about-section reveal-on-scroll"
-  id="about">
+<section class="about-section reveal-on-scroll" id="about">
 
   <div class="about-layout">
 
     <div class="about-number">
+      <span>04</span>
+      <div class="number-line"></div>
+      <span>HERITAGE</span>
     </div>
-
 
     <div class="about-content">
 
@@ -290,30 +433,36 @@
       </h2>
 
       <p class="about-text">
-        SILKO brings together some of the world's most
-        recognized watch brands in one carefully selected
-        collection.
+        SILKO brings together some of the world's most recognized watch brands in one
+        carefully selected collection. We believe a fine watch isn't simply an instrument
+        to tell time—it is a personal testament to where you have been and where you are headed.
       </p>
 
       <p class="about-text">
-        From everyday essentials to statement pieces,
-        every watch is selected for its design, reliability
-        and ability to complement the person wearing it.
+        From everyday minimalist essentials to rare statement pieces, every watch is selected
+        for its aesthetic harmony, mechanical reliability, and uncompromised build quality.
       </p>
 
-      <p class="about-text">
-        Whether you're heading to the office, stepping into
-        a special occasion or simply enjoying your day,
-        SILKO helps you find a watch that fits your style.
-      </p>
+      <div class="about-metrics">
+        <div class="metric-box">
+          <span class="metric-val">100%</span>
+          <span class="metric-label">Certified Genuine</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-box">
+          <span class="metric-val">10,000+</span>
+          <span class="metric-label">Enthusiasts Served</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-box">
+          <span class="metric-val">2 Years</span>
+          <span class="metric-label">Movement Warranty</span>
+        </div>
+      </div>
 
-      <a
-        routerLink="/products"
-        class="text-link">
-
+      <a routerLink="/products" class="text-link">
         EXPLORE THE COLLECTION
         <span>→</span>
-
       </a>
 
     </div>
@@ -323,15 +472,170 @@
 </section>
 
 
-<!-- ==================== CONTACT ==================== -->
-<section
-  class="contact-section reveal-on-scroll"
-  id="contact">
+<!-- ==================== TESTIMONIALS / SOCIAL PROOF ==================== -->
+<section class="reviews-section reveal-on-scroll" id="testimonials">
+
+  <div class="section-heading">
+    <p class="section-label">VOICES OF THE COLLECTORS</p>
+    <h2>WHAT CLIENTS <span>SAY</span></h2>
+    <div class="heading-line"></div>
+    <p class="section-subtext">Authentic experiences from collectors who wear SILKO every day.</p>
+  </div>
+
+  <div class="reviews-grid">
+
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-quote">
+        "The Titan Chronograph arrived in impeccable luxury packaging. The weight, balance, and polish
+        on the steel bracelet are unmatched at this price point. A phenomenal shopping experience."
+      </p>
+      <div class="reviewer-meta">
+        <div class="reviewer-avatar">VK</div>
+        <div>
+          <strong>Vikram K.</strong>
+          <span>Verified Collector · Titan Chronograph</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card featured-review">
+      <div class="badge-verified">TOP REVIEW</div>
+      <div class="stars">★★★★★</div>
+      <p class="review-quote">
+        "Authenticity was my primary concern when ordering online. SILKO delivered original warranty papers,
+        branded packaging, and flawless serial verification. Truly the gold standard for horology."
+      </p>
+      <div class="reviewer-meta">
+        <div class="reviewer-avatar">AR</div>
+        <div>
+          <strong>Ananya R.</strong>
+          <span>Verified Collector · Fossil Automatic</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-quote">
+        "Ordered the G-Shock tactical series for everyday training. Delivered within 48 hours, fully tracked.
+        Will definitely be returning for my next dress watch!"
+      </p>
+      <div class="reviewer-meta">
+        <div class="reviewer-avatar">RS</div>
+        <div>
+          <strong>Rohit S.</strong>
+          <span>Verified Collector · Casio G-Shock</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<!-- ==================== VIP NEWSLETTER ==================== -->
+<section class="newsletter-section reveal-on-scroll">
+  <div class="newsletter-card">
+    <div class="newsletter-content">
+      <span class="newsletter-tag">THE SILKO CIRCLE</span>
+      <h2>UNLOCK <span>10% OFF</span> YOUR FIRST TIMEPIECE</h2>
+      <p>Subscribe for private collector drops, seasonal previews, and horological insights directly in your inbox.</p>
+      
+      <form class="newsletter-form" (submit)="$event.preventDefault()">
+        <input type="email" placeholder="Enter your email address" required aria-label="Email Address">
+        <button type="submit" class="newsletter-btn">
+          JOIN PRIVILEGE
+          <span>→</span>
+        </button>
+      </form>
+      <span class="newsletter-disclaimer">Zero spam. Unsubscribe at any time.</span>
+    </div>
+  </div>
+</section>
+<!-- ==================== SECOND TRUST STRIP ==================== -->
+<section class="trust-strip-secondary" aria-label="Why shop with SILKO">
+
+  <div class="trust-strip-item">
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3zM9 12l2.2 2.2L15.5 10"
+      />
+    </svg>
+
+    <div class="trust-strip-content">
+      <strong>Authentic Brands</strong>
+      <span>Titan, Casio, Fossil &amp; more</span>
+    </div>
+  </div>
+
+  <div class="trust-strip-item">
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z"
+      />
+    </svg>
+
+    <div class="trust-strip-content">
+      <strong>Secure Checkout</strong>
+      <span>Safe, protected payments</span>
+    </div>
+  </div>
+
+  <div class="trust-strip-item">
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M3 7l9-4 9 4-9 4-9-4zM3 7v10l9 4 9-4V7M12 11v10"
+      />
+    </svg>
+
+    <div class="trust-strip-content">
+      <strong>Track Your Orders</strong>
+      <span>Follow every step to your door</span>
+    </div>
+  </div>
+
+  <div class="trust-strip-item">
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M4 14v-2a8 8 0 0116 0v2M4 14h3v5H4zM17 14h3v5h-3zM20 19c0 1.5-2 2-5 2"
+      />
+    </svg>
+
+    <div class="trust-strip-content">
+      <strong>Customer Support</strong>
+      <span>Mon&ndash;Sat, 10am&ndash;7pm</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ==================== CONTACT & CONCIERGE ==================== -->
+<section class="contact-section reveal-on-scroll" id="contact">
 
   <div class="contact-inner">
 
     <p class="section-label">
-      WE ARE HERE FOR YOU
+      EXPERT HOROLOGY ASSISTANCE
     </p>
 
     <h2>
@@ -340,69 +644,56 @@
     </h2>
 
     <p class="contact-intro">
-      Our team is here to help you with products,
-      orders and any questions about SILKO.
+      Our dedicated concierge team is available to assist with sizing advice, caliber specifications,
+      custom orders, and delivery coordination.
     </p>
-
 
     <div class="contact-grid">
 
       <div class="contact-card">
-
         <div class="contact-icon">
-          ✉
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
         </div>
-
-        <h3>Email</h3>
-
-        <p>
-          silkotimeless&#64;gmail.com
-        </p>
-
+        <h3>Email Concierge</h3>
+        <p>silkotimeless&#64;gmail.com</p>
+        <span class="card-hint">Typical response within 2 hours</span>
       </div>
 
-
       <div class="contact-card">
-
         <div class="contact-icon">
-          ☎
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
         </div>
-
-        <h3>Appointments</h3>
-
-        <p>
-          1800 0000 1919
-        </p>
-
+        <h3>Direct Line</h3>
+        <p>1800 0000 1919</p>
+        <span class="card-hint">Mon – Sat: 9:00 AM – 8:00 PM</span>
       </div>
 
-
       <div class="contact-card">
-
         <div class="contact-icon">
-          ?
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
         </div>
-
-        <h3>Customer Help</h3>
-
-        <p>
-          1800 8888 2200
-        </p>
-
+        <h3>VIP Customer Help</h3>
+        <p>1800 8888 2200</p>
+        <span class="card-hint">Toll-free customer support</span>
       </div>
 
     </div>
 
-
     <div class="contact-note">
-
-      <span>NEED MORE HELP?</span>
-
+      <span>NEED SPECIFIC ADVICE?</span>
       <p>
-        Have questions about a SILKO product or your order?
-        Our support team is ready to assist you.
+        Have questions regarding authenticity, water resistance, or band adjustments?
+        Our horology specialists are always on standby.
       </p>
-
     </div>
 
   </div>

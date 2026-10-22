@@ -1,71 +1,59 @@
 /* =========================================================
-   SILKO - GLOBAL DESIGN SYSTEM
+   SILKO – GLOBAL DESIGN SYSTEM
+   Tokens, reset, typography, buttons, forms, shared helpers.
+   Every token name from the old file is kept, so existing
+   component CSS keeps working.
    ========================================================= */
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 :root {
   /* ---------- Colors ---------- */
-
   --color-bg: #ffffff;
-  --color-surface: #f6f8fa;
-  --color-surface-dark: #0b1f33;
+  --color-surface: #f5f7fa;
+  --color-surface-dark: #07121f;
+  --color-black: #05080d;
 
-  --color-text: #0b0d0f;
+  --color-text: #0b1520;
   --color-text-light: #ffffff;
-  --color-text-muted: #66717d;
+  --color-text-muted: #5f6b78;
 
   --color-border: #e1e6eb;
   --color-border-dark: #24384a;
 
-  /* SILKO Brand Colors */
-  --color-primary: #0b1f33;
-  --color-primary-light: #12395a;
-  --color-primary-accent: #1e5a86;
+  /* Brand */
+  --color-primary: #0a1b30;
+  --color-primary-light: #14395c;
+  --color-primary-accent: #2a6aa8;
 
-  --color-accent: #0b1f33;
+  --color-accent: #0a1b30;
   --color-accent-contrast: #ffffff;
+
+  /* Light blue highlight – used on dark navy / black surfaces */
+  --color-ice: #a9c9e8;
 
   --color-danger: #c0392b;
   --color-success: #2e7d5b;
-  --color-warning: #b7791f;
+  --color-warning: #c2410c;
 
   /* ---------- Typography ---------- */
+  --font-sans: "Jost", "Century Gothic", "Trebuchet MS", Arial, sans-serif;
 
-  --font-sans:
-    "Jost",
-    "Century Gothic",
-    "Trebuchet MS",
-    Arial,
-    sans-serif;
-
-  /* ---------- Border Radius ---------- */
-
+  /* ---------- Radius ---------- */
   --radius-xs: 4px;
-  --radius-sm: 7px;
+  --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 24px;
   --radius-pill: 999px;
 
   /* ---------- Shadows ---------- */
-
-  --shadow-xs:
-    0 1px 3px rgba(11, 31, 51, 0.05);
-
-  --shadow-sm:
-    0 4px 12px rgba(11, 31, 51, 0.07);
-
-  --shadow-md:
-    0 12px 30px rgba(11, 31, 51, 0.10);
-
-  --shadow-lg:
-    0 20px 50px rgba(11, 31, 51, 0.15);
+  --shadow-xs: 0 1px 3px rgba(11, 31, 51, 0.06);
+  --shadow-sm: 0 4px 14px rgba(11, 31, 51, 0.08);
+  --shadow-md: 0 14px 34px rgba(11, 31, 51, 0.12);
+  --shadow-lg: 0 24px 56px rgba(11, 31, 51, 0.18);
 
   /* ---------- Spacing ---------- */
-
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -78,158 +66,122 @@ html {
   --space-10: 96px;
 
   /* ---------- Layout ---------- */
-
   --container-width: 1280px;
   --navbar-height: 72px;
 
-  /* ---------- Transitions ---------- */
-
+  /* ---------- Motion ---------- */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.25s ease;
   --transition-slow: 0.4s ease;
-}
 
+  /* ---------- Focus ring ---------- */
+  --ring: 0 0 0 3px rgba(30, 90, 134, 0.28);
+}
 
 /* =========================================================
    RESET
    ========================================================= */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-
   background: var(--color-bg);
   color: var(--color-text);
-
-  font-family: var(--font-sans);
-
-  letter-spacing: 0.015em;
-
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
+/* body carries Angular Material's "mat-typography" class, which
+   would otherwise force Roboto over our Jost. */
+html, body, body.mat-typography {
+  font-family: var(--font-sans);
+}
+
+/* Material also forces Roboto on every heading – point them at Jost
+   (font-family only, so heading sizes elsewhere stay as they were). */
+.mat-typography h1,
+.mat-typography h2,
+.mat-typography h3,
+.mat-typography h4,
+.mat-typography h5,
+.mat-typography h6 {
+  font-family: var(--font-sans);
+}
 
 /* =========================================================
    TYPOGRAPHY
    ========================================================= */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   margin: 0 0 var(--space-3);
-
   color: var(--color-text);
-
   font-family: var(--font-sans);
-
   font-weight: 500;
-
   line-height: 1.15;
-
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
-h1 {
-  font-size: clamp(38px, 5vw, 64px);
-}
-
-h2 {
-  font-size: clamp(30px, 4vw, 46px);
-}
-
-h3 {
-  font-size: clamp(22px, 3vw, 30px);
-}
-
-h4 {
-  font-size: 20px;
-}
+h1 { font-size: clamp(36px, 5vw, 60px); }
+h2 { font-size: clamp(28px, 3.6vw, 42px); }
+h3 { font-size: clamp(20px, 2.4vw, 26px); }
+h4 { font-size: 18px; }
 
 p {
   margin: 0 0 var(--space-3);
-
   color: var(--color-text-muted);
-
   font-size: 15px;
-
   line-height: 1.7;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+a { color: inherit; text-decoration: none; }
 
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-}
+button, input, select, textarea { font-family: inherit; }
+button { cursor: pointer; }
 
-button {
-  cursor: pointer;
-}
+img { max-width: 100%; display: block; }
 
+a, button { -webkit-tap-highlight-color: transparent; }
+
+/* Keyboard users get a clear ring; mouse users don't. */
+:focus-visible {
+  outline: 2px solid var(--color-primary-accent);
+  outline-offset: 2px;
+}
 
 /* =========================================================
    TEXT HELPERS
    ========================================================= */
 
-.text-muted {
-  color: var(--color-text-muted);
-}
-
-.text-gold {
-  color: var(--color-primary-accent);
-}
+.text-muted { color: var(--color-text-muted); }
+.text-ice   { color: var(--color-ice); }
 
 .uppercase {
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
 
-
 /* =========================================================
-   BUTTON SYSTEM
+   BUTTONS
    ========================================================= */
 
 .btn {
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
-
   gap: 10px;
-
   min-height: 46px;
-
-  padding: 12px 24px;
-
+  padding: 12px 26px;
   border: 1px solid transparent;
-
   border-radius: var(--radius-sm);
-
-  font-size: 13px;
-
+  font-size: 12.5px;
   font-weight: 600;
-
-  letter-spacing: 0.08em;
-
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-
   transition:
     background var(--transition-normal),
     color var(--transition-normal),
@@ -238,148 +190,78 @@ button {
     box-shadow var(--transition-normal);
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn:active {
-  transform: translateY(0);
-}
-
-
-/* Primary */
+.btn:hover  { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
 
 .btn-primary {
   background: var(--color-accent);
   color: var(--color-accent-contrast);
-
   box-shadow: var(--shadow-xs);
 }
-
 .btn-primary:hover {
-  background: #292929;
-
+  background: var(--color-primary-light);
   box-shadow: var(--shadow-sm);
 }
-
-
-/* Gold */
-
-.btn-gold {
-  background: var(--color-gold);
-  color: #ffffff;
-}
-
-.btn-gold:hover {
-  background: var(--color-gold-dark);
-
-  box-shadow: var(--shadow-sm);
-}
-
-
-/* Outline */
 
 .btn-outline {
   background: transparent;
-
-  color: var(--color-text);
-
-  border-color: var(--color-text);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
 }
-
 .btn-outline:hover {
-  background: var(--color-text);
+  background: var(--color-primary);
   color: var(--color-text-light);
 }
 
-
-/* Light */
-
 .btn-light {
-  background: #ffffff;
+  background: #fff;
   color: var(--color-text);
-
   border-color: rgba(255, 255, 255, 0.5);
 }
-
-.btn-light:hover {
-  background: #f5f5f5;
-
-  box-shadow: var(--shadow-sm);
-}
-
-
-/* Disabled */
+.btn-light:hover { background: #f1f4f7; box-shadow: var(--shadow-sm); }
 
 .btn:disabled {
   opacity: 0.5;
-
   cursor: not-allowed;
-
   transform: none;
+  box-shadow: none;
 }
 
-
 /* =========================================================
-   PAGE CONTAINER
+   LAYOUT
    ========================================================= */
 
 .page {
-  width: min(
-    calc(100% - 40px),
-    var(--container-width)
-  );
-
+  width: min(calc(100% - 40px), var(--container-width));
   margin: 0 auto;
-
   padding: var(--space-8) 0 var(--space-10);
 }
 
-
-/* =========================================================
-   SECTION SYSTEM
-   ========================================================= */
-
-.section {
-  padding: var(--space-10) 0;
-}
+.section { padding: var(--space-10) 0; }
 
 .section-header {
   margin-bottom: var(--space-7);
-
   text-align: center;
 }
 
 .section-label {
   display: inline-block;
-
   margin-bottom: var(--space-3);
-
   color: var(--color-primary-accent);
-
   font-size: 11px;
-
   font-weight: 600;
-
-  letter-spacing: 0.18em;
-
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
-.section-title {
-  margin-bottom: var(--space-3);
-}
+.section-title { margin-bottom: var(--space-3); }
 
 .section-description {
   max-width: 620px;
-
   margin: 0 auto;
-
   color: var(--color-text-muted);
-
   line-height: 1.7;
 }
-
 
 /* =========================================================
    CARDS
@@ -387,13 +269,9 @@ button {
 
 .card {
   background: var(--color-bg);
-
   border: 1px solid var(--color-border);
-
   border-radius: var(--radius-lg);
-
   box-shadow: var(--shadow-xs);
-
   transition:
     transform var(--transition-normal),
     box-shadow var(--transition-normal),
@@ -402,12 +280,9 @@ button {
 
 .card:hover {
   transform: translateY(-3px);
-
-  border-color: #ddddda;
-
+  border-color: #cfd8e0;
   box-shadow: var(--shadow-md);
 }
-
 
 /* =========================================================
    FORM ELEMENTS
@@ -417,184 +292,124 @@ input,
 select,
 textarea {
   width: 100%;
-
   padding: 12px 14px;
-
   border: 1px solid var(--color-border);
-
   border-radius: var(--radius-sm);
-
-  background: #ffffff;
-
+  background: #fff;
   color: var(--color-text);
-
   font-size: 14px;
-
   outline: none;
-
   transition:
     border-color var(--transition-normal),
-    box-shadow var(--transition-normal);
+    box-shadow var(--transition-normal),
+    background var(--transition-normal);
+}
+
+/* Checkboxes / radios must NOT be stretched to 100% width. */
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  padding: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
 }
 
 input::placeholder,
-textarea::placeholder {
-  color: #999999;
-}
+textarea::placeholder { color: #9aa5b1; }
 
-input:focus,
+input:hover:not(:disabled):not([type="checkbox"]):not([type="radio"]),
+select:hover:not(:disabled),
+textarea:hover:not(:disabled) { border-color: #c4ced8; }
+
+input:focus:not([type="checkbox"]):not([type="radio"]),
 select:focus,
 textarea:focus {
- border-color: var(--color-primary-accent);
-
-box-shadow:
-  0 0 0 3px rgba(30, 90, 134, 0.12);
+  border-color: var(--color-primary-accent);
+  box-shadow: var(--ring);
 }
 
+input:disabled, select:disabled, textarea:disabled {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
 
 /* =========================================================
-   IMAGES
-   ========================================================= */
-
-img {
-  max-width: 100%;
-
-  display: block;
-}
-
-
-/* =========================================================
-   LINKS
-   ========================================================= */
-
-a,
-button {
-  -webkit-tap-highlight-color: transparent;
-}
-
-
-/* =========================================================
-   PAGE TRANSITION
-   ========================================================= */
-
-router-outlet + *,
-.page {
-  animation: page-fade-in 0.35s ease;
-}
-
-@keyframes page-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f4f4f2;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #cfcfca;
-
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #aaa9a2;
-}
-
-
-/* =========================================================
-   TEXT SELECTION
-   ========================================================= */
-
-::selection {
-  background: var(--color-gold);
-  color: #ffffff;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-  :root {
-    --navbar-height: 64px;
-  }
-
-  .page {
-    width: min(
-      calc(100% - 32px),
-      var(--container-width)
-    );
-
-    padding-top: var(--space-7);
-    padding-bottom: var(--space-8);
-  }
-
-  .section {
-    padding: var(--space-8) 0;
-  }
-
-  .section-header {
-    margin-bottom: var(--space-6);
-  }
-
-  .btn {
-    min-height: 44px;
-
-    padding: 11px 20px;
-  }
-}
-
-
-@media (max-width: 480px) {
-
-  .page {
-    width: calc(100% - 24px);
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  .btn {
-    width: 100%;
-  }
-  /* =========================================================
    PRODUCT LINKS (cart, wishlist, checkout, product cards)
    ========================================================= */
 
-.product-link:hover {
-  text-decoration: underline;
-}
+.product-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .product-image-link {
   display: block;
   width: 100%;
   height: 100%;
 }
+
+/* =========================================================
+   PAGE TRANSITION
+   ========================================================= */
+
+router-outlet + *,
+.page { animation: page-fade-in 0.35s ease; }
+
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   SCROLLBAR + SELECTION
+   ========================================================= */
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #eef1f4; }
+::-webkit-scrollbar-thumb {
+  background: #b9c4cf;
+  border-radius: 999px;
+  border: 2px solid #eef1f4;
+}
+::-webkit-scrollbar-thumb:hover { background: #8e9cab; }
+
+::selection { background: var(--color-primary); color: #fff; }
+/* =========================================================
+   TOAST (Material snackbar from ToastService)
+   Navy card that sits BELOW the navbar instead of covering it.
+   ========================================================= */
+
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: var(--color-primary);
+  --mdc-snackbar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: var(--color-ice);
+}
+
+/* extra specificity + !important: Material's own styles load after ours */
+.cdk-overlay-container .mat-mdc-snack-bar-container { margin-top: 86px !important; }
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 760px) {
+  .cdk-overlay-container .mat-mdc-snack-bar-container { margin-top: 122px !important; }
+}
+
 /* =========================================================
    ADMIN TABLES
-   - fixes the Actions cell (a table cell must stay a table cell)
-   - on phones every row becomes a small card, so Price, Stock,
-     Status and Actions are visible without sideways scrolling
+   (These rules used to sit INSIDE the 480px media query,
+   so they only worked on very small phones. They now apply
+   at the widths the original comments intended.)
+   - keeps the Actions cell a real table cell on desktop
+   - on phones every row becomes a small card
    ========================================================= */
 
 .admin-table td.actions-cell {
@@ -608,8 +423,14 @@ router-outlet + *,
   margin-right: 14px;
 }
 
-.admin-table td.actions-cell > *:last-child {
-  margin-right: 0;
+.admin-table td.actions-cell > *:last-child { margin-right: 0; }
+
+@media (min-width: 861px) and (max-width: 1280px) {
+  .table-wrap .admin-table thead th,
+  .table-wrap .admin-table tbody td {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 @media (max-width: 860px) {
@@ -621,7 +442,6 @@ router-outlet + *,
     width: 100%;
   }
 
-  /* headers are replaced by the labels inside each row */
   .table-wrap .admin-table thead {
     position: absolute;
     width: 1px;
@@ -635,9 +455,7 @@ router-outlet + *,
     border-bottom: 1px solid var(--color-border);
   }
 
-  .table-wrap .admin-table tbody tr:last-child {
-    border-bottom: 0;
-  }
+  .table-wrap .admin-table tbody tr:last-child { border-bottom: 0; }
 
   .table-wrap .admin-table td {
     display: flex;
@@ -661,9 +479,7 @@ router-outlet + *,
     text-align: left;
   }
 
-  .table-wrap .admin-table td.image-cell {
-    justify-content: flex-start;
-  }
+  .table-wrap .admin-table td.image-cell { justify-content: flex-start; }
 
   .table-wrap .admin-table td.actions-cell {
     display: flex;
@@ -674,9 +490,7 @@ router-outlet + *,
     border-top: 1px dashed var(--color-border);
   }
 
-  .table-wrap .admin-table td.actions-cell > * {
-    margin-right: 0;
-  }
+  .table-wrap .admin-table td.actions-cell > * { margin-right: 0; }
 
   .table-wrap .admin-table td.empty-row {
     display: block;
@@ -684,13 +498,40 @@ router-outlet + *,
   }
 }
 
-/* Between phone and wide desktop the admin content area is narrow,
-   so the tables use slightly tighter cells and fit without clipping. */
-@media (min-width: 861px) and (max-width: 1280px) {
-  .table-wrap .admin-table thead th,
-  .table-wrap .admin-table tbody td {
-    padding-left: 8px;
-    padding-right: 8px;
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  :root { --navbar-height: 64px; }
+
+  .page {
+    width: min(calc(100% - 32px), var(--container-width));
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-8);
   }
+
+  .section { padding: var(--space-8) 0; }
+  .section-header { margin-bottom: var(--space-6); }
+  .btn { min-height: 44px; padding: 11px 20px; }
 }
+
+@media (max-width: 480px) {
+  .page { width: calc(100% - 24px); }
+  p { font-size: 14px; }
+  .btn { width: 100%; }
+}
+
+/* =========================================================
+   REDUCED MOTION – respect the visitor's OS setting
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

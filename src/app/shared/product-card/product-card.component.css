@@ -131,13 +131,8 @@
 }
 
 
-.wishlist-btn:hover {
-  transform: scale(1.08);
-
-  background: var(--color-primary);
-
-  color: #ffffff;
-}
+.wishlist-btn:hover { transform: scale(1.1); color: var(--color-primary-accent); }
+.wishlist-btn:hover svg path { fill: currentColor; }
 
 
 /* =========================================================

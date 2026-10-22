@@ -20,12 +20,13 @@ const DB_FILE = path.join(__dirname, '..', 'db.json');
 
 const router = jsonServer.router(DB_FILE);
 const middlewares = jsonServer.defaults();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const TOKEN_LIFETIME_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 // ---------- secret used to sign tokens (created once, kept out of git) ----------
 const SECRET_FILE = path.join(__dirname, '.secret');
 function loadSecret() {
+  if (process.env.TOKEN_SECRET) return process.env.TOKEN_SECRET;
   try {
     return fs.readFileSync(SECRET_FILE, 'utf8').trim();
   } catch {

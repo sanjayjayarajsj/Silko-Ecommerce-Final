@@ -605,6 +605,25 @@
       },
       "quantity": 1,
       "id": 6
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 4,
+        "name": "Titan Automatic Silver",
+        "brand": "Titan",
+        "price": 12995,
+        "image": "images/titan/t 4.png",
+        "category": "Automatic",
+        "description": "A premium automatic men's watch with a classic silver finish.",
+        "stock": 8,
+        "images": [
+          "images/titan/t 4.png",
+          "images/titan/t 4 2.png"
+        ]
+      },
+      "quantity": 1,
+      "id": 7
     }
   ],
   "wishlist": [

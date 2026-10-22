@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: silko-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm run api
+    envVars:
+      - key: TOKEN_SECRET
+        generateValue: true

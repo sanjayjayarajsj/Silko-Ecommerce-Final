@@ -255,10 +255,16 @@
           [class.saved]="inWishlist()"
           [attr.aria-pressed]="inWishlist()"
         >
-
-          <span class="heart">
-            {{ inWishlist() ? '♥' : '♡' }}
-          </span>
+          <svg class="wish-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              d="M7 3.8h10a1.2 1.2 0 011.2 1.2v15.2l-6.2-4.3-6.2 4.3V5A1.2 1.2 0 017 3.8z"
+            />
+          </svg>
 
           {{ inWishlist() ? 'Saved to Wishlist' : 'Add to Wishlist' }}
 
