@@ -1,5 +1,5 @@
 import { Component, PLATFORM_ID, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,RouterLink } from '@angular/router';
 import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
 
 interface OrderSuccessProduct {
@@ -25,7 +25,7 @@ interface OrderSuccessState {
 @Component({
   selector: 'app-order-success',
   standalone: true,
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe,RouterLink],
   templateUrl: './order-success.component.html',
   styleUrl: './order-success.component.css'
 })

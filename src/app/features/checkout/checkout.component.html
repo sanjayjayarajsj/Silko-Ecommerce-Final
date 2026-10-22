@@ -322,8 +322,13 @@
             (click)="paymentMethod = 'Card'"
           >
 
-            <span class="payment-icon">💳</span>
-
+           <span class="payment-icon">
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M3 10h18M7 15h4"/>
+    </g>
+  </svg>
+</span>
             <span class="payment-option-content">
               <strong>Card</strong>
               <small>Credit or debit card</small>
@@ -343,7 +348,13 @@
             (click)="paymentMethod = 'UPI'"
           >
 
-            <span class="payment-icon">📱</span>
+           <span class="payment-icon">
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="7" y="3" width="10" height="18" rx="2.2"/><path d="M11 17.5h2"/>
+    </g>
+  </svg>
+</span>
 
             <span class="payment-option-content">
               <strong>UPI</strong>
@@ -364,7 +375,13 @@
             (click)="paymentMethod = 'COD'"
           >
 
-            <span class="payment-icon">💵</span>
+           <span class="payment-icon">
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="6.5" width="18" height="11" rx="2"/><circle cx="12" cy="12" r="2.4"/><path d="M6.5 12h.01M17.5 12h.01"/>
+    </g>
+  </svg>
+</span>
 
             <span class="payment-option-content">
               <strong>Cash on Delivery</strong>
@@ -477,7 +494,7 @@
               </div>
 
               <span class="order-price">
-                ₹{{ item.product.price * item.quantity }}
+             ₹{{ (item.product.price * item.quantity).toLocaleString('en-US') }}
               </span>
 
             </div>
@@ -497,7 +514,7 @@
         <span>Subtotal</span>
 
         <span>
-          ₹{{ cartTotal | async }}
+         ₹{{ (cartTotal | async)?.toLocaleString('en-US') }}
         </span>
 
       </div>

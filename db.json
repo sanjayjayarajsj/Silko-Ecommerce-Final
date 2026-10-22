@@ -22,7 +22,7 @@
       "image": "images/titan/t 2.png",
       "category": "Analog",
       "description": "A slim black men's watch designed for a modern and sophisticated look.",
-      "stock": 4,
+      "stock": 3,
       "images": [
         "images/titan/t 2.png",
         "images/titan/t 2 2.png"
@@ -64,7 +64,7 @@
       "image": "images/titan/t 5.png",
       "category": "Sports",
       "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
-      "stock": 7,
+      "stock": 6,
       "images": [
         "images/titan/t 5.png",
         "images/titan/t 5 2.png"
@@ -78,7 +78,7 @@
       "image": "images/titan/t 6.png",
       "category": "Analog",
       "description": "A classic black analog watch suitable for everyday men's wear.",
-      "stock": 1,
+      "stock": 0,
       "images": [
         "images/titan/t 6.png",
         "images/titan/t 6 2.png"
@@ -624,6 +624,25 @@
       },
       "quantity": 1,
       "id": 7
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 5,
+        "name": "Titan Maritime Blue",
+        "brand": "Titan",
+        "price": 5995,
+        "image": "images/titan/t 5.png",
+        "category": "Sports",
+        "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
+        "stock": 6,
+        "images": [
+          "images/titan/t 5.png",
+          "images/titan/t 5 2.png"
+        ]
+      },
+      "quantity": 1,
+      "id": 8
     }
   ],
   "wishlist": [
@@ -1233,6 +1252,90 @@
       ],
       "total": 4495,
       "id": 14
+    },
+    {
+      "userId": 3,
+      "fullName": "Fathima",
+      "phone": "9988221199",
+      "address": "payyanur",
+      "city": "payyanur",
+      "pincode": "670353",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-10-22T09:19:17.602Z",
+      "items": [
+        {
+          "product": {
+            "id": 5,
+            "name": "Titan Maritime Blue",
+            "brand": "Titan",
+            "price": 5995,
+            "image": "images/titan/t 5.png",
+            "category": "Sports",
+            "description": "A sporty men's watch featuring a stylish blue dial and durable design.",
+            "stock": 6
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 5995,
+      "id": 15
+    },
+    {
+      "userId": 3,
+      "fullName": "Sjj",
+      "phone": "9988221199",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "paymentMethod": "UPI",
+      "status": "Pending",
+      "createdAt": "2026-10-22T09:21:15.231Z",
+      "items": [
+        {
+          "product": {
+            "id": 6,
+            "name": "Titan Karishma Black duo",
+            "brand": "Titan",
+            "price": 4495,
+            "image": "images/titan/t 6.png",
+            "category": "Analog",
+            "description": "A classic black analog watch suitable for everyday men's wear.",
+            "stock": 0
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 4495,
+      "id": 16
+    },
+    {
+      "userId": 3,
+      "fullName": "Sjss",
+      "phone": "9988221199",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-10-22T10:51:53.818Z",
+      "items": [
+        {
+          "product": {
+            "id": 2,
+            "name": "Titan Edge Black",
+            "brand": "Titan",
+            "price": 8995,
+            "image": "images/titan/t 2.png",
+            "category": "Analog",
+            "description": "A slim black men's watch designed for a modern and sophisticated look.",
+            "stock": 3
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 8995,
+      "id": 17
     }
   ],
   "addresses": [
@@ -1265,7 +1368,8 @@
       "comment": "I like the product",
       "createdAt": "2026-10-10T09:55:48.903Z",
       "verifiedPurchase": true,
-      "id": 1
+      "id": 1,
+      "updatedAt": "2026-10-22T10:31:58.139Z"
     }
   ]
 }

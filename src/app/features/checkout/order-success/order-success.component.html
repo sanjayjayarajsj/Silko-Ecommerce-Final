@@ -151,15 +151,22 @@
 
 
     <!-- Continue Button -->
+    <div class="success-actions">
 
-    <button
-      type="button"
-      class="ok-btn"
-      (click)="goHome()"
-    >
-      Continue Shopping
-      <span>→</span>
-    </button>
+      <button
+        type="button"
+        class="ok-btn"
+        (click)="goHome()"
+      >
+        Continue Shopping
+        <span>→</span>
+      </button>
+
+      <a routerLink="/order" class="orders-link">
+        View my orders
+      </a>
+
+    </div>
 
 
     <!-- Footer Note -->

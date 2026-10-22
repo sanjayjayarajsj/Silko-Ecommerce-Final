@@ -30,6 +30,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  opacity: 1;
 }
 
 .hero-overlay {
@@ -57,7 +58,7 @@
   justify-content: center;
   gap: 16px;
   margin-bottom: 22px;
-  color: #6fb3e0;
+  color: #f7f8f8;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 4.5px;
@@ -130,8 +131,8 @@
 }
 
 .shop-btn:hover {
-  background: #6fb3e0;
-  border-color: #6fb3e0;
+  background: #fbfbfc;
+  border-color: #090b0d;
   color: #050b11;
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(111, 179, 224, 0.3);
@@ -266,7 +267,7 @@
   justify-content: center;
   border-radius: 50%;
   background: rgba(111, 179, 224, 0.12);
-  color: #6fb3e0;
+  color: #edf1f4;
   border: 1px solid rgba(111, 179, 224, 0.25);
 }
 
@@ -495,20 +496,6 @@
   color: #ffffff;
   text-align: left;
 }
-
-.section-number {
-  margin-bottom: 18px;
-  color: #6fb3e0;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 3px;
-}
-
-.section-number span {
-  font-weight: 700;
-  font-size: 14px;
-}
-
 .video-label {
   margin: 0 0 12px;
   color: rgba(255, 255, 255, 0.65);
@@ -560,7 +547,7 @@
 }
 
 .craft-icon {
-  color: #6fb3e0;
+  color: #f5fbfe;
   font-size: 11px;
 }
 
@@ -569,8 +556,8 @@
 }
 
 .video-btn {
-  background: #6fb3e0;
-  border-color: #6fb3e0;
+  background: #f0f4f6;
+  border-color: #0b0c0d;
   color: #050b11;
 }
 
@@ -730,14 +717,6 @@
   z-index: 2;
 }
 
-.brand-number {
-  color: var(--color-primary-accent);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  margin-bottom: 6px;
-}
-
 .brand-meta strong {
   font-size: 22px;
   font-weight: 600;
@@ -830,7 +809,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  color: #6fb3e0;
+  color: #f9fbfd;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 3px;
@@ -839,7 +818,7 @@
 .number-line {
   width: 1px;
   height: 60px;
-  background: linear-gradient(to bottom, #6fb3e0, transparent);
+  background: linear-gradient(to bottom, #f4f7f8, transparent);
 }
 
 .about-content {
@@ -847,7 +826,7 @@
 }
 
 .about-content .section-label {
-  color: #6fb3e0;
+  color: #fafdff;
 }
 
 .about-content h2 {
@@ -989,7 +968,7 @@
 }
 
 .stars {
-  color: #4a9bd4;
+  color: #f4cc07;
   font-size: 15px;
   letter-spacing: 3px;
   margin-bottom: 16px;

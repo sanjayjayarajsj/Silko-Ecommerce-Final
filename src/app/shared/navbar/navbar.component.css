@@ -78,7 +78,7 @@
 
 .logo-mark { transition: transform 0.6s ease; }
 .logo:hover { opacity: 0.85; }
-.logo:hover .logo-mark { transform: rotate(180deg); }
+/* .logo:hover .logo-mark { transform: rotate(180deg); } */
 
 /* ---------- Search ---------- */
 
@@ -91,9 +91,7 @@
   margin: 0 12px;
   padding: 0 16px;
   height: 42px;
-
   color: var(--nav-soft);
-  background: var(--nav-field);
   border: 1px solid var(--nav-field-line);
   border-radius: var(--radius-pill);
 
@@ -101,13 +99,11 @@
 }
 
 .search-inline svg { flex-shrink: 0; }
-
 .search-inline:focus-within {
   color: var(--nav-fg);
   border-color: var(--color-primary-accent);
   box-shadow: var(--ring);
 }
-
 /* the global input style is reset here – this one is a borderless field */
 .search-inline input {
   flex: 1;
@@ -115,6 +111,7 @@
   min-width: 0;
   padding: 0;
   border: 0;
+  outline: none;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
