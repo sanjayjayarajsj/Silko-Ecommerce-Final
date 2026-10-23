@@ -50,7 +50,7 @@ export class AdminReviewsComponent {
 
     forkJoin({
       reviews: this.reviewService.getAllReviews(),
-      products: this.productService.getProducts()
+      products: this.productService.getAllProducts()
     }).subscribe({
       next: ({ reviews, products }) => {
         this.productNames = new Map(products.map(product => [product.id, product.name]));

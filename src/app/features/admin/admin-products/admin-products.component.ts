@@ -132,7 +132,6 @@ closeDeleteDialog(): void {
   this.showDeleteDialog = false;
   this.productToDelete = null;
 }
-
 deleteProduct(): void {
   const product = this.productToDelete;
 
@@ -140,13 +139,11 @@ deleteProduct(): void {
     return;
   }
 
-  this.productService.deleteProduct(product.id).subscribe(() => {
-    this.allProducts = this.allProducts.filter(
-      p => p.id !== product.id
-    );
+  this.productService.softDeleteProduct(product.id).subscribe(() => {
+    this.allProducts = this.allProducts.filter(p => p.id !== product.id);
 
     this.applyFilters();
-    this.toast.show('Product deleted');
+    this.toast.show('Product moved to Deleted Products');
 
     this.closeDeleteDialog();
   });

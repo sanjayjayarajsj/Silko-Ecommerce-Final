@@ -105,8 +105,8 @@
 @if (showDeleteDialog && productToDelete) {
 
   <app-confirmation-dialog
-    title="Delete Product?"
-    [message]="'Delete &quot;' + productToDelete.name + '&quot;? This cannot be undone.'"
+    title="Move to Deleted Products?"
+    [message]="'&quot;' + productToDelete.name + '&quot; will be hidden from the shop. You can restore it later.'"
     (confirmed)="deleteProduct()"
     (cancelled)="closeDeleteDialog()"
   />

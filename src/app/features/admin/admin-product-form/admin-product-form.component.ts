@@ -65,7 +65,7 @@ export class AdminProductFormComponent {
   @ViewChild(ImageCropperComponent) private cropper?: ImageCropperComponent;
 
   constructor() {
-        this.productService.getProducts().subscribe(products => {
+        this.productService.getAllProducts().subscribe(products => {
       this.existingProducts = products;
       this.brandOptions = this.uniqueSorted(products.map(p => p.brand));
       this.categoryOptions = this.uniqueSorted(products.map(p => p.category));
@@ -77,7 +77,14 @@ export class AdminProductFormComponent {
       this.isEditMode = true;
       this.loading = true;
 
-      this.productService.getProduct(this.productId).subscribe(product => {
+      this.productService.getAllProducts().subscribe(products => {
+        const product = products.find(p => p.id === this.productId);
+        if (!product) {
+          this.toast.show('Product not found.');
+          this.router.navigate(['/admin/products']);
+          return;
+        }
+
         this.name = product.name;
         this.brand = product.brand;
         this.category = product.category;
@@ -273,7 +280,7 @@ export class AdminProductFormComponent {
 
     // Re-check against the latest products, in case someone added the
     // same product after this page was opened.
-    this.productService.getProducts().subscribe({
+    this.productService.getAllProducts().subscribe({
       next: products => {
         this.existingProducts = products;
 

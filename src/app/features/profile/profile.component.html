@@ -1,533 +1,402 @@
 <section class="profile-page">
 
-  <!-- Page Header -->
-
-  <div class="profile-header">
-
-    <!-- Logout (top right) -->
-
-    <button
-      type="button"
-      class="logout-btn"
-      (click)="openLogoutDialog()"
-    >
-      Logout
-    </button>
-
-    <p class="eyebrow">
-      YOUR ACCOUNT
-    </p>
-
-    <h1>
-      My Profile
-    </h1>
-
+  <header class="profile-header">
+    <h1>My Profile</h1>
     <p class="profile-description">
       Manage your account and saved delivery addresses.
     </p>
+  </header>
 
-  </div>
+  <div class="profile-layout">
 
+    <!-- Account card (left) -->
 
-  <!-- User Information -->
+    <aside class="account-card">
 
-  @if (user$ | async; as user) {
+      @if (user$ | async; as user) {
 
-    <div class="info-card">
+        <div class="account-identity">
 
-      <div class="avatar-upload">
+          <div class="avatar-upload">
 
-        <label class="avatar" [class.has-photo]="!!user.profilePicture" for="profilePictureInput">
-
-          @if (user.profilePicture) {
-            <img [src]="user.profilePicture" alt="Your profile picture">
-          } @else {
-            {{ user.name.charAt(0) }}
-          }
-
-          <span class="avatar-edit-badge">
-            @if (uploadingPicture) {
-              ...
-            } @else {
-              📷
-            }
-          </span>
-
-        </label>
-
-        <input
-          id="profilePictureInput"
-          type="file"
-          accept="image/*"
-          class="avatar-file-input"
-          [disabled]="uploadingPicture"
-          (change)="onProfilePictureSelected($event)"
-        >
-
-      </div>
-
-      <div class="user-info">
-
-        <p class="user-label">
-          ACCOUNT
-        </p>
-
-        @if (editing) {
-
-          <form
-            class="edit-form"
-            (ngSubmit)="saveName(user)"
-            autocomplete="off"
-          >
-
-            <label for="editName">
-              Full Name
+            <label
+              class="avatar"
+              [class.has-photo]="!!user.profilePicture"
+              [class.uploading]="uploadingPicture"
+              for="profilePictureInput"
+              aria-label="Change profile picture"
+            >
+              @if (user.profilePicture) {
+                <img [src]="user.profilePicture" alt="Your profile picture">
+              } @else {
+                {{ user.name.charAt(0) }}
+              }
             </label>
 
+            <span class="avatar-edit-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+            </span>
+
             <input
-              id="editName"
-              type="text"
-              name="editName"
-              [(ngModel)]="editName"
-              (input)="onEditNameInput()"
-              maxlength="40"
-              placeholder="Enter your full name"
-              autocomplete="off"
+              id="profilePictureInput"
+              type="file"
+              accept="image/*"
+              class="avatar-file-input"
+              [disabled]="uploadingPicture"
+              (change)="onProfilePictureSelected($event)"
             >
 
-            @if (editSubmitted && !isValidEditName()) {
-              <small class="error">Enter a valid name (letters only, at least 3 characters)</small>
-            }
+          </div>
 
-            <p class="edit-note">
-              Only your name can be edited. Email cannot be changed.
-            </p>
+          @if (editing) {
 
-            <div class="edit-actions">
+            <form
+              class="edit-form"
+              (ngSubmit)="saveName(user)"
+              autocomplete="off"
+            >
+              <label for="editName">Full name</label>
 
-              <button
-                type="submit"
-                class="save-profile-btn"
-                [disabled]="savingName"
+              <input
+                id="editName"
+                type="text"
+                name="editName"
+                [(ngModel)]="editName"
+                (input)="onEditNameInput()"
+                maxlength="40"
+                placeholder="Enter your full name"
+                autocomplete="off"
               >
-                {{ savingName ? 'Saving...' : 'Save' }}
-              </button>
 
-              <button
-                type="button"
-                class="cancel-profile-btn"
-                (click)="cancelEdit()"
-              >
-                Cancel
-              </button>
+              @if (editSubmitted && !isValidEditName()) {
+                <small class="error">Enter a valid name (letters only, at least 3 characters)</small>
+              }
 
-            </div>
+              <p class="edit-note">
+                Only your name can be edited. Email cannot be changed.
+              </p>
 
-          </form>
+              <div class="edit-actions">
+                <button type="submit" class="save-profile-btn" [disabled]="savingName">
+                  {{ savingName ? 'Saving...' : 'Save' }}
+                </button>
+                <button type="button" class="cancel-profile-btn" (click)="cancelEdit()">
+                  Cancel
+                </button>
+              </div>
+            </form>
 
-        } @else {
+            <p class="account-email account-email-editing">{{ user.email }}</p>
 
-          <h2>
-            {{ user.name }}
-          </h2>
+          } @else {
 
-        }
+            <h2 class="account-name">{{ user.name }}</h2>
+            <p class="account-email">{{ user.email }}</p>
 
-        <p>
-          {{ user.email }}
-        </p>
+            <button type="button" class="edit-profile-btn" (click)="startEdit(user)">
+              Edit name
+            </button>
 
-      </div>
+          }
 
-      @if (!editing) {
-
-        <button
-          type="button"
-          class="edit-profile-btn"
-          (click)="startEdit(user)"
-        >
-          Edit
-        </button>
+        </div>
 
       }
 
-    </div>
+      <nav class="account-links">
 
-  }
+        <a routerLink="/order" class="account-link">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 3H18V21H6Z"/>
+            <path d="M9 7H15"/>
+            <path d="M9 11H15"/>
+            <path d="M9 15H13"/>
+          </svg>
+          <span>My Orders</span>
+          <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </a>
 
+        <button type="button" class="account-link logout" (click)="openLogoutDialog()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <path d="M16 17l5-5-5-5"/>
+            <path d="M21 12H9"/>
+          </svg>
+          <span>Logout</span>
+        </button>
 
-  <!-- Orders -->
+      </nav>
 
-  <a
-    routerLink="/order"
-    class="orders-link"
-  >
-
-    <div class="orders-icon">
-
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path d="M6 3H18V21H6Z"></path>
-        <path d="M9 7H15"></path>
-        <path d="M9 11H15"></path>
-        <path d="M9 15H13"></path>
-      </svg>
-
-    </div>
-
-    <div class="orders-content">
-
-      <p>
-        ORDERS
-      </p>
-
-      <strong>
-        My Orders
-      </strong>
-
-    </div>
-
-    <span class="orders-arrow">
-      →
-    </span>
-
-  </a>
+    </aside>
 
 
-  <!-- Address Section -->
+    <!-- Addresses (right) -->
 
-  <div class="address-section">
+    <div class="address-section">
 
-    <div class="address-section-header">
+      <div class="address-section-header">
 
-      <div>
+        <div>
+          <h2>Saved addresses</h2>
+                   <p>
+            @if (addressLimitReached) {
+              You've saved the maximum of {{ maxAddresses }} addresses. Remove one to add another.
+            } @else {
+              Used to fill in your details at checkout.
+            }
+          </p>
+        </div>
 
-        <p class="section-label">
-          DELIVERY
-        </p>
-
-        <h2>
-          Saved Addresses
-        </h2>
+        <button
+          type="button"
+          class="add-address-btn"
+          [class.secondary]="showAddForm"
+          (click)="toggleAddForm()"
+          [disabled]="addressLimitReached && !showAddForm"
+        >
+          @if (showAddForm) {
+            Cancel
+          } @else {
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Add address
+          }
+        </button>
 
       </div>
 
-      <button
-        type="button"
-        class="add-address-btn"
-        (click)="toggleAddForm()"
-      >
-        {{ showAddForm ? 'Cancel' : '+ Add Address' }}
-      </button>
 
-    </div>
+      @if (showAddForm) {
 
+        <form class="address-form" (ngSubmit)="saveAddress()">
 
-    <!-- Add Address Form -->
-
-    @if (showAddForm) {
-
-      <form
-        class="address-form"
-        (ngSubmit)="saveAddress()"
-      >
-
-        <div class="form-heading">
-
-          <h3>
-            Add New Address
-          </h3>
-
-          <p>
-            Save an address for faster checkout.
-          </p>
-
-        </div>
-
-
-        <!-- Address Type -->
-
-        <div class="type-section">
-
-          <label>
-            Address Type
-          </label>
-
-          <div class="type-toggle">
-
-            <button
-              type="button"
-              [class.active]="addressType === 'Home'"
-              (click)="addressType = 'Home'"
-            >
-              Home
-            </button>
-
-            <button
-              type="button"
-              [class.active]="addressType === 'Work'"
-              (click)="addressType = 'Work'"
-            >
-              Work
-            </button>
-
+          <div class="form-heading">
+            <h3>New address</h3>
+            <p>Save an address for faster checkout.</p>
           </div>
 
-        </div>
+          <div class="type-section">
+            <label>Address type</label>
 
+            <div class="type-toggle">
+              <button type="button" [class.active]="addressType === 'Home'" (click)="addressType = 'Home'">
+                Home
+              </button>
+              <button type="button" [class.active]="addressType === 'Work'" (click)="addressType = 'Work'">
+                Work
+              </button>
+            </div>
+          </div>
 
-        <!-- Full Name -->
+          <div class="form-row">
 
-        <div class="form-field">
+            <div class="form-field">
+              <label for="fullName">Full name</label>
+              <input
+                id="fullName"
+                type="text"
+                placeholder="Enter full name"
+                [(ngModel)]="fullName"
+                (input)="onFullNameInput()"
+                name="fullName"
+              >
+              @if (addressSubmitted && !fullName) {
+                <small class="error">Full name is required</small>
+              } @else if (addressSubmitted && !isValidFullName()) {
+                <small class="error">Enter a valid name (letters only, at least 3 characters)</small>
+              }
+            </div>
 
-          <label for="fullName">
-            Full Name
-          </label>
+            <div class="form-field">
+              <label for="phone">Mobile number</label>
+              <input
+                id="phone"
+                type="tel"
+                placeholder="10-digit mobile number"
+                [(ngModel)]="phone"
+                (input)="onPhoneInput()"
+                name="phone"
+                maxlength="10"
+                inputmode="numeric"
+                autocomplete="tel-national"
+              >
+              @if (addressSubmitted && !phone) {
+                <small class="error">Mobile number is required</small>
+              } @else if (addressSubmitted && !isValidPhoneNumber()) {
+                <small class="error">Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9</small>
+              }
+            </div>
 
-          <input
-            id="fullName"
-            type="text"
-            placeholder="Enter full name"
-            [(ngModel)]="fullName"
-            (input)="onFullNameInput()"
-            name="fullName"
-          >
-
-          @if (addressSubmitted && !fullName) {
-            <small class="error">Full name is required</small>
-          } @else if (addressSubmitted && !isValidFullName()) {
-            <small class="error">Enter a valid name (letters only, at least 3 characters)</small>
-          }
-
-        </div>
-
-
-        <!-- Address -->
-        <!-- Mobile Number -->
-
-        <div class="form-field">
-
-          <label for="phone">
-            Mobile Number
-          </label>
-
-          <input
-            id="phone"
-            type="tel"
-            placeholder="10-digit mobile number"
-            [(ngModel)]="phone"
-            (input)="onPhoneInput()"
-            name="phone"
-            maxlength="10"
-            inputmode="numeric"
-            autocomplete="tel-national"
-          >
-
-          @if (addressSubmitted && !phone) {
-            <small class="error">Mobile number is required</small>
-          } @else if (addressSubmitted && !isValidPhoneNumber()) {
-            <small class="error">Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9</small>
-          }
-
-        </div>
-        <div class="form-field">
-
-          <label for="address">
-            Address
-          </label>
-
-          <input
-            id="address"
-            type="text"
-            placeholder="Enter your address"
-            [(ngModel)]="address"
-            (input)="onAddressInput()"
-            name="address"
-          >
-
-          @if (addressSubmitted && !address) {
-            <small class="error">Address is required</small>
-          } @else if (addressSubmitted && !isValidAddressLine()) {
-            <small class="error">Enter a valid address (at least 5 characters)</small>
-          }
-
-        </div>
-
-
-        <!-- City / PIN -->
-
-        <div class="form-row">
+          </div>
 
           <div class="form-field">
-
-            <label for="city">
-              City
-            </label>
-
+            <label for="address">Address</label>
             <input
-              id="city"
+              id="address"
               type="text"
-              placeholder="Enter city"
-              [(ngModel)]="city"
-              (input)="onCityInput()"
-              name="city"
+              placeholder="Enter your address"
+              [(ngModel)]="address"
+              (input)="onAddressInput()"
+              name="address"
             >
-
-            @if (addressSubmitted && !city) {
-              <small class="error">City is required</small>
-            } @else if (addressSubmitted && !isValidCityName()) {
-              <small class="error">Letters only</small>
+            @if (addressSubmitted && !address) {
+              <small class="error">Address is required</small>
+            } @else if (addressSubmitted && !isValidAddressLine()) {
+              <small class="error">Enter a valid address (at least 5 characters)</small>
             }
+          </div>
+
+          <div class="form-row">
+
+            <div class="form-field">
+              <label for="city">City</label>
+              <input
+                id="city"
+                type="text"
+                placeholder="Enter city"
+                [(ngModel)]="city"
+                (input)="onCityInput()"
+                name="city"
+              >
+              @if (addressSubmitted && !city) {
+                <small class="error">City is required</small>
+              } @else if (addressSubmitted && !isValidCityName()) {
+                <small class="error">Letters only</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="pincode">PIN code</label>
+              <input
+                id="pincode"
+                type="text"
+                placeholder="6-digit PIN"
+                [(ngModel)]="pincode"
+                (input)="onPincodeInput()"
+                name="pincode"
+                maxlength="6"
+                inputmode="numeric"
+              >
+              @if (addressSubmitted && !isValidPin()) {
+                <small class="error">PIN code must be exactly 6 digits</small>
+              }
+            </div>
 
           </div>
 
+          <button type="submit" class="save-address-btn">
+            Save address
+          </button>
 
-          <div class="form-field">
+        </form>
 
-            <label for="pincode">
-              PIN Code
-            </label>
-
-            <input
-              id="pincode"
-              type="text"
-              placeholder="6-digit PIN"
-              [(ngModel)]="pincode"
-              (input)="onPincodeInput()"
-              name="pincode"
-              maxlength="6"
-              inputmode="numeric"
-            >
-
-            @if (addressSubmitted && !isValidPin()) {
-              <small class="error">PIN code must be exactly 6 digits</small>
-            }
-
-          </div>
-
-        </div>
+      }
 
 
-        <button
-          type="submit"
-          class="save-address-btn"
-        >
-          Save Address
-          <span>→</span>
-        </button>
+      @if (addresses$ | async; as addresses) {
 
-      </form>
+        @if (addresses.length > 0) {
 
-    }
+          <div class="address-list">
 
+            @for (addr of addresses; track addr.id) {
 
-    <!-- Saved Addresses -->
+              <div class="address-card">
 
-    @if (addresses$ | async; as addresses) {
+                <div class="address-card-header">
 
-      @if (addresses.length > 0) {
+                  <span class="address-type">
+                    @if (addr.type === 'Work') {
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="2" y="7" width="20" height="14" rx="2"/>
+                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                      </svg>
+                    } @else {
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 11l9-8 9 8"/>
+                        <path d="M5 10v10h14V10"/>
+                      </svg>
+                    }
+                    {{ addr.type }}
+                  </span>
 
-        <div class="address-list">
+                  <button
+                    type="button"
+                    class="remove-address-btn"
+                    (click)="openDeleteAddressDialog(addr.id)"
+                  >
+                    Remove
+                  </button>
 
-          @for (addr of addresses; track addr.id) {
+                </div>
 
-            <div class="address-card">
-
-              <div class="address-card-header">
-
-                <span class="address-type">
-                  {{ addr.type }}
-                </span>
-
-                <button
-                  type="button"
-                  class="remove-address-btn"
-                 (click)="openDeleteAddressDialog(addr.id)"
-                >
-                  Remove
-                </button>
-
-              </div>
-
-
-              <div class="address-content">
-
-                <p class="address-name">
-                  {{ addr.fullName }}
-                </p>
+                <p class="address-name">{{ addr.fullName }}</p>
 
                 <p class="address-text">
                   {{ addr.address }}, {{ addr.city }} - {{ addr.pincode }}
                 </p>
 
                 @if (addr.phone) {
-                  <p class="address-text">
-                    +91 {{ addr.phone }}
-                  </p>
+                  <p class="address-text">+91 {{ addr.phone }}</p>
                 }
+
               </div>
 
-            </div>
-
-          }
-
-        </div>
-
-      } @else if (!showAddForm) {
-
-        <div class="no-addresses">
-
-          <div class="empty-address-icon">
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path d="M12 21S19 14.8 19 9.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"></path>
-              <circle cx="12" cy="9.5" r="2.2"></circle>
-            </svg>
+            }
 
           </div>
 
-          <h3>
-            No saved addresses
-          </h3>
+        } @else if (!showAddForm) {
 
-          <p>
-            Add a delivery address to make checkout faster.
-          </p>
+          <div class="no-addresses">
 
-        </div>
+            <div class="empty-address-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21S19 14.8 19 9.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/>
+                <circle cx="12" cy="9.5" r="2.2"/>
+              </svg>
+            </div>
+
+            <h3>No saved addresses</h3>
+            <p>Add a delivery address to make checkout faster.</p>
+
+            <button type="button" class="add-address-btn" (click)="toggleAddForm()">
+              Add address
+            </button>
+
+          </div>
+
+        }
 
       }
 
-    }
+    </div>
 
   </div>
+
+
   @if (showLogoutDialog) {
+    <app-confirmation-dialog
+      title="Logout?"
+      message="Are you sure you want to logout?"
+      (confirmed)="logout()"
+      (cancelled)="closeLogoutDialog()"
+    />
+  }
 
-  <app-confirmation-dialog
-    title="Logout?"
-    message="Are you sure you want to logout?"
-    (confirmed)="logout()"
-    (cancelled)="closeLogoutDialog()"
-  />
-
-}
-
-@if (showDeleteAddressDialog) {
-
-  <app-confirmation-dialog
-    title="Remove Address?"
-    message="Are you sure you want to remove this address?"
-    (confirmed)="deleteAddress()"
-    (cancelled)="closeDeleteAddressDialog()"
-  />
-
-}
+  @if (showDeleteAddressDialog) {
+    <app-confirmation-dialog
+      title="Remove Address?"
+      message="Are you sure you want to remove this address?"
+      (confirmed)="deleteAddress()"
+      (cancelled)="closeDeleteAddressDialog()"
+    />
+  }
 
 </section>

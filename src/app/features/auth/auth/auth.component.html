@@ -1,85 +1,62 @@
-<section
-  class="auth-page"
-  [class.register-mode]="mode === 'register'"
->
+<section class="auth-page">
 
   <div class="auth-layout">
 
-    <!-- Brand Section (text changes with the mode) -->
+    <!-- Brand panel -->
 
     <div class="auth-brand">
 
-      <div class="brand-mark">
-        S
+      <div class="dial" aria-hidden="true">
+        <span class="hand hour"></span>
+        <span class="hand minute"></span>
       </div>
 
-      <p class="brand-label">
-        SILKO WATCHES
-      </p>
+      <p class="brand-logo">SILKO</p>
 
-      @if (mode === 'login') {
+      <div class="brand-copy">
 
-        <h2>
-          Time made<br>
-          <span>remarkable.</span>
-        </h2>
+        @if (mode === 'login') {
 
-        <p class="brand-description">
-          Discover a collection of watches designed
-          for those who value timeless style.
-        </p>
+          <h2>Time made<br>remarkable.</h2>
 
-      } @else {
+          <p class="brand-description">
+            Discover a collection of watches designed
+            for those who value timeless style.
+          </p>
 
-        <h2>
-          Your style.<br>
-          <span>Your time.</span>
-        </h2>
+        } @else {
 
-        <p class="brand-description">
-          Create your SILKO account and discover
-          watches designed for timeless everyday style.
-        </p>
+          <h2>Your style.<br>Your time.</h2>
 
-      }
+          <p class="brand-description">
+            Create your SILKO account and discover
+            watches designed for timeless everyday style.
+          </p>
+
+        }
+
+      </div>
 
     </div>
 
 
-    <!-- Login / Register / OTP Card -->
+    <!-- Login / Register / OTP card -->
 
     <div class="auth-box">
 
     @if (mode === 'login') {
+
       <div class="auth-header">
-
-        <p class="eyebrow">
-          WELCOME BACK
-        </p>
-
-        <h1>
-          Sign in to SILKO
-        </h1>
-
-        <p>
-          Login to continue shopping your favourite watches.
-        </p>
-
+        <h1>Welcome back</h1>
+        <p>Login to continue shopping your favourite watches.</p>
       </div>
 
-
-      <form
-        #loginForm="ngForm"
-        (ngSubmit)="login()"
-      >
-
-        <!-- Email -->
+      <form #loginForm="ngForm" (ngSubmit)="login()">
 
         <div class="form-field">
 
-          <label for="email">
-            Email Address
-          </label>
+          <label for="email">Email address</label>
+
           <input
             id="email"
             type="email"
@@ -88,28 +65,20 @@
             (ngModelChange)="onEmailChange($event)"
             #emailField="ngModel"
             placeholder="Enter your email"
+            autocomplete="email"
             required
             email
           >
 
           @if (emailField.invalid && emailField.touched) {
-
-            <p class="field-hint">
-              Enter a valid email address
-            </p>
-
+            <p class="field-hint">Enter a valid email address</p>
           }
 
         </div>
 
-
-        <!-- Password -->
-
         <div class="form-field">
 
-          <label for="password">
-            Password
-          </label>
+          <label for="password">Password</label>
 
           <div class="password-field">
 
@@ -120,6 +89,7 @@
               [(ngModel)]="password"
               #passwordField="ngModel"
               placeholder="Enter your password"
+              autocomplete="current-password"
               required
               minlength="6"
             >
@@ -136,97 +106,45 @@
           </div>
 
           @if (passwordField.invalid && passwordField.touched) {
-
-            <p class="field-hint">
-              Password must be at least 6 characters
-            </p>
-
+            <p class="field-hint">Password must be at least 6 characters</p>
           }
 
         </div>
 
-
-        <!-- Error -->
-
         @if (errorMessage) {
-
-          <div class="error-message">
-
-            <span>!</span>
-
-            <p>
-              {{ errorMessage }}
-            </p>
-
+          <div class="error-message" role="alert">
+            <span aria-hidden="true">!</span>
+            <p>{{ errorMessage }}</p>
           </div>
-
         }
 
-
-        <!-- Login Button -->
-
-        <button
-          type="submit"
-          class="submit-btn"
-          [disabled]="loginForm.invalid"
-        >
-          <span>
-            Login
-          </span>
-
-          <span class="arrow">
-            →
-          </span>
+        <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
+          Login
         </button>
 
       </form>
 
-      <!-- Register -->
-
       @if (!isAdminEmail) {
         <div class="auth-footer">
-
           <p>
             Don't have an account?
-            <a routerLink="/register">
-              Create an account
-            </a>
+            <a routerLink="/register">Create an account</a>
           </p>
-
         </div>
       }
+
     } @else if (step === 'form') {
 
       <div class="auth-header">
-
-        <p class="eyebrow">
-          JOIN SILKO
-        </p>
-
-        <h1>
-          Create your account
-        </h1>
-
-        <p>
-          Register to explore and shop our watch collection.
-        </p>
-
+        <h1>Create your account</h1>
+        <p>Register to explore and shop our watch collection.</p>
       </div>
 
-
-      <form
-        #registerForm="ngForm"
-        (ngSubmit)="register()"
-        autocomplete="off"
-      >
-
-        <!-- Name -->
+      <form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
 
         <div class="form-field">
 
-          <label for="name">
-            Full Name
-          </label>
+          <label for="name">Full name</label>
 
           <input
             id="name"
@@ -243,7 +161,6 @@
           >
 
           @if (nameField.invalid && nameField.touched && nameField.dirty) {
-
             <p class="field-hint">
               Name must start with a capital letter and contain only letters
             </p>
@@ -251,14 +168,9 @@
 
         </div>
 
-
-        <!-- Email -->
-
         <div class="form-field">
 
-          <label for="email">
-            Email Address
-          </label>
+          <label for="email">Email address</label>
 
           <input
             id="email"
@@ -273,23 +185,14 @@
           >
 
           @if (emailField.invalid && emailField.touched) {
-
-            <p class="field-hint">
-              Enter a valid email address
-            </p>
-
+            <p class="field-hint">Enter a valid email address</p>
           }
 
         </div>
 
-
-        <!-- Password -->
-
         <div class="form-field">
 
-          <label for="password">
-            Password
-          </label>
+          <label for="password">Password</label>
 
           <div class="password-field">
 
@@ -318,23 +221,20 @@
           </div>
 
           @if (passwordField.invalid && passwordField.touched) {
-
             <p class="field-hint">
               Password must be at least 6 characters and include both uppercase and lowercase letters
             </p>
-
+          } @else {
+            <p class="field-note">
+              At least 6 characters, with uppercase and lowercase letters.
+            </p>
           }
 
         </div>
 
-
-        <!-- Confirm Password -->
-
         <div class="form-field">
 
-          <label for="confirmPassword">
-            Confirm Password
-          </label>
+          <label for="confirmPassword">Confirm password</label>
 
           <div class="password-field">
 
@@ -361,66 +261,35 @@
           </div>
 
           @if (passwordsMismatch && confirmPasswordField.touched) {
-
-            <p class="field-hint">
-              Passwords do not match
-            </p>
-
+            <p class="field-hint">Passwords do not match</p>
           }
 
         </div>
-
-
-        <!-- Register Button -->
 
         <button
           type="submit"
           class="submit-btn"
           [disabled]="registerForm.invalid || passwordsMismatch || sending"
         >
-          <span>
-            {{ sending ? 'Sending OTP...' : 'Create Account' }}
-          </span>
-
-          <span class="arrow">
-            →
-          </span>
+          {{ sending ? 'Sending OTP...' : 'Create account' }}
         </button>
 
       </form>
 
-
-      <!-- Login Link -->
-
       <div class="auth-footer">
-
         <p>
           Already have an account?
-          <a routerLink="/login">
-            Login
-          </a>
+          <a routerLink="/login">Login</a>
         </p>
-
       </div>
 
     } @else {
 
-      <!-- OTP Verification -->
+      <!-- OTP verification -->
 
       <div class="auth-header">
-
-        <p class="eyebrow">
-          VERIFY YOUR EMAIL
-        </p>
-
-        <h1>
-          Enter OTP
-        </h1>
-
-        <p>
-          We sent a 6-digit code to <strong>{{ email }}</strong>.
-        </p>
-
+        <h1>Verify your email</h1>
+        <p>We sent a 6-digit code to <strong>{{ email }}</strong>.</p>
       </div>
 
       @if (demoMode && demoOtp) {
@@ -429,16 +298,11 @@
         </div>
       }
 
-      <form
-        (ngSubmit)="verifyOtp()"
-        autocomplete="off"
-      >
+      <form (ngSubmit)="verifyOtp()" autocomplete="off">
 
         <div class="form-field">
 
-          <label for="otp">
-            One-Time Password
-          </label>
+          <label for="otp">One-time password</label>
 
           <input
             id="otp"
@@ -454,9 +318,7 @@
           >
 
           @if (otpError) {
-            <p class="field-hint">
-              {{ otpError }}
-            </p>
+            <p class="field-hint">{{ otpError }}</p>
           }
 
           <p class="otp-timer" [class.expired]="secondsLeft === 0">
@@ -474,13 +336,7 @@
           class="submit-btn"
           [disabled]="otpInput.length !== 6 || submitting || secondsLeft === 0"
         >
-          <span>
-            {{ submitting ? 'Verifying...' : 'Verify & Create Account' }}
-          </span>
-
-          <span class="arrow">
-            →
-          </span>
+          {{ submitting ? 'Verifying...' : 'Verify and create account' }}
         </button>
 
       </form>
@@ -494,18 +350,17 @@
           } @else if (secondsLeft > 0) {
             <span class="resend-wait">Resend available in {{ timerText }}</span>
           } @else {
-            <a href="javascript:void(0)" (click)="resendOtp()">Resend OTP</a>
+            <button type="button" class="link-btn" (click)="resendOtp()">Resend OTP</button>
           }
         </p>
 
         <p>
-          <a href="javascript:void(0)" (click)="backToForm()">← Change details</a>
+          <button type="button" class="link-btn" (click)="backToForm()">Change details</button>
         </p>
 
       </div>
 
     }
-
 
     </div>
 

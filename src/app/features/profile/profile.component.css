@@ -1,287 +1,361 @@
- /* =========================================
-    PROFILE PAGE
+/* =========================================
+   PROFILE PAGE
 ========================================= */
 
 .profile-page {
   width: 100%;
-  max-width: 850px;
-
+  max-width: 1100px;
   margin: 0 auto;
-
-  padding: 60px 24px 100px;
+  padding: 64px 24px 100px;
 }
-
-
-/* =========================================
-   PAGE HEADER
-========================================= */
 
 .profile-header {
-  margin-bottom: 38px;
-
+  margin-bottom: 44px;
   text-align: center;
-}
-
-.profile-header .eyebrow {
-  margin: 0 0 9px;
-
-  color: var(--color-accent);
-
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 3px;
 }
 
 .profile-header h1 {
   margin: 0;
-
   color: var(--color-text);
-
-  font-size: 36px;
-  font-weight: 700;
-
-  line-height: 1.2;
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -1px;
 }
 
 .profile-description {
-  max-width: 430px;
-
-  margin: 12px auto 0;
-
+  max-width: 440px;
+  margin: 14px auto 0;
   color: var(--color-text-muted);
-
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.6;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
 }
 
 
 /* =========================================
-   USER INFORMATION
+   ACCOUNT CARD (navy)
 ========================================= */
 
-.info-card {
-  display: flex;
-  align-items: center;
-
-  gap: 18px;
-
-  margin-bottom: 14px;
-  padding: 24px;
-
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-
-  background: #ffffff;
-
-  box-shadow: var(--shadow-sm);
+.account-card {
+  position: sticky;
+  top: calc(var(--navbar-height) + 24px);
+  padding: 32px 28px 8px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-dark);
+  color: var(--color-text-light);
+  box-shadow: var(--shadow-md);
 }
+
+.account-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 28px;
+  text-align: center;
+}
+
+/* ---------- avatar ---------- */
 
 .avatar-upload {
   position: relative;
-
-  flex-shrink: 0;
+  margin-bottom: 18px;
 }
 
 .avatar {
-  width: 58px;
-  height: 58px;
-
+  position: relative;
+  width: 96px;
+  height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  border: 3px solid rgba(255, 255, 255, 0.18);
   border-radius: 50%;
-
-  background: var(--color-primary);
+  background: var(--color-primary-light);
   color: #ffffff;
-
-  font-size: 21px;
-  font-weight: 700;
-
+  font-size: 36px;
+  font-weight: 500;
   text-transform: uppercase;
-
   overflow: hidden;
   cursor: pointer;
+  transition: border-color var(--transition-fast);
 }
 
-.avatar.has-photo {
-  background: var(--color-border);
+.avatar:hover {
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .avatar img {
   width: 100%;
   height: 100%;
-
   object-fit: cover;
+}
+
+.avatar.uploading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 31, 51, 0.6);
+}
+
+.avatar.uploading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: avatar-spin 0.8s linear infinite;
+}
+
+@keyframes avatar-spin {
+  to { transform: rotate(360deg); }
 }
 
 .avatar-edit-badge {
   position: absolute;
-  right: -2px;
-  bottom: -2px;
-
-  width: 22px;
-  height: 22px;
-
+  right: 0;
+  bottom: 2px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  border: 2px solid var(--color-surface-dark);
   border-radius: 50%;
-  border: 2px solid #ffffff;
+  background: #ffffff;
+  color: var(--color-primary);
+  pointer-events: none; /* clicks go to the label underneath */
+}
 
-  background: var(--color-accent);
-
-  font-size: 11px;
-
-  pointer-events: none;
+.avatar-edit-badge svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .avatar-file-input {
   position: absolute;
   width: 1px;
   height: 1px;
-
   overflow: hidden;
-
   opacity: 0;
   pointer-events: none;
 }
 
-.user-info {
-  min-width: 0;
+.avatar-upload:focus-within .avatar {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
 }
 
-.user-label {
+/* ---------- name / email ---------- */
+
+.account-name {
   margin: 0 0 4px;
-
-  color: var(--color-accent);
-
-  font-size: 9px;
-  font-weight: 700;
-
-  letter-spacing: 2px;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
-.info-card h2 {
-  margin: 0 0 4px;
-
-  color: var(--color-text);
-
-  font-size: 19px;
-  font-weight: 700;
-}
-
-.info-card .user-info > p:last-child {
+.account-email {
   margin: 0;
-
-  overflow: hidden;
-
-  color: var(--color-text-muted);
-
-  font-size: 13px;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
-
-/* =========================================
-   ORDERS LINK
-========================================= */
-
-.orders-link {
-  min-height: 76px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 15px;
-
-  margin-bottom: 44px;
-  padding: 14px 20px;
-
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-
-  background: #ffffff;
-
-  color: var(--color-text);
-
-  text-decoration: none;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.2s ease;
+.account-email-editing {
+  margin-top: 16px;
 }
 
-.orders-link:hover {
-  border-color: var(--color-primary);
-
-  background: #f8fafc;
-
-  transform: translateY(-1px);
-}
-
-.orders-icon {
-  width: 40px;
-  height: 40px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+.edit-profile-btn {
+  margin-top: 20px;
+  min-height: 38px;
+  padding: 8px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: var(--radius-sm);
+  background: transparent;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
 
-  background: var(--color-primary);
+.edit-profile-btn:hover {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: var(--color-primary);
+}
+
+/* ---------- edit name form ---------- */
+
+.edit-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.edit-form label {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.edit-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.edit-form input:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+
+.edit-note {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.save-profile-btn,
+.cancel-profile-btn {
+  flex: 1;
+  min-height: 40px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.save-profile-btn {
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  color: var(--color-primary);
+}
+
+.save-profile-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-profile-btn {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
   color: #ffffff;
 }
 
-.orders-icon svg {
-  width: 19px;
-  height: 19px;
+.account-card .error {
+  color: #ffb4aa;
+}
 
+/* ---------- links (My Orders / Logout) ---------- */
+
+.account-links {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.account-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 4px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.account-link:last-child {
+  border-bottom: 0;
+}
+
+.account-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
-
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.orders-content {
+.account-link span {
   flex: 1;
 }
 
-.orders-content p {
-  margin: 0 0 3px;
-
-  color: var(--color-accent);
-
-  font-size: 8px;
-  font-weight: 700;
-
-  letter-spacing: 2px;
+.account-link .chevron {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  transition:
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
-.orders-content strong {
-  font-size: 14px;
-  font-weight: 700;
+.account-link:hover .chevron {
+  opacity: 1;
+  transform: translateX(3px);
 }
 
-.orders-arrow {
-  color: var(--color-primary);
-
-  font-size: 20px;
-
-  transition: transform 0.2s ease;
+.account-link.logout {
+  color: #ffb4aa;
 }
 
-.orders-link:hover .orders-arrow {
-  transform: translateX(4px);
+.account-link:hover:not(.logout) {
+  color: #ffffff;
+}
+
+.account-link:focus-visible,
+.edit-profile-btn:focus-visible,
+.save-profile-btn:focus-visible,
+.cancel-profile-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
 }
 
 
@@ -290,72 +364,88 @@
 ========================================= */
 
 .address-section {
-  width: 100%;
+  min-width: 0;
 }
 
 .address-section-header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-
   gap: 20px;
-
-  margin-bottom: 18px;
-}
-
-.section-label {
-  margin: 0 0 6px;
-
-  color: var(--color-accent);
-
-  font-size: 9px;
-  font-weight: 700;
-
-  letter-spacing: 2px;
+  margin-bottom: 24px;
 }
 
 .address-section-header h2 {
   margin: 0;
-
   color: var(--color-text);
-
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
-
-/* =========================================
-   ADD ADDRESS BUTTON
-========================================= */
+.address-section-header p {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
 
 .add-address-btn {
   flex-shrink: 0;
-
-  min-height: 38px;
-
-  padding: 9px 15px;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-sm);
-
-  background: #ffffff;
-  color: var(--color-primary);
-
+  background: var(--color-primary);
+  color: #ffffff;
   font-family: inherit;
-
-  font-size: 11px;
-  font-weight: 700;
-
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-
   transition:
-    background 0.2s ease,
-    color 0.2s ease;
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.add-address-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 .add-address-btn:hover {
+  background: var(--color-primary-light);
+}
+
+.add-address-btn.secondary {
+  background: #ffffff;
+  color: var(--color-primary);
+}
+
+.add-address-btn.secondary:hover {
+  background: var(--color-surface);
+}
+.add-address-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-address-btn:disabled:hover {
   background: var(--color-primary);
-  color: #ffffff;
+}
+
+.add-address-btn:focus-visible,
+.save-address-btn:focus-visible,
+.type-toggle button:focus-visible,
+.remove-address-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 
@@ -366,153 +456,103 @@
 .address-form {
   display: flex;
   flex-direction: column;
-
-  gap: 17px;
-
-  margin-bottom: 20px;
-  padding: 25px;
-
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 28px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-
-  background: #ffffff;
-
-  box-shadow: var(--shadow-sm);
-}
-
-.form-heading {
-  padding-bottom: 5px;
+  background: var(--color-surface);
 }
 
 .form-heading h3 {
-  margin: 0 0 5px;
-
+  margin: 0 0 4px;
   color: var(--color-text);
-
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 19px;
+  font-weight: 500;
 }
 
 .form-heading p {
   margin: 0;
-
   color: var(--color-text-muted);
-
-  font-size: 11px;
+  font-size: 14px;
 }
-
-
-/* =========================================
-   ADDRESS TYPE
-========================================= */
 
 .type-section {
   display: flex;
   flex-direction: column;
-
-  gap: 7px;
+  gap: 8px;
 }
 
 .type-section > label,
 .form-field label {
   color: var(--color-text);
-
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 0.4px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .type-toggle {
+  width: 100%;
+  max-width: 260px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-
-  gap: 8px;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
 }
 
 .type-toggle button {
-  min-height: 42px;
-
-  padding: 9px;
-
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-
-  background: #ffffff;
-  color: var(--color-text);
-
+  min-height: 38px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--color-text-muted);
   font-family: inherit;
-
-  font-size: 11px;
-  font-weight: 700;
-
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .type-toggle button:hover {
-  border-color: var(--color-primary);
+  color: var(--color-text);
 }
 
 .type-toggle button.active {
-  border-color: var(--color-primary);
-
   background: var(--color-primary);
   color: #ffffff;
-}
-
-
-/* =========================================
-   FORM FIELDS
-========================================= */
-.error {
-  display: block;
-  margin-top: 7px;
-  color: var(--color-danger);
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-
-  gap: 7px;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
 
-  gap: 14px;
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
 }
 
 .address-form input {
   width: 100%;
-  box-sizing: border-box;
-
-  min-height: 44px;
-
-  padding: 11px 13px;
-
+  min-height: 46px;
+  padding: 11px 14px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-
   background: #ffffff;
   color: var(--color-text);
-
   font-family: inherit;
-  font-size: 12px;
-
+  font-size: 14px;
   outline: none;
-
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .address-form input::placeholder {
@@ -521,54 +561,33 @@
 
 .address-form input:focus {
   border-color: var(--color-primary);
-
-  box-shadow:
-    0 0 0 3px rgba(11, 31, 51, 0.06);
+  box-shadow: 0 0 0 3px rgba(11, 31, 51, 0.08);
 }
 
-
-/* =========================================
-   SAVE ADDRESS
-========================================= */
+.error {
+  display: block;
+  color: var(--color-danger);
+  font-size: 12px;
+  line-height: 1.4;
+}
 
 .save-address-btn {
+  align-self: flex-start;
   min-height: 46px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 10px;
-
-  margin-top: 3px;
-  padding: 12px 18px;
-
-  border: none;
+  padding: 0 28px;
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius-sm);
-
   background: var(--color-primary);
   color: #ffffff;
-
   font-family: inherit;
-
-  font-size: 11px;
-  font-weight: 700;
-
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+  transition: background var(--transition-fast);
 }
 
 .save-address-btn:hover {
-  background: var(--color-secondary);
-
-  transform: translateY(-1px);
-}
-
-.save-address-btn span {
-  font-size: 16px;
+  background: var(--color-primary-light);
 }
 
 
@@ -577,28 +596,23 @@
 ========================================= */
 
 .address-list {
-  display: flex;
-  flex-direction: column;
-
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
 }
 
 .address-card {
-  padding: 20px;
-
+  padding: 22px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-
   background: #ffffff;
-
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .address-card:hover {
   border-color: #cbd4dc;
-
   box-shadow: var(--shadow-sm);
 }
 
@@ -606,387 +620,148 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  gap: 15px;
-
-  margin-bottom: 13px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .address-type {
   display: inline-flex;
   align-items: center;
-
-  min-height: 24px;
-
-  padding: 4px 10px;
-
-  border-radius: 20px;
-
+  gap: 6px;
+  padding: 5px 12px 5px 10px;
+  border-radius: var(--radius-pill);
   background: #eef3f7;
   color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 500;
+}
 
-  font-size: 9px;
-  font-weight: 700;
-
-  letter-spacing: 1px;
-
-  text-transform: uppercase;
+.address-type svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .remove-address-btn {
-  padding: 3px;
-
-  border: none;
+  margin-right: -8px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-xs);
   background: transparent;
-
   color: var(--color-danger);
-
   font-family: inherit;
-
-  font-size: 10px;
-  font-weight: 600;
-
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-
-  transition: opacity 0.2s ease;
+  transition: background var(--transition-fast);
 }
 
 .remove-address-btn:hover {
-  opacity: 0.7;
-}
-
-.address-content {
-  padding-left: 1px;
+  background: rgba(192, 57, 43, 0.08);
 }
 
 .address-name {
-  margin: 0 0 5px;
-
+  margin: 0 0 6px;
   color: var(--color-text);
-
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .address-text {
   margin: 0;
-
   color: var(--color-text-muted);
-
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.6;
 }
 
 
 /* =========================================
-   EMPTY ADDRESS STATE
+   EMPTY STATE
 ========================================= */
 
 .no-addresses {
-  min-height: 190px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-
-  padding: 30px 20px;
-
-  border: 1px dashed var(--color-border);
+  padding: 48px 24px;
+  border: 1px dashed #c9d2da;
   border-radius: var(--radius-md);
-
   text-align: center;
 }
 
 .empty-address-icon {
-  width: 44px;
-  height: 44px;
-
-  margin-bottom: 12px;
-
+  width: 52px;
+  height: 52px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-
   background: #eef3f7;
   color: var(--color-primary);
 }
 
 .empty-address-icon svg {
-  width: 21px;
-  height: 21px;
-
+  width: 24px;
+  height: 24px;
+  fill: none;
   stroke: currentColor;
   stroke-width: 1.5;
-
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .no-addresses h3 {
-  margin: 0 0 5px;
-
+  margin: 0 0 6px;
   color: var(--color-text);
-
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .no-addresses p {
-  margin: 0;
-
+  margin: 0 0 22px;
   color: var(--color-text-muted);
-
-  font-size: 11px;
-}
-/* =========================================
-   LOGOUT BUTTON (top right)
-========================================= */
-
-.profile-header {
-  position: relative;
-}
-
-.logout-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  min-height: 36px;
-  padding: 8px 16px;
-
-  border: 1px solid var(--color-danger);
-  border-radius: var(--radius-sm);
-
-  background: #ffffff;
-  color: var(--color-danger);
-
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.logout-btn:hover {
-  background: var(--color-danger);
-  color: #ffffff;
+  font-size: 14px;
 }
 
 
 /* =========================================
-   EDIT PROFILE
+   RESPONSIVE
 ========================================= */
 
-.info-card .user-info {
-  flex: 1;
+@media (max-width: 900px) {
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-card {
+    position: static;
+  }
+
 }
 
-.edit-profile-btn {
-  flex-shrink: 0;
-
-  min-height: 36px;
-  padding: 8px 16px;
-
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-sm);
-
-  background: #ffffff;
-  color: var(--color-primary);
-
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.edit-profile-btn:hover {
-  background: var(--color-primary);
-  color: #ffffff;
-}
-
-.edit-form {
-  display: flex;
-  flex-direction: column;
-
-  gap: 7px;
-
-  margin-bottom: 8px;
-}
-
-.edit-form label {
-  color: var(--color-text);
-
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 0.4px;
-}
-
-.edit-form input {
-  width: 100%;
-  box-sizing: border-box;
-
-  min-height: 42px;
-  padding: 10px 13px;
-
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-
-  background: #ffffff;
-  color: var(--color-text);
-
-  font-family: inherit;
-  font-size: 13px;
-
-  outline: none;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.edit-form input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(11, 31, 51, 0.06);
-}
-
-.edit-note {
-  margin: 0;
-
-  color: var(--color-text-muted);
-
-  font-size: 10px;
-}
-
-.edit-actions {
-  display: flex;
-  gap: 8px;
-
-  margin-top: 4px;
-}
-
-.save-profile-btn,
-.cancel-profile-btn {
-  min-height: 36px;
-  padding: 8px 18px;
-
-  border-radius: var(--radius-sm);
-
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.save-profile-btn {
-  border: none;
-
-  background: var(--color-primary);
-  color: #ffffff;
-}
-
-.save-profile-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.cancel-profile-btn {
-  border: 1px solid var(--color-border);
-
-  background: #ffffff;
-  color: var(--color-text);
-}
-
-
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 650px) {
+@media (max-width: 560px) {
 
   .profile-page {
-    padding: 45px 20px 80px;
-  }
-
-  .profile-header h1 {
-    font-size: 32px;
-  }
-
-  .info-card {
-    padding: 20px;
-  }
-
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 500px) {
-
-  .profile-page {
-    padding: 35px 15px 70px;
+    padding: 40px 16px 80px;
   }
 
   .profile-header {
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
 
-  .profile-header h1 {
-    font-size: 29px;
-  }
-
-  .profile-description {
-    font-size: 12px;
-  }
-
-  .info-card {
-    gap: 13px;
-
-    padding: 17px;
-  }
-
-  .avatar {
-    width: 48px;
-    height: 48px;
-
-    font-size: 18px;
-  }
-
-  .info-card h2 {
-    font-size: 16px;
-  }
-
-  .info-card .user-info > p:last-child {
-    font-size: 11px;
-  }
-
-  .orders-link {
-    margin-bottom: 35px;
-    padding: 12px 15px;
-  }
-
-  .orders-icon {
-    width: 36px;
-    height: 36px;
+  .account-card {
+    padding: 28px 20px 4px;
   }
 
   .address-section-header {
-    align-items: flex-start;
     flex-direction: column;
+    align-items: stretch;
   }
 
   .add-address-btn {
@@ -994,17 +769,28 @@
   }
 
   .address-form {
-    padding: 20px 17px;
+    padding: 22px 18px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
-
-    gap: 17px;
   }
 
-  .address-card {
-    padding: 17px;
+  .save-address-btn {
+    width: 100%;
+  }
+
+  .address-list {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  * {
+    transition: none !important;
+    animation: none !important;
   }
 
 }

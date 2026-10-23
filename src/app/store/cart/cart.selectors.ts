@@ -2,7 +2,7 @@ import { createFeature,createFeatureSelector,createSelector } from "@ngrx/store"
 import { CartState } from "./cart.state";
 
 export const selectCartState=createFeatureSelector<CartState>('cart');
-export const selectCartItems=createSelector(selectCartState,(state)=>state.items);
+export const selectCartItems=createSelector(selectCartState,(state)=>state.items.filter(item=>!item.product.isDeleted));
 export const selectCartCount=createSelector(selectCartItems,(items)=>items.reduce((total,item)=>
 total+item.quantity,0));
 export const selectCartTotal=createSelector(selectCartItems,(items)=>items.reduce((total,item)=>

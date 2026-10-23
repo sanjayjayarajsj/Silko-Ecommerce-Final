@@ -10,33 +10,22 @@
   align-items: center;
   justify-content: center;
 
-  padding: 60px 24px;
+  padding: 48px 24px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #f5f8fa 0%,
-      #ffffff 50%,
-      #edf3f7 100%
-    );
+  background: var(--color-surface);
 }
-
-
-/* =========================================
-   AUTH LAYOUT
-========================================= */
 
 .auth-layout {
   width: 100%;
-  max-width: 1050px;
+  max-width: 1060px;
 
   display: grid;
-  grid-template-columns: 1fr 460px;
-
-  background: #ffffff;
+  grid-template-columns: 1fr 480px;
 
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
+
+  background: #ffffff;
 
   overflow: hidden;
 
@@ -51,13 +40,13 @@
 .auth-brand {
   position: relative;
 
-  min-height: 560px;
+  min-height: 580px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 
-  padding: 60px;
+  padding: 48px 56px;
 
   background: var(--color-primary);
   color: #ffffff;
@@ -65,114 +54,119 @@
   overflow: hidden;
 }
 
-.auth-brand::before {
-  content: "";
-
-  position: absolute;
-
-  width: 340px;
-  height: 340px;
-
-  right: -150px;
-  top: -120px;
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  border-radius: 50%;
-}
-
-.auth-brand::after {
-  content: "";
-
-  position: absolute;
-
-  width: 250px;
-  height: 250px;
-
-  right: -80px;
-  bottom: -110px;
-
-  border: 1px solid rgba(255, 255, 255, 0.09);
-
-  border-radius: 50%;
-}
-
-
-/* =========================================
-   BRAND MARK
-========================================= */
-
-.brand-mark {
-  position: relative;
-  z-index: 1;
-
-  width: 52px;
-  height: 52px;
-
-  margin-bottom: 30px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid rgba(255, 255, 255, 0.45);
-
-  color: #ffffff;
-
-  font-family: Georgia, serif;
-  font-size: 28px;
-  font-weight: 600;
-
-  letter-spacing: -2px;
-}
-
-.brand-label {
-  position: relative;
-  z-index: 1;
-
-  margin: 0 0 16px;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 3px;
-
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.auth-brand h2 {
+.brand-logo {
   position: relative;
   z-index: 1;
 
   margin: 0;
 
-  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+}
 
-  font-size: clamp(38px, 4vw, 54px);
-  font-weight: 400;
+.brand-copy {
+  position: relative;
+  z-index: 1;
+}
 
+.auth-brand h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(38px, 4.2vw, 54px);
+  font-weight: 300;
   line-height: 1.08;
-
   letter-spacing: -1.5px;
 }
 
-.auth-brand h2 span {
-  color: #ffffff;
-  font-style: italic;
-}
-
 .brand-description {
-  position: relative;
-  z-index: 1;
-
   max-width: 340px;
 
-  margin: 24px 0 0;
+  margin: 22px 0 0;
 
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.72);
 
-  font-size: 13px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* ---------- watch dial (set to 10:10) ---------- */
+
+.dial {
+  position: absolute;
+  top: -150px;
+  right: -150px;
+
+  width: 440px;
+  height: 440px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.dial::before {
+  content: "";
+
+  position: absolute;
+  inset: 14px;
+
+  border-radius: 50%;
+
+  background:
+    repeating-conic-gradient(rgba(255, 255, 255, 0.6) 0 1deg, transparent 1deg 30deg),
+    repeating-conic-gradient(rgba(255, 255, 255, 0.24) 0 0.5deg, transparent 0.5deg 6deg);
+
+  -webkit-mask: radial-gradient(circle closest-side, transparent calc(100% - 12px), #000 calc(100% - 11px));
+  mask: radial-gradient(circle closest-side, transparent calc(100% - 12px), #000 calc(100% - 11px));
+}
+
+.dial::after {
+  content: "";
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+}
+
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+
+  border-radius: 2px;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  transform-origin: 50% 100%;
+}
+
+.hand.hour {
+  width: 4px;
+  height: 26%;
+  margin-left: -2px;
+
+  transform: rotate(-60deg);
+}
+
+.hand.minute {
+  width: 2px;
+  height: 38%;
+  margin-left: -1px;
+
+  transform: rotate(60deg);
 }
 
 
@@ -181,29 +175,17 @@
 ========================================= */
 
 .auth-box {
-  padding: 60px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 56px 52px;
 
   background: #ffffff;
 }
 
-
-/* =========================================
-   HEADER
-========================================= */
-
 .auth-header {
-  margin-bottom: 34px;
-}
-
-.auth-header .eyebrow {
-  margin: 0 0 10px;
-
-  color: var(--color-accent);
-
-  font-size: 9px;
-  font-weight: 700;
-
-  letter-spacing: 2.5px;
+  margin-bottom: 32px;
 }
 
 .auth-header h1 {
@@ -211,10 +193,10 @@
 
   color: var(--color-text);
 
-  font-size: 28px;
-  font-weight: 700;
-
-  line-height: 1.2;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .auth-header > p:last-child {
@@ -222,8 +204,15 @@
 
   color: var(--color-text-muted);
 
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.6;
+}
+
+.auth-header strong {
+  color: var(--color-text);
+  font-weight: 500;
+
+  overflow-wrap: anywhere;
 }
 
 
@@ -248,24 +237,15 @@
 .form-field label {
   color: var(--color-text);
 
-  font-size: 11px;
-  font-weight: 700;
-
-  letter-spacing: 0.4px;
+  font-size: 14px;
+  font-weight: 500;
 }
-
-
-/* =========================================
-   INPUTS
-========================================= */
 
 .auth-box input {
   width: 100%;
-  box-sizing: border-box;
+  min-height: 50px;
 
-  min-height: 48px;
-
-  padding: 13px 14px;
+  padding: 12px 14px;
 
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -274,14 +254,13 @@
   color: var(--color-text);
 
   font-family: inherit;
-  font-size: 13px;
+  font-size: 15px;
 
   outline: none;
 
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .auth-box input::placeholder {
@@ -291,16 +270,19 @@
 .auth-box input:focus {
   border-color: var(--color-primary);
 
-  box-shadow:
-    0 0 0 3px rgba(11, 31, 51, 0.06);
+  box-shadow: 0 0 0 3px rgba(11, 31, 51, 0.08);
+}
 
-  background: #ffffff;
+.auth-box input.ng-invalid.ng-touched {
+  border-color: var(--color-danger);
+}
+
+.auth-box input.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
 }
 
 
-/* =========================================
-   PASSWORD
-========================================= */
+/* ---------- password ---------- */
 
 .password-field {
   position: relative;
@@ -309,77 +291,71 @@
 }
 
 .password-field input {
-  padding-right: 68px;
+  padding-right: 72px;
 }
 
-.password-field .toggle-password {
+.toggle-password {
   position: absolute;
-
-  right: 7px;
   top: 50%;
+  right: 8px;
 
-  transform: translateY(-50%);
+  padding: 6px 10px;
 
-  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-xs);
 
-  border: none;
   background: transparent;
-
-  color: var(--color-accent);
+  color: var(--color-primary);
 
   font-family: inherit;
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 0.5px;
+  font-size: 13px;
+  font-weight: 500;
 
   cursor: pointer;
+
+  transform: translateY(-50%);
 }
 
-.password-field .toggle-password:hover {
-  color: var(--color-primary);
+.toggle-password:hover {
+  background: var(--color-surface);
 }
 
 
-/* =========================================
-   VALIDATION
-========================================= */
+/* ---------- hints / errors ---------- */
+
+.field-hint,
+.field-note {
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
 
 .field-hint {
-  margin: -2px 0 0;
-
   color: var(--color-danger);
-
-  font-size: 11px;
-  line-height: 1.4;
-
-  text-align: left;
 }
 
-
-/* =========================================
-   ERROR MESSAGE
-========================================= */
+.field-note {
+  color: var(--color-text-muted);
+}
 
 .error-message {
   display: flex;
   align-items: center;
-  gap: 9px;
 
-  margin-top: -4px;
-  padding: 11px 12px;
+  gap: 10px;
 
-  border: 1px solid rgba(180, 45, 45, 0.2);
+  padding: 12px 14px;
+
+  border: 1px solid #f1c6c0;
   border-radius: var(--radius-sm);
 
-  background: rgba(180, 45, 45, 0.05);
-
-  text-align: left;
+  background: #fdf1f0;
 }
 
 .error-message > span {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 
   flex-shrink: 0;
 
@@ -392,7 +368,7 @@
   background: var(--color-danger);
   color: #ffffff;
 
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -401,73 +377,55 @@
 
   color: var(--color-danger);
 
-  font-size: 11px;
-  line-height: 1.4;
+  font-size: 14px;
 }
 
 
-/* =========================================
-   SUBMIT BUTTON (login / register / verify)
-========================================= */
+/* ---------- submit ---------- */
 
 .submit-btn {
   width: 100%;
-
   min-height: 50px;
 
   margin-top: 4px;
-  padding: 13px 18px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  border: none;
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius-sm);
 
   background: var(--color-primary);
   color: #ffffff;
 
   font-family: inherit;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  letter-spacing: 0.5px;
+  font-size: 15px;
+  font-weight: 500;
 
   cursor: pointer;
 
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    opacity 0.2s ease;
+  transition: background var(--transition-fast);
 }
 
 .submit-btn:hover:not(:disabled) {
-  /* background: var(--color-secondary); */
-
-  transform: translateY(-1px);
+  background: var(--color-primary-light);
 }
 
 .submit-btn:disabled {
   opacity: 0.45;
-
   cursor: not-allowed;
 }
 
-.submit-btn .arrow {
-  font-size: 17px;
-  line-height: 1;
+.submit-btn:focus-visible,
+.toggle-password:focus-visible,
+.link-btn:focus-visible,
+.auth-footer a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 
-/* =========================================
-   FOOTER
-========================================= */
+/* ---------- footer links ---------- */
 
 .auth-footer {
-  margin-top: 30px;
+  margin-top: 28px;
   padding-top: 24px;
 
   border-top: 1px solid var(--color-border);
@@ -480,129 +438,86 @@
 
   color: var(--color-text-muted);
 
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: 14px;
 }
 
-.auth-footer a {
+.auth-footer a,
+.link-btn {
   color: var(--color-primary);
 
-  font-weight: 700;
-
+  font-weight: 500;
   text-decoration: none;
 }
 
-.auth-footer a:hover {
-  color: var(--color-accent);
-
+.auth-footer a:hover,
+.link-btn:hover {
   text-decoration: underline;
 }
 
+.link-btn {
+  padding: 0;
 
-/* =========================================
-   REGISTER MODE
-   (the register form is taller, so spacing is a little tighter)
-========================================= */
+  border: 0;
 
-.register-mode .auth-header {
-  margin-bottom: 30px;
-}
+  background: none;
 
-.register-mode .auth-box form {
-  gap: 17px;
-}
+  font-family: inherit;
+  font-size: inherit;
 
-.register-mode .form-field {
-  gap: 7px;
-}
-
-.register-mode .auth-box input {
-  min-height: 46px;
-
-  padding: 12px 14px;
-}
-
-.register-mode .field-hint {
-  margin: -1px 0 0;
-
-  font-size: 10px;
-}
-
-.register-mode .submit-btn {
-  margin-top: 5px;
-}
-
-.register-mode .auth-footer {
-  margin-top: 26px;
-  padding-top: 21px;
-}
-
-/* desktop only, so the tablet/mobile rules below still win on small screens */
-@media (min-width: 851px) {
-
-  .register-mode .auth-brand {
-    min-height: 650px;
-  }
-
-  .register-mode .auth-box {
-    padding-top: 52px;
-    padding-bottom: 52px;
-  }
-
+  cursor: pointer;
 }
 
 
 /* =========================================
-   OTP VERIFICATION
+   OTP
 ========================================= */
 
-.otp-input {
+.auth-box input.otp-input {
+  padding-left: 0.5em;
+
   text-align: center;
 
-  font-size: 22px !important;
-  font-weight: 700;
-
-  letter-spacing: 10px;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
 }
 
 .demo-otp {
   margin-bottom: 20px;
   padding: 12px 14px;
 
-  border: 1px dashed var(--color-accent);
+  border: 1px dashed var(--color-border-dark);
   border-radius: var(--radius-sm);
 
-  background: #f5f8fa;
-  color: var(--color-text);
+  background: var(--color-surface);
 
-  font-size: 12px;
-  text-align: center;
+  font-size: 14px;
 }
 
 .demo-otp strong {
-  font-size: 16px;
-  letter-spacing: 3px;
+  letter-spacing: 0.15em;
 }
 
 .otp-timer {
-  margin: 4px 0 0;
+  margin: 0;
 
   color: var(--color-text-muted);
 
-  font-size: 12px;
-  text-align: center;
+  font-size: 13px;
 }
 
 .otp-timer strong {
-  color: var(--color-primary);
+  color: var(--color-text);
+  font-weight: 500;
 }
 
 .otp-timer.expired {
   color: var(--color-danger);
 }
 
-.otp-actions p {
-  margin: 6px 0;
+.otp-actions p + p {
+  margin-top: 10px;
 }
 
 .resend-wait {
@@ -611,77 +526,77 @@
 
 
 /* =========================================
-   TABLET
+   TABLET / MOBILE
 ========================================= */
 
-@media (max-width: 850px) {
+@media (max-width: 860px) {
+
+  .auth-page {
+    align-items: stretch;
+
+    padding: 0;
+  }
 
   .auth-layout {
-    max-width: 480px;
+    max-width: none;
 
     grid-template-columns: 1fr;
+    align-content: start;
+
+    border: 0;
+    border-radius: 0;
+
+    box-shadow: none;
   }
 
   .auth-brand {
-    min-height: auto;
+    min-height: 0;
 
-    padding: 42px 40px;
+    padding: 28px 24px 32px;
+  }
+
+  .brand-copy {
+    margin-top: 28px;
   }
 
   .auth-brand h2 {
-    font-size: 40px;
+    font-size: 32px;
   }
 
   .brand-description {
-    margin-top: 16px;
+    display: none;
+  }
+
+  .dial {
+    top: -110px;
+    right: -90px;
+
+    width: 280px;
+    height: 280px;
   }
 
   .auth-box {
-    padding: 42px 40px;
+    padding: 36px 24px 48px;
   }
 
 }
 
-
-/* =========================================
-   MOBILE
-========================================= */
-
 @media (max-width: 520px) {
 
-  .auth-page {
-    padding: 25px 15px;
-  }
-
-  .auth-brand {
-    padding: 34px 25px;
-  }
-
-  .brand-mark {
-    width: 44px;
-    height: 44px;
-
-    margin-bottom: 22px;
-
-    font-size: 23px;
-  }
-
-  .auth-brand h2 {
-    font-size: 34px;
-  }
-
-  .brand-description {
-    max-width: 290px;
-
-    font-size: 12px;
-  }
-
-  .auth-box {
-    padding: 34px 25px;
-  }
-
   .auth-header h1 {
-    font-size: 25px;
+    font-size: 26px;
+  }
+
+  .auth-box input.otp-input {
+    font-size: 22px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  * {
+    transition: none !important;
   }
 
 }

@@ -111,6 +111,12 @@ export const routes: Routes = [
                     import('./features/admin/admin-product-form/admin-product-form.component')
                         .then(m => m.AdminProductFormComponent)
             },
+                        {
+                path: 'deleted-products',
+                loadComponent: () =>
+                    import('./features/admin/admin-deleted-products/admin-deleted-products.component')
+                        .then(m => m.AdminDeletedProductsComponent)
+            },
             {
                 path: 'orders',
                 loadComponent: () =>

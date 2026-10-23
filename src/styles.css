@@ -31,6 +31,11 @@ html { scroll-behavior: smooth; }
 
   /* Light blue highlight – used on dark navy / black surfaces */
   --color-ice: #a9c9e8;
+  
+  /* Used by the order dialogs, auth, profile and wishlist, but were
+     never defined before (so those backgrounds came out transparent). */
+  --color-white: #ffffff;
+  --color-secondary: #14395c;
 
   --color-danger: #c0392b;
   --color-success: #2e7d5b;

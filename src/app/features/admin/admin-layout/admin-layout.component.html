@@ -24,6 +24,13 @@
         </svg>
         Products
       </a>
+            <a routerLink="/admin/deleted-products" routerLinkActive="active">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+          <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/>
+        </svg>
+        Deleted Products
+      </a>
 
       <a routerLink="/admin/orders" routerLinkActive="active">
         <svg viewBox="0 0 24 24" width="18" height="18">
@@ -53,7 +60,7 @@
 
     </nav>
 
-    <button class="admin-logout" (click)="logout()">
+    <button class="admin-logout"(click)="openLogoutDialog()">
       <svg viewBox="0 0 24 24" width="18" height="18">
         <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
@@ -66,5 +73,12 @@
   <main class="admin-content">
     <router-outlet></router-outlet>
   </main>
-
+@if (showLogoutDialog) {
+  <app-confirmation-dialog
+    title="Logout?"
+    message="Are you sure you want to logout?"
+    (confirmed)="logout()"
+    (cancelled)="closeLogoutDialog()"
+  />
+}
 </div>

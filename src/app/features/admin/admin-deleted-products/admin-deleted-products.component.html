@@ -1,0 +1,61 @@
+<div class="admin-products">
+
+  <div class="page-header">
+    <div>
+      <h1>Deleted Products</h1>
+      <p class="subtitle">{{ deletedProducts.length }} deleted products</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <p class="loading">Loading...</p>
+  } @else {
+    <div class="table-wrap">
+      <table class="products-table admin-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Deleted on</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of deletedProducts; track product.id) {
+            <tr>
+              <td class="image-cell">
+                <img [src]="product.image" [alt]="product.name" class="row-image" loading="lazy">
+              </td>
+              <td data-label="Name">{{ product.name }}</td>
+              <td data-label="Brand">{{ product.brand }}</td>
+              <td data-label="Category">{{ product.category }}</td>
+              <td data-label="Price">₹{{ product.price }}</td>
+              <td data-label="Deleted on">{{ product.deletedAt | date: 'mediumDate' }}</td>
+              <td class="actions-cell">
+                <button class="restore" (click)="restore(product)">Restore</button>
+                <button (click)="askPermanentDelete(product)">Delete permanently</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="empty-row">No deleted products.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (productToRemove) {
+    <app-confirmation-dialog
+      title="Delete permanently?"
+      [message]="'Permanently delete &quot;' + productToRemove.name + '&quot;? This cannot be undone.'"
+      (confirmed)="permanentDelete()"
+      (cancelled)="cancelPermanentDelete()"
+    />
+  }
+
+</div>

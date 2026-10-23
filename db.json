@@ -12,7 +12,9 @@
       "images": [
         "images/titan/t 1.png",
         "images/titan/t 1 2.png"
-      ]
+      ],
+      "isDeleted": false,
+      "deletedAt": null
     },
     {
       "id": 2,
@@ -22,7 +24,7 @@
       "image": "images/titan/t 2.png",
       "category": "Analog",
       "description": "A slim black men's watch designed for a modern and sophisticated look.",
-      "stock": 3,
+      "stock": 4,
       "images": [
         "images/titan/t 2.png",
         "images/titan/t 2 2.png"
@@ -132,7 +134,7 @@
       "image": "images/casio/3 1.png",
       "category": "Digital",
       "description": "A retro-inspired digital men's watch for everyday wear.",
-      "stock": 4,
+      "stock": 3,
       "images": [
         "images/casio/3 1.png",
         "images/casio/3 3.png"
@@ -559,56 +561,6 @@
     {
       "userId": 3,
       "product": {
-        "id": 3,
-        "name": "Titan Chronograph",
-        "brand": "Titan",
-        "price": 7495,
-        "image": "images/titan/t 3.png",
-        "category": "Chronograph",
-        "description": "A bold chronograph watch with a premium men's fashion design.",
-        "stock": 12,
-        "images": [
-          "images/titan/t 3.png",
-          "images/titan/t 3 2.png"
-        ]
-      },
-      "quantity": 1,
-      "id": 5
-    },
-    {
-      "userId": 3,
-      "product": {
-        "id": 6,
-        "name": "Titan Karishma Black duo",
-        "brand": "Titan",
-        "price": 4495,
-        "image": "images/titan/t 6.png",
-        "category": "Analog",
-        "description": "A classic black analog watch suitable for everyday men's wear.",
-        "stock": 1,
-        "images": [
-          "images/titan/t 6.png",
-          "images/titan/t 6 2.png"
-        ],
-        "ratingAverage": 5,
-        "ratingCount": 1,
-        "specs": {
-          "movement": "Automatic",
-          "caseSize": "42 MM",
-          "caseMaterial": "Stainless steel",
-          "strapMaterial": "Leather",
-          "dialColor": "Black",
-          "glass": "Sapphire",
-          "waterResistance": "50M",
-          "warranty": "2 Years"
-        }
-      },
-      "quantity": 1,
-      "id": 6
-    },
-    {
-      "userId": 3,
-      "product": {
         "id": 4,
         "name": "Titan Automatic Silver",
         "brand": "Titan",
@@ -643,6 +595,46 @@
       },
       "quantity": 1,
       "id": 8
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 9,
+        "name": "Casio Vintage Digital",
+        "brand": "Casio",
+        "price": 2995,
+        "image": "images/casio/3 1.png",
+        "category": "Digital",
+        "description": "A retro-inspired digital men's watch for everyday wear.",
+        "stock": 3,
+        "images": [
+          "images/casio/3 1.png",
+          "images/casio/3 3.png"
+        ]
+      },
+      "quantity": 1,
+      "id": 9
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 1,
+        "name": "Titan Neo",
+        "brand": "Titan",
+        "price": 4995,
+        "image": "images/titan/t 1.png",
+        "category": "Analog",
+        "description": "A stylish men's analog watch with a clean and elegant design.",
+        "stock": 999,
+        "images": [
+          "images/titan/t 1.png",
+          "images/titan/t 1 2.png"
+        ],
+        "isDeleted": false,
+        "deletedAt": null
+      },
+      "quantity": 1,
+      "id": 10
     }
   ],
   "wishlist": [
@@ -747,6 +739,26 @@
         }
       },
       "id": 8
+    },
+    {
+      "userId": 3,
+      "product": {
+        "id": 1,
+        "name": "Titan Neo",
+        "brand": "Titan",
+        "price": 4995,
+        "image": "images/titan/t 1.png",
+        "category": "Analog",
+        "description": "A stylish men's analog watch with a clean and elegant design.",
+        "stock": 999,
+        "images": [
+          "images/titan/t 1.png",
+          "images/titan/t 1 2.png"
+        ],
+        "isDeleted": false,
+        "deletedAt": null
+      },
+      "id": 9
     }
   ],
   "users": [
@@ -1317,7 +1329,7 @@
       "city": "mahe",
       "pincode": "570765",
       "paymentMethod": "COD",
-      "status": "Pending",
+      "status": "Cancelled",
       "createdAt": "2026-10-22T10:51:53.818Z",
       "items": [
         {
@@ -1331,11 +1343,48 @@
             "description": "A slim black men's watch designed for a modern and sophisticated look.",
             "stock": 3
           },
-          "quantity": 1
+          "quantity": 1,
+          "cancelled": {
+            "at": "2026-10-23T04:02:43.129Z",
+            "by": "user",
+            "note": "Changed my mind - i dont this product"
+          }
         }
       ],
       "total": 8995,
-      "id": 17
+      "id": 17,
+      "refundedTotal": 8995,
+      "cancelNote": "Changed my mind - i dont this product",
+      "cancelledBy": "user",
+      "cancelledAt": "2026-10-23T04:02:43.129Z"
+    },
+    {
+      "userId": 3,
+      "fullName": "Sjs",
+      "phone": "9988221199",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-10-23T04:04:55.138Z",
+      "items": [
+        {
+          "product": {
+            "id": 9,
+            "name": "Casio Vintage Digital",
+            "brand": "Casio",
+            "price": 2995,
+            "image": "images/casio/3 1.png",
+            "category": "Digital",
+            "description": "A retro-inspired digital men's watch for everyday wear.",
+            "stock": 3
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 2995,
+      "id": 18
     }
   ],
   "addresses": [
@@ -1356,6 +1405,36 @@
       "city": "mahe",
       "pincode": "570765",
       "id": 2
+    },
+    {
+      "userId": 3,
+      "type": "Home",
+      "fullName": "Sjs",
+      "phone": "9988221199",
+      "address": "kannur",
+      "city": "mahe",
+      "pincode": "570765",
+      "id": 3
+    },
+    {
+      "userId": 3,
+      "type": "Work",
+      "fullName": "Usman",
+      "address": "vadakkumbad ramnthali",
+      "city": "payyanur",
+      "phone": "9988221192",
+      "pincode": "889989",
+      "id": 4
+    },
+    {
+      "userId": 3,
+      "type": "Work",
+      "fullName": "queen",
+      "address": "kzkd ferok",
+      "city": "kzkd",
+      "phone": "9988221199",
+      "pincode": "111222",
+      "id": 5
     }
   ],
   "reviews": [

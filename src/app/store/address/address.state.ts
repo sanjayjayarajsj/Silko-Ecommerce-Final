@@ -7,3 +7,4 @@ export interface AddressState {
 export const initialAddressState: AddressState = {
   items: []
 };
+export const MAX_ADDRESSES = 5;

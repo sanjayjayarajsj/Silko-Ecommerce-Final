@@ -40,4 +40,7 @@ export interface Product {
   // Missing = no reviews yet.
   ratingAverage?: number;
   ratingCount?: number;
+    // Soft delete: product stays in db.json but is hidden from the shop.
+  isDeleted?: boolean;
+  deletedAt?: string;
 }

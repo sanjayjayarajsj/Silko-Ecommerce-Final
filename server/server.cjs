@@ -267,6 +267,7 @@ const NAME_PATTERN = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
 const ADDRESS_PATTERN = /^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*$/;
 const PAYMENT_METHODS = ['Card', 'UPI', 'COD'];
 const MAX_QUANTITY_PER_PRODUCT = 5;
+const MAX_ADDRESSES = 5;
 const MAX_PRODUCTS_IN_ORDER = 5;
 const ORDER_FLOW = ['Pending', 'Processing', 'Shipped', 'Delivered'];
 const RETURN_STATUSES = ['Requested', 'Approved', 'Picked Up', 'Refunded', 'Rejected'];
@@ -340,7 +341,7 @@ server.post('/orders', (req, res) => {
   const short = [];
   for (const [productId, quantity] of wanted) {
     const product = findProduct(productId);
-    if (!product) {
+    if (!product || product.isDeleted) {
       return res.status(409).json({ code: 'PRODUCT_GONE', message: 'One of the watches in your order is no longer available.', productIds: [productId] });
     }
     if (product.stock < quantity) short.push(product);
@@ -639,6 +640,10 @@ server.use((req, res, next) => {
 
         // a saved address must have valid details, including a mobile number
         if (resource === 'addresses') {
+          const owned = router.db.get('addresses').value().filter((a) => sameId(a.userId, me.id));
+          if (owned.length >= MAX_ADDRESSES) {
+            return res.status(400).json({ message: `You can save up to ${MAX_ADDRESSES} addresses.` });
+          }
           const checked = checkDelivery(body);
           if (checked.error) return res.status(400).json({ message: checked.error });
           Object.assign(body, checked);

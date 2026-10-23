@@ -14,6 +14,7 @@ import { clearWishlist } from '../../store/wishlist/wishlist.actions';
 import { sanitizeNameInput,sanitizeAddressInput,sanitizePincodeInput,isValidName,isValidCity,isValidAddress,isValidPincode,isValidPhone, sanitizePhoneInput } from '../../shared/form-validators';
 import { validateImageFile, fileToResizedDataUrl } from '../../shared/image-file';
 import { ConfirmationDialogComponent } from '../../shared/confirmation-dialog/confirmation-dialog.component';
+import { MAX_ADDRESSES } from '../../store/address/address.state';
 
 @Component({
   selector: 'app-profile',
@@ -30,7 +31,12 @@ export class ProfileComponent {
 
   user$ = this.authService.getCurrentUser();
   addresses$ = this.store.select(selectAddresses);
+    readonly maxAddresses = MAX_ADDRESSES;
+  private savedAddresses = this.store.selectSignal(selectAddresses);
 
+  get addressLimitReached(): boolean {
+    return this.savedAddresses().length >= MAX_ADDRESSES;
+  }
   showAddForm = false;
   addressSubmitted = false;
   addressType: 'Home' | 'Work' = 'Home';
@@ -202,9 +208,14 @@ logout(): void {
     return isValidPincode(this.pincode);
   }
   saveAddress() {
+        if (this.addressLimitReached) {
+      this.toast.show(`You can save up to ${MAX_ADDRESSES} addresses.`);
+      return;
+    }
     this.addressSubmitted = true;
 
     if (
+      !this.isValidPhoneNumber() ||
       !this.isValidFullName() ||
       !this.isValidAddressLine() ||
       !this.isValidCityName() ||
@@ -223,11 +234,13 @@ logout(): void {
       fullName: this.fullName,
       address: this.address,
       city: this.city,
+      phone: this.phone,
       pincode: this.pincode
     };
     this.store.dispatch(addAddress({ address: newAddress }));
     this.toast.show('Address saved');
     this.fullName = '';
+    this.phone = '';
     this.address = '';
     this.city = '';
     this.pincode = '';
@@ -235,8 +248,11 @@ logout(): void {
     this.showAddForm = false;
     this.addressSubmitted = false;
   }
-
   toggleAddForm(): void {
+    if (!this.showAddForm && this.addressLimitReached) {
+      this.toast.show(`You can save up to ${MAX_ADDRESSES} addresses. Remove one to add another.`);
+      return;
+    }
     this.showAddForm = !this.showAddForm;
     this.addressSubmitted = false;
   }
