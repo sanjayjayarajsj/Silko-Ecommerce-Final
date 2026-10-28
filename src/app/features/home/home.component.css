@@ -31,14 +31,28 @@
   object-fit: cover;
   object-position: center;
   opacity: 1;
+    filter: brightness(1.1) saturate(1.1);
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
+
   background:
-    radial-gradient(circle at center, rgba(5, 15, 25, 0.4) 0%, rgba(5, 15, 25, 0.88) 100%),
-    linear-gradient(to bottom, rgba(5, 11, 17, 0.5) 0%, rgba(5, 11, 17, 0.95) 100%);
+    /* soft pool of shade behind the headline and buttons */
+    radial-gradient(
+      ellipse 60% 55% at 50% 50%,
+      rgba(5, 15, 25, 0.45),
+      transparent 75%
+    ),
+    /* darker at the top (navbar) and bottom (hero-bottom), clear in the middle */
+    linear-gradient(
+      180deg,
+      rgba(5, 15, 25, 0.4) 0%,
+      rgba(5, 15, 25, 0.1) 30%,
+      rgba(5, 15, 25, 0.1) 65%,
+      rgba(5, 15, 25, 0.55) 100%
+    );
 }
 
 .hero-content {
@@ -51,7 +65,11 @@
   flex-direction: column;
   align-items: center;
 }
-
+.hero-label,
+.hero h1,
+.hero-text {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
 .hero-label {
   display: flex;
   align-items: center;

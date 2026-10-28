@@ -73,9 +73,6 @@ export class ProductListComponent {
     const page = Math.floor(Number(this.params().get('page')));
     return Number.isFinite(page) && page > 1 ? page : 1;
   });
-
-  // What is typed in the search box. It is separate from the URL so that
-  // typing a space (or pausing) never rewrites what the person is typing.
   readonly searchBox = signal('');
   readonly filtersOpen = signal(false);
   private searchTimer: ReturnType<typeof setTimeout> | undefined;
